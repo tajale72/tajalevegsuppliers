@@ -1,61 +1,56 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
-	d "myoneapp/db"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
+	d "myoneapp/db"
+	"myoneapp/model"
 )
 
-func main() {
-	r := gin.Default()
-	r.Use(cors.Default())
-	r.POST("/submit", Submit)
-	r.GET("/products", GetProductsDetails)
-	r.GET("/products/:id", GetProductsDetailsByID)
-	r.Run()
+// Define a database interface or type from myoneapp/db package
+type Database interface {
+	CreateTable(data []byte) error
+	GetProducts() ([]model.Request, error)
+	GetProductByID(id int) (model.Request, error)
+	// Add other database-related methods if needed
 }
 
-func Submit(c *gin.Context) {
+type DBClient struct {
+	DB Database
+}
+
+func (dbClient *DBClient) Submit(c *gin.Context) {
 	body := c.Request.Body
 	data, _ := io.ReadAll(body)
 
-	db, err := d.GetDBConnection()
-	if err != nil {
-		log.Println("Error connecting to the database: ", err)
-	}
-	defer db.Close()
-
-	err = d.CreateTable(db, data)
+	err := dbClient.DB.CreateTable(data)
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
 	}
-	c.JSON(http.StatusAccepted, "succefully created the bill")
+
+	c.JSON(http.StatusAccepted, "Successfully created the bill")
 }
 
-func GetProductsDetails(c *gin.Context) {
-
-	db, err := d.GetDBConnection()
-	if err != nil {
-		log.Fatal("Error connecting to the database: ", err)
-	}
-	defer db.Close()
-
-	lisofProducts, err := d.GetProducts(db)
+func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
+	lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
 	}
 
-	fmt.Println("lisofProducts:", lisofProducts)
 	c.JSON(http.StatusAccepted, lisofProducts)
 }
 
-func GetProductsDetailsByID(c *gin.Context) {
+func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 	id := c.Param("id") // Assuming you get the ID from the request URL
 
 	// Convert id to int
@@ -65,13 +60,7 @@ func GetProductsDetailsByID(c *gin.Context) {
 		return
 	}
 
-	db, err := d.GetDBConnection()
-	if err != nil {
-		log.Fatal("Error connecting to the database: ", err)
-	}
-	defer db.Close()
-
-	productDetails, err := d.GetProductByID(db, productID)
+	productDetails, err := dbClient.DB.GetProductByID(productID)
 	if err != nil {
 		log.Println("Error getting product details: ", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
@@ -79,4 +68,20 @@ func GetProductsDetailsByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, productDetails)
+}
+
+func main() {
+	r := gin.Default()
+	r.Use(cors.Default())
+
+	db, _ := d.GetDBConnection()
+	dbClient := &DBClient{
+		DB: db, // Assuming GetDBConnection returns a Database object
+	}
+
+	r.POST("/submit", dbClient.Submit)
+	r.GET("/products", dbClient.GetProductsDetails)
+	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
+
+	r.Run()
 }
