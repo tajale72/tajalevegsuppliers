@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetable Bill</title>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, h3, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: rgb(255, 182, 193);
+            color: black;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Container styles */
+        .container {
+            background-color: rgb(255, 182, 193);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group select {
+            width: calc(100% - 22px);
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: #ff0000;
+        }
+                .centered-component {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+        .centered-component h1,
+        .centered-component h4,
+        .centered-component p {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="createbill.html">Create Bill</a>
+        <a href="getproducts.html">Product Lists</a>
+        <a href="getbilldetailsbyid.html">Bill Details</a>
+    </div>
+    <br>
+    <div class="container">
+       <div class="form-group">
+        <div class="centered-component">
+            <label for="supplierName"><h1>तजले भेज सप्लायर्स</h1></label>
+            <h4>आलु प्याज तथा तरकारी भण्डार</h4>
+            <p>कमलबिनायक-१०, भक्तपुर</p>
+            <p>फोन: ०१-६६१६२७७ | 01-6616277 </p>
+            <p>मोबाइल: ९८४१६९२२११ | 9841692211</p>
+            <div class="form-group" style="display: flex; justify-content: space-between; padding-right: 80%;">
+                <label for="billNumber">बिल नं: </label>
+                <input type="text" id="billNumber" placeholder="बिल नं" required>
+            </div>
+        </div>
+        
+        
+    <div class="form-group" style="display: flex; justify-content: space-between;">
+        <div>
+            <label for="panNumber">पान.नं:</label>
+            <input type="text" id="panNumber" placeholder="६०१०८६४८९" required>
+        </div>
+        <div>
+            <label for="billDate">मिति/Date:</label>
+            <input type="date" id="billDate" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="billName">श्री/Mr./Ms.:</label>
+        <input type="text" id="billName" placeholder="नाम/Name" required>
+    </div>
+    <div class="form-group" style="display: flex; justify-content: space-between;">
+        <div>
+            <label for="billPlace">ठेगाना/Address:</label>
+            <input type="text" id="billPlace" placeholder="ठेगाना/Address" required>
+        </div>
+        <div>
+            <label for="customerPhoneNumber">क्रेतिको फोन/Customer Ph:</label>
+            <input type="tel" id="customerPhoneNumber" placeholder="९८४१६९२२११" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="customerPanNumber">क्रेतिको पान.नं:</label>
+        <input type="text" id="customerPanNumber" placeholder="क्रेतिको पान.नं" required>
+    </div>
+</div>
+
+
+        <h3>Add Vegitable</h3>
+        <form id="billForm">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <select id="productName" required>
+                    <option value="" disabled selected>Vegetables</option>
+                    <option value="Potato (आलु)">Potato (आलु)</option>
+                    <option value="Tomato (गोलभेडा)">Tomato (गोलभेडा)</option>
+                    <option value="Onion (प्याज)">Onion (प्याज)</option>
+                    <option value="Garlic (लह्सुन)">Garlic (लह्सुन)</option>
+                    <option value="Ginger (अदुवा)">Ginger (अदुवा)</option>
+                    <option value="Cauliflower (काउली)">Cauliflower (काउली)</option>
+                    <option value="Cabbage (बन्दा गोल)">Cabbage (बन्दा गोल)</option>
+                    <option value="Spinach (पालूङ्गो)">Spinach (पालूङ्गो)</option>
+                    <option value="Carrot (गाजर)">Carrot (गाजर)</option>
+                    <option value="Brinjal/Eggplant (बेगुन)">Brinjal/Eggplant (बेगुन)</option>
+                    <option value="Green Peas (केरा)">Green Peas (केरा)</option>
+                    <option value="Radish (मूला)">Radish (मूला)</option>
+                    <option value="Pumpkin (फर्सी)">Pumpkin (फर्सी)</option>
+                    <option value="Okra/Ladyfinger (भिन्डी)">Okra/Ladyfinger (भिन्डी)</option>
+                    <option value="Bell Pepper (खुर्सानी)">Bell Pepper (खुर्सानी)</option>
+                    <option value="Bitter Gourd (करेला)">Bitter Gourd (करेला)</option>
+                    <option value="Luffa (घीरौला)">Luffa (घीरौला)</option>
+                    <option value="Green Beans (फर्सी बेन्स)">Green Beans (फर्सी बेन्स)</option>
+                    <option value="Lentils (मस्याङ्ग)">Lentils (मस्याङ्ग)</option>
+                    <option value="Coriander (धनिया)">Coriander (धनिया)</option>
+                    <option value="Cucumber (खिरो)">Cucumber (खिरो)</option>
+                    <option value="Turmeric (भेटे)">Turmeric (भेटे)</option>
+                    <option value="Mustard Greens (तोरी साग)">Mustard Greens (तोरी साग)</option>
+                    <option value="Fenugreek (मेथी)">Fenugreek (मेथी)</option>
+                    <option value="Spring Onion (हरियो प्याज)">Spring Onion (हरियो प्याज)</option>
+                    <option value="Yam (अलु बन्दा)">Yam (अलु बन्दा)</option>
+                    <option value="Taro Root (गाहतियो)">Taro Root (गाहतियो)</option>
+                    <option value="Soybean (भटमास)">Soybean (भटमास)</option>
+                    <option value="Asparagus (कुरिलो)">Asparagus (कुरिलो)</option>
+                    <option value="Broccoli (ब्रोकोली)">Broccoli (ब्रोकोली)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity (kg):</label>
+                <input type="number" id="quantity" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="rate">Rate per kg (in NPR):</label>
+                <input type="number" id="rate" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Product">
+            </div>
+        </form>
+        <h3>Add Fruits</h3>
+        <form id="fruitForm">
+            <div class="form-group">
+                <label for="Fruit">Fruit Name:</label>
+                <select id="FruitName" required>
+                    <option value="" disabled selected>Fruits</option>
+                    <option value=" आम (Aam) - Mango">आम (Aam) - Mango</option>
+                    <option value=" केरा (Kera) - Banana">केरा (Kera) - Banana</option>
+                    <option value=" अम्बा (Amba) - Guava">अम्बा (Amba) - Guava</option>
+                    <option value=" पपाया (Papaya) - Papaya">पपाया (Papaya) - Papaya</option>
+                    <option value=" "अनानास (Ananas) - Pineapple">अनानास (Ananas) - Pineapple</option>
+                    <option value=" सन्तरा (Santara) - Orange">सन्तरा (Santara) - Orange</option>
+                    <option value=" कागती (Kagati) - Lemon">कागती (Kagati) - Lemon</option>
+                    <option value=" स्याउ (Syau) - Apple">स्याउ (Syau) - Apple</option>
+                    <option value=" नास्पाती (Naspati) - Pear"> नास्पाती (Naspati) - Pear</option>
+                        <option value=" अनार (Anar) - Pomegranate">अनार (Anar) - Pomegranate</option>
+                        <option value=" लिच्ची (Litchi) - Lychee">लिच्ची (Litchi) - Lychee</option>
+                        <option value=" आँप (Aap) - Peach">आँप (Aap) - Peach</option>
+                        <option value=" आलुबखडा (Aalubkhada) - Plum"> आलुबखडा (Aalubkhada) - Plum</option>
+                        <option value=" खुर्सानी (Khursani) - Apricot">खुर्सानी (Khursani) - Apricot</option>
+                        <option value=" इन्जीर (Injir) - Fig"> इन्जीर (Injir) - Fig</option>
+                        <option value=" किवी (Kiwi) - Kiwi">किवी (Kiwi) - Kiwi</option>
+                        <option value=" तरबुज (Tarbuz) - Watermelon"> तरबुज (Tarbuz) - Watermelon</option>
+                        <option value=" कटहर (Katahar) - Cantaloupe">कटहर (Katahar) - Cantaloupe</option>
+                        <option value=" हनीड्यू मेलन (Honeydew Melon) - Honeydew Melon"> हनीड्यू मेलन (Honeydew Melon) - Honeydew Melon</option>
+                        <option value=" जुगा (Juga) - Passion Fruit"> जुगा (Juga) - Passion Fruit</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fruitQuantity">Quantity (kg):</label> <!-- Changed the ID to avoid conflicts -->
+                <input type="number" id="fruitQuantity" min="0" step="0.01" required> <!-- Changed the ID to avoid conflicts -->
+            </div>
+            <div class="form-group">
+                <label for="fruitRate">Rate per kg (in NPR):</label> <!-- Changed the ID to avoid conflicts -->
+                <input type="number" id="fruitRate" min="0" step="0.01" required> <!-- Changed the ID to avoid conflicts -->
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Product">
+            </div>
+        </form>
+
+        <h3>Bill Details</h3>
+        <table id="billTable">
+            <thead>
+                <tr>
+                    <th>Name of Product</th>
+                    <th>Quantity (kg)</th>
+                    <th>Rate per kg (NPR)</th>
+                    <th>Price (NPR)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td id="totalQuantity">0</td>
+                    <td></td>
+                    <td id="totalPrice">0</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+         <h3>Submit Bill</h3>
+        <button id="submitBtn">Submit Bill</button>
+    </div>
+    <script>
+        var billForm = document.getElementById("billForm");
+        var fruitForm = document.getElementById("fruitForm"); // Added fruitForm variable
+        var billTableBody = document.querySelector("#billTable tbody");
+        var totalQuantityElement = document.getElementById("totalQuantity");
+        var totalPriceElement = document.getElementById("totalPrice");
+        var submitBtn = document.getElementById("submitBtn");
+
+        // Your existing JavaScript code remains unchanged for billForm
+
+        // Modified event listener for fruitForm
+        fruitForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var fruitName = document.getElementById("FruitName").value; // Changed the ID to match the fruit select element
+            var fruitQuantity = parseFloat(document.getElementById("fruitQuantity").value); // Changed the ID to match the fruit quantity input element
+            var fruitRate = parseFloat(document.getElementById("fruitRate").value); // Changed the ID to match the fruit rate input element
+            var fruitPrice = fruitQuantity * fruitRate;
+
+            // Add row to the bill table
+            var newRow = billTableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${fruitName}</td>
+                <td>${fruitQuantity}</td>
+                <td>${fruitRate}</td>
+                <td>${fruitPrice.toFixed(2)}</td>
+                <td><button class="remove-btn">Remove</button></td>
+            `;
+
+            // Update total quantity and price
+            totalQuantityElement.textContent = (parseFloat(totalQuantityElement.textContent) + fruitQuantity).toFixed(2);
+            totalPriceElement.textContent = (parseFloat(totalPriceElement.textContent) + fruitPrice).toFixed(2);
+
+            // Reset form fields
+            fruitForm.reset();
+        });
+
+        // Your existing JavaScript code for billTableBody event listener and submitBtn event listener remains unchanged
+
+    </script>
+
+
+    <script>
+        var billForm = document.getElementById("billForm");
+        var billTableBody = document.querySelector("#billTable tbody");
+        var totalQuantityElement = document.getElementById("totalQuantity");
+        var totalPriceElement = document.getElementById("totalPrice");
+        var submitBtn = document.getElementById("submitBtn");
+
+        var billData = {
+            billNumber:"",
+            billName: "",
+            billPlace: "",
+            billDate: "",
+            customerPhoneNumber:"",
+            customerPanNumber : "",
+            products: [],
+            billTotalAmount : ""
+        };
+
+        billForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var productName = document.getElementById("productName").value;
+            var quantity = parseFloat(document.getElementById("quantity").value);
+            var rate = parseFloat(document.getElementById("rate").value);
+            var price = quantity * rate;
+
+            // Add row to the bill table
+            var newRow = billTableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${productName}</td>
+                <td>${quantity}</td>
+                <td>${rate}</td>
+                <td>${price.toFixed(2)}</td>
+                <td><button class="remove-btn">Remove</button></td>
+            `;
+
+            // Update total quantity and price
+            totalQuantityElement.textContent = (parseFloat(totalQuantityElement.textContent) + quantity).toFixed(2);
+            totalPriceElement.textContent = (parseFloat(totalPriceElement.textContent) + price).toFixed(2);
+
+            // Reset form fields
+            billForm.reset();
+        });
+
+        billTableBody.addEventListener("click", function(event) {
+            if (event.target.classList.contains("remove-btn")) {
+                var row = event.target.closest("tr");
+                var quantity = parseFloat(row.children[1].textContent);
+                var price = parseFloat(row.children[3].textContent);
+
+                // Update total quantity and price
+                totalQuantityElement.textContent = (parseFloat(totalQuantityElement.textContent) - quantity).toFixed(2);
+                totalPriceElement.textContent = (parseFloat(totalPriceElement.textContent) - price).toFixed(2);
+
+                // Remove the row
+                row.remove();
+            }
+        });
+
+        submitBtn.addEventListener("click", function() {
+            // Get bill name and date
+            billData.billNumber = document.getElementById("billNumber").value;
+            billData.billName = document.getElementById("billName").value;
+            billData.billPlace = document.getElementById("billPlace").value;
+            billData.billDate = document.getElementById("billDate").value;
+            billData.customerPhoneNumber = document.getElementById("customerPhoneNumber").value;
+            billData.customerPanNumber = document.getElementById("customerPanNumber").value;
+            var billTotalAmount = 0; // Initialize billTotalAmount
+
+            // Add products to the bill data
+            var products = [];
+            billTableBody.querySelectorAll("tr:not(.total-row)").forEach(function(row) {
+                var cells = row.children;
+                var product = {
+                    name: cells[0].textContent,
+                    quantity: parseFloat(cells[1].textContent),
+                    rate: parseFloat(cells[2].textContent),
+                    price: parseFloat(cells[3].textContent)
+                };
+                products.push(product);
+                 // Accumulate prices to calculate billTotalAmount
+                billTotalAmount += product.price;
+            });
+
+            billData.products = products;
+            billData.billTotalAmount = billTotalAmount
+
+            // Log billData (you can send it to the backend API here)
+            console.log(billData);
+
+            if (billData.products.length === 0) {
+                alert("Add products to the bill before submitting.");
+            } else {
+                // Send billData to the backend API using fetch
+                fetch('http://localhost:8080/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(billData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Bill submitted successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting the bill. Please try again.');
+                });
+            }
+        });
+
+        
+    </script>
+</body>
+
+</html>
