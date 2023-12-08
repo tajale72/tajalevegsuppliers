@@ -43,7 +43,7 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 	lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error getting the products"})
 		return
 	}
 
@@ -63,7 +63,7 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 	productDetails, err := dbClient.DB.GetProductByID(productID)
 	if err != nil {
 		log.Println("Error getting product details: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -73,7 +73,10 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
-	db, _ := d.GetDBConnection()
+	db, err := d.GetDBConnection()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+	}
 	dbClient := &DBClient{
 		DB: db, // Assuming GetDBConnection returns a Database object
 	}
