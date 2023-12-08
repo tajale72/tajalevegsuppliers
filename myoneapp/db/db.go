@@ -114,8 +114,8 @@ func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
 	err := dbClient.DB.QueryRow("SELECT * FROM Bill_Details WHERE id = $1;", id).
 		Scan(&bill.ID, &bill.BillName, &bill.BillDate, &bill.BillPlace, &productsJSON, &bill.BillNumber, &bill.CustomerPanNum, &bill.CustomerPhonenumber, &bill.BillTotalAmount)
 	if err != nil {
-		log.Println("Error querying database:", err)
-		return bill, fmt.Errorf("error querying database: %w", err)
+		log.Println("Error getting data from the database:", err)
+		return bill, fmt.Errorf("Error getting data from the database: %w", err)
 	}
 
 	// Unmarshal the JSON string into the Products field of the bill
