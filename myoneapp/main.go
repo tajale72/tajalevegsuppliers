@@ -73,7 +73,6 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
-
 	db, _ := d.GetDBConnection()
 	dbClient := &DBClient{
 		DB: db, // Assuming GetDBConnection returns a Database object
