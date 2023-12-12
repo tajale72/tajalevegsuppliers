@@ -80,10 +80,15 @@ func main() {
 	dbClient := &DBClient{
 		DB: db, // Assuming GetDBConnection returns a Database object
 	}
+	r.GET("/", GetProductsDetails)
 
 	r.POST("/submit", dbClient.Submit)
 	r.GET("/products", dbClient.GetProductsDetails)
 	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
 
 	r.Run()
+}
+
+func GetProductsDetails(c *gin.Context) {
+	c.JSON(http.StatusAccepted, "succes from 8080")
 }
