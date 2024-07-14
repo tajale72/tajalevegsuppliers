@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.table-input {
+    width: 100%;
+    border: none;          /* Remove the border */
+    box-sizing: border-box;
+    outline: none;        /* Remove the outline on focus */
+    padding: 4px;         /* Add some padding for better spacing */
+}
+
+
+.pan-input {
+    width: 20px;
+    text-align: center;
+  }
+  .dotted-line::after {
+    content: " ....................";
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: #000; /* Adjust color as needed */
+}
+.dotted-line-sign::after {
+    content: " .............";
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    color: #000; /* Adjust color as needed */
+}
+
+.bill-container {
+    border: 2px solid black;
+    padding: 20px;
+    width: 600px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+
+.create-bill {
+    text-align: center;
+    width: 100%;
+    margin-top: 2px; /* Add some spacing above the button */
+}
+
+.create-bill button {
+    width: 100px;/* Set width to 100% to match the container */
+    padding: 10px;
+    background-color: #f0f0f0; /* Default background color */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.create-bill button:hover {
+    background-color: blue; /* Background color on hover */
+    color: white; /* Text color on hover */
+}

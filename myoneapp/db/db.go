@@ -62,7 +62,7 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 	// SQL statement with placeholders
 	sqlStatement := `
     INSERT INTO Bill_Details (bill_name, bill_date, bill_place, bill_number, customer_phonenumber, customer_pan_num, products, bill_total_amount)
-    VALUES ($1, $2, $3, $4::jsonb, $5, $6, $7, $8);`
+    VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8);`
 
 	// Execute the SQL query with specific values
 	_, err = dbClient.DB.Exec(sqlStatement, req.BillName, req.BillDate, req.BillPlace, req.BillNumber, req.CustomerPhonenumber, req.CustomerPanNum, productsJSON, req.BillTotalAmount)
