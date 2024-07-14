@@ -1,7 +1,7 @@
 # tajalevegsuppliers
     
 # tools
-    - go , postgres
+    - go , postgres@16
     
 
 # Create a migration file

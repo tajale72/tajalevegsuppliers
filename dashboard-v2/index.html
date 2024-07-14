@@ -1,0 +1,155 @@
+<html>
+  <div class="bill-container">
+    <link rel="stylesheet" href="style.css" />
+    <h3>तजले भेज सप्लायर्स</h3>
+    <h4>आलु प्याज तथा तरकारी भण्डार</h4>
+    <h5>कमलबिनायक-१०, भक्तपुर</h5>
+    <p>
+      बिल नं <input type="text" id="billNumber" required />फोन: ०१-६६१६२७७ मो:
+      ९८४१६९२२११
+    </p>
+    <p>
+      पान.नं: <span id="panContainer"></span>मिति:
+      <input type="date" id="billDate" required />
+    </p>
+    <p>श्री:<span class="dotted-line"></span></p>
+    <p>
+      ठेगाना:<span class="dotted-line"></span> फोन:<span
+        class="dotted-line"
+      ></span>
+    </p>
+    <p>क्रेतिको पान.नं: <span id="customer-panContainer"></span></p>
+
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Krasa</th>
+          <th>Bibaran</th>
+          <th>Sankhya</th>
+          <th>Dar</th>
+          <th>Rakam</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Empty rows will be added here by JavaScript -->
+      </tbody>
+    </table>
+
+    <p>
+      "भोज तथा पिकनिकको ठोक तथा खुर्दा तरकारी स्वयं mulle मा पाइन्छ। # होम
+      डेलिभरी पनि व्यवस्था छ।"
+    </p>
+
+    <p>
+      क्रेतिको साइन इन
+      <span class="dotted-line-sign"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      तजले भेज सप्लायर्स <span class="dotted-line-sign"></span>
+    </p>
+  </div>
+
+  <div class="create-bill">
+    <button>Create Bill</button>
+  </div>
+</html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const panNumber = "६०१०८६४८९";
+    const panContainer = document.getElementById("panContainer");
+
+    for (let digit of panNumber) {
+      let input = document.createElement("input");
+      input.type = "text";
+      input.value = digit;
+      input.className = "pan-input";
+      input.readOnly = true; // Making the input fields read-only
+      panContainer.appendChild(input);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const panNumber = "६०१०८६४८९";
+    const panContainer = document.getElementById("customer-panContainer");
+
+    for (let i = 0; i < panNumber.length; i++) {
+      let input = document.createElement("input");
+      input.type = "text";
+      input.className = "pan-input";
+
+      panContainer.appendChild(input);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const tableBody = document.querySelector("#data-table tbody");
+
+    for (let i = 0; i < 21; i++) {
+      // 20 additional rows
+      const row = document.createElement("tr");
+
+      for (let j = 0; j < 5; j++) {
+        const cell = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "table-input";
+        cell.appendChild(input);
+        row.appendChild(cell);
+      }
+
+      tableBody.appendChild(row);
+    }
+    // Add "Jamma" in the 21st row under the "Dar" column (index 3)
+    const jammaRow = document.createElement("tr");
+    for (let j = 0; j < 5; j++) {
+      const cell = document.createElement("td");
+      if (j === 3) {
+        cell.textContent = "Jamma"; // Add "Jamma" in the "Dar" column
+      }
+      jammaRow.appendChild(cell);
+    }
+    tableBody.appendChild(jammaRow);
+
+    // Add "Customer RS ..." in the 22nd row with an input field
+    const customerRow = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.style.width = "100%"; // Set the width to 100%
+    cell.colSpan = 5; // Make it span all columns
+
+    // Create a container for flex display
+    const container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.alignItems = "center"; // Center vertically
+    container.style.justifyContent = "space-between"; // Space between items
+
+    const label = document.createElement("span");
+    label.textContent = "Customer RS ";
+    container.appendChild(label);
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "table-input";
+    input.placeholder =
+      "..................................................................................................................................................................................................................................................................................."; // Placeholder for the input
+
+    container.appendChild(input); // Add the input to the container
+    cell.appendChild(container); // Add the container to the cell
+    customerRow.appendChild(cell);
+    tableBody.appendChild(customerRow);
+
+    // // Add a cell for input without column grid
+    // const inputCell = document.createElement("td");
+    // const input = document.createElement("input");
+    // input.type = "text";
+    // input.className = "table-input";
+    // inputCell.appendChild(input);
+    // customerRow.appendChild(inputCell);
+
+    tableBody.appendChild(customerRow);
+  });
+</script>

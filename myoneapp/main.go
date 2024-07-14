@@ -11,6 +11,7 @@ import (
 
 	d "myoneapp/db"
 	"myoneapp/model"
+	mongoDB "myoneapp/mongo"
 )
 
 // Define a database interface or type from myoneapp/db package
@@ -28,8 +29,20 @@ type DBClient struct {
 func (dbClient *DBClient) Submit(c *gin.Context) {
 	body := c.Request.Body
 	data, _ := io.ReadAll(body)
+	mongoClient, err := mongoDB.GetDBConnection()
+	if err != nil {
+		log.Println("Error CreateTable: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Connecting to mongo Server Error"})
+		return
+	}
 
-	err := dbClient.DB.CreateTable(data)
+	err = mongoClient.CreateTable(data)
+	if err != nil {
+		log.Println("Error CreateTable: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Creating mongo table Server Error"})
+		return
+	}
+	err = dbClient.DB.CreateTable(data)
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
@@ -40,6 +53,13 @@ func (dbClient *DBClient) Submit(c *gin.Context) {
 }
 
 func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
+	lisofProducts, err := dbClient.DB.GetProducts()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error getting the products"})
+		return
+	}
+
 	lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
