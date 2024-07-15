@@ -36,7 +36,7 @@
       <p>श्री:<input type="text" class="input-field" id="customerName" /></p>
       <p>
         ठेगाना:<input type="text" class="input-field" id="location" />
-        फोन:<input type="text" class="input-field" />
+        फोन:<input type="text" class="input-field" id="customerPhoneNumber"/>
       </p>
       <p>क्रेतिको पान.नं: <span id="customer-panContainer"></span></p>
 
@@ -124,6 +124,8 @@
         document.getElementById("grandTotal").value = grandTotal;
       }
     </script>
+
+
     <script>
       document.addEventListener("DOMContentLoaded", (event) => {
         const panNumber = "६०१०८६४८९";
@@ -172,10 +174,13 @@
         .getElementById("createBillButton")
         .addEventListener("click", () => {
           const billNumber = document.getElementById("billNumber").value;
-          const panNumber = "६०१०८६४८९";
-          const nepaliDate = document.getElementById("nepali-datepicker").value;
+          const billDate = document.getElementById("nepali-datepicker").value;
+          const sellerName =  document.getElementById("title").innerText;
+          const sellerPanNum = "६०१०८६४८९";
+
           const customerName = document.getElementById("customerName").value;
           const customerLocation = document.getElementById("location").value;
+          const customerPhoneNumber = document.getElementById("customerPhoneNumber").value;
           const customerPanContainer = Array.from(
             document.querySelectorAll("#customer-panContainer input")
           )
@@ -185,10 +190,12 @@
           // Create an object to store the data
           const billData = {
             billNumber: billNumber,
-            billDate: nepaliDate,
-            sellerPanNum: panNumber,
+            billDate: billDate,
+            sellerName : sellerName,
+            sellerPanNum: sellerPanNum,
             customerName: customerName,
             customerLocation: customerLocation,
+            customerPhoneNumber : customerPhoneNumber,
             customerPanContainer: customerPanContainer,
             items: [],
           };
