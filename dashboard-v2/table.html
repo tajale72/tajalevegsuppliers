@@ -13,7 +13,6 @@
       src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.4.min.js"
       type="text/javascript"
     ></script>
-    <script src="signature_pad.js"></script>
   </head>
   <body>
     <div class="bill-container">
@@ -57,7 +56,35 @@
               document.write(`
                             <tr>
                                 <td>${i + 1}</td>
-                                <td><input type="text" class="table-input" /></td>
+                                <td><input type="text" class="table-input" />
+                                  <select id="productName" required>
+                        <option value="" disabled selected>Vegetables</option>
+                        <option value="Potato (आलु)">Potato (आलु)</option>
+                        <option value="Tomato (गोलभेडा)">Tomato (गोलभेडा)</option>
+                        <option value="Onion (प्याज)">Onion (प्याज)</option>
+                        <option value="Garlic (लह्सुन)">Garlic (लह्सुन)</option>
+                        <option value="Ginger (अदुवा)">Ginger (अदुवा)</option>
+                        <option value="Cauliflower (काउली)">Cauliflower (काउली)</option>
+                        <option value="Cabbage (बन्दा गोल)">Cabbage (बन्दा गोल)</option>
+                        <option value="Spinach (पालूङ्गो)">Spinach (पालूङ्गो)</option>
+                        <option value="Carrot (गाजर)">Carrot (गाजर)</option>
+                        <option value="Brinjal/Eggplant (बेगुन)">Brinjal/Eggplant (बेगुन)</option>
+                        <option value="Green Peas (केरा)">Green Peas (केरा)</option>
+                        <option value="Radish (मूला)">Radish (मूला)</option>
+                        <option value="Pumpkin (फर्सी)">Pumpkin (फर्सी)</option>
+                        <option value="Okra/Ladyfinger (भिन्डी)">Okra/Ladyfinger (भिन्डी)</option>
+                        <option value="Bell Pepper (खुर्सानी)">Bell Pepper (खुर्सानी)</option>
+                        <option value="Bitter Gourd (करेला)">Bitter Gourd (करेला)</option>
+                        <option value="Luffa (घीरौला)">Luffa (घीरौला)</option>
+                        <option value="Green Beans (फर्सी बेन्स)">Green Beans (फर्सी बेन्स)</option>
+                        <option value="Lentils (मस्याङ्ग)">Lentils (मस्याङ्ग)</option>
+                        <option value="Coriander (धनिया)">Coriander (धनिया)</option>
+                        <option value="Cucumber (खिरो)">Cucumber (खिरो)</option>
+                        <option value="Turmeric (भेटे)">Turmeric (भेटे)</option>
+                        <option value="Mustard Greens (तोरी साग)">Mustard Greens (तोरी साग)</option>
+                        <option value="Fenugreek (मेथी)">Fenugreek (मेथी)</option>
+                    </select>
+                                </td>
                                 <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
                                 <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
                                 <td><input type="text" class="table-input" readonly /></td>
@@ -80,31 +107,14 @@
         "भोज तथा पिकनिकको ठोक तथा खुर्दा तरकारी स्वयं मुल्ले मा पाइन्छ। # होम
         डेलिभरी पनि व्यवस्था छ।"
       </p>
-     <div class="sign-container">
-    <div class="input-wrapper"  style="text-align: left;">
-        <p>क्रेतिको साइन इन : <input type="text" class="input-field" id="customerSignature" /></p>
-    </div>
-    <div class="input-wrapper" style="text-align: right;">
-        <p>तजले भेजसप्लायर्स  : <input type="text" class="input-field" id="sellerSignature" /></p>
-    </div>
-</div>
-      
-    
-      </div>
+      <p>
+        क्रेतिको साइन इन <input type="text" class="input-field-sign" /> तजले भेज
+        सप्लायर्स <input type="text" class="input-field-sign" />
+      </p>
     </div>
     <div class="create-bill">
       <button id="createBillButton">Create Bill</button>
     </div>
-
-
-
-
-
-
-
-
-
-
 
     <script>
       function calculateTotal() {
@@ -247,22 +257,3 @@
       });
   });
 </script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", (event) => {
-    const signInputs = document.querySelectorAll(".input-field-sign");
-    signInputs.forEach((input) => {
-      input.maxLength = 1; // Ensure only one character per input box
-
-      input.addEventListener("input", function () {
-        if (this.value.length === this.maxLength) {
-          const nextInput = this.nextElementSibling;
-          if (nextInput && nextInput.classList.contains("input-field-sign")) {
-            nextInput.focus();
-          }
-        }
-      });
-    });
-  });
-</script>
-

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -60,7 +61,7 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 		return
 	}
 
-	lisofProducts, err := dbClient.DB.GetProducts()
+	//lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error getting the products"})
@@ -90,6 +91,29 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, productDetails)
 }
 
+func (dbClient *DBClient) GetBillNumber(c *gin.Context) {
+	mongoClient, err := mongoDB.GetDBConnection()
+	if err != nil {
+		log.Println("Error CreateTable: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Connecting to mongo Server Error"})
+		return
+	}
+
+	id, err := mongoClient.GetLastBillNumber()
+	if err != nil {
+		log.Println("Error getting product details: ", err)
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	fmt.Println("id", id)
+
+	c.JSON(http.StatusOK, id)
+}
+
+type BillNumber struct {
+	billNumber string `json:"billNumber"`
+}
+
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
@@ -105,6 +129,7 @@ func main() {
 	r.POST("/submit", dbClient.Submit)
 	r.GET("/products", dbClient.GetProductsDetails)
 	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
+	r.GET("/getBillNumber", dbClient.GetBillNumber)
 
 	r.Run()
 }

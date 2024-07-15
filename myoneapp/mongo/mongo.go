@@ -55,15 +55,19 @@ func (dbClient *DBClient) Close() {
 }
 
 func (dbClient *DBClient) CreateTable(data []byte) error {
+	var req interface{}
+	json.Unmarshal(data, &req)
 
-	var req model.Request
-	if err := json.Unmarshal(data, &req); err != nil {
-		log.Println("Unmarshal", err)
-		return fmt.Errorf("error unmarshaling request: %w", err)
-	}
+	fmt.Println("Data", string(data))
 
-	cellections, _ := dbClient.DB.ListCollectionNames(context.Background(), bson.M{})
-	log.Println("calling mongo cellections", cellections)
+	// var req model.Request
+	// if err := json.Unmarshal(data, &req); err != nil {
+	// 	log.Println("Unmarshal", err)
+	// 	return fmt.Errorf("error unmarshaling request: %w", err)
+	// }
+
+	// cellections, _ := dbClient.DB.ListCollectionNames(context.Background(), bson.M{})
+	//log.Println("calling mongo cellections", cellections)
 
 	collection := dbClient.DB.Collection(collName)
 
@@ -141,6 +145,19 @@ func (dbClient *DBClient) DeleteUser(id int) error {
 		return fmt.Errorf("error deleting user: %w", err)
 	}
 	return nil
+}
+
+type Result struct {
+	BillNumber int64 `json:"billNumber"`
+}
+
+func (dbClient *DBClient) GetLastBillNumber() (Result, error) {
+	collection := dbClient.DB.Collection(collName)
+	billnumber, _ := collection.CountDocuments(context.Background(), bson.M{})
+	// opts := options.FindOne().SetSort(bson.D{{"billNumber", -1}})
+	var result Result
+	result.BillNumber = billnumber + 1
+	return result, nil
 }
 
 type User struct {

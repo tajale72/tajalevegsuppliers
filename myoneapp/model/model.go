@@ -29,7 +29,15 @@ type Request struct {
 	BillDate            string    `json:"billDate"`
 	Products            []Product `json:"products"`
 	BillNumber          string    `json:"billNumber"`
+	BillTotalAmount     float64   `json:"billTotalAmount"`
+	SellerPanNum        string    `json:"sellerPanNum"`
+	CustomerLocation    string    `json:"customerLocation"`
 	CustomerPanNum      string    `json:"customerPanNumber"`
 	CustomerPhonenumber string    `json:"customerPhoneNumber"`
-	BillTotalAmount     float64   `json:"billTotalAmount"`
+	//CustomerInfo        CustomerInfo `json:"customerInfo"`
+}
+type CustomerInfo struct {
+	CustomerLocation    string `json:"customerLocation"`
+	CustomerPanNum      string `json:"customerPanNumber"`
+	CustomerPhonenumber string `json:"customerPhoneNumber"`
 }
