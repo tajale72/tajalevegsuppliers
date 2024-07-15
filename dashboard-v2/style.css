@@ -25,6 +25,10 @@ th {
     padding: 4px;         /* Add some padding for better spacing */
 }
 
+.sum-row {
+    font-weight: bold;
+}
+
 
 .pan-input {
     width: 20px;
@@ -42,6 +46,19 @@ th {
     letter-spacing: 0.5px;
     color: #000; /* Adjust color as needed */
 }
+.input-field {
+    border: none;
+    border-bottom: 1px dotted black; /* Dotted line effect */
+    outline: none;
+    width: 40%; /* Adjust as needed */
+}
+.input-field-sign {
+    border: none;
+    border-bottom: 1px dotted black; /* Dotted line effect */
+    outline: none;
+    width: 20%; /* Adjust as needed */
+}
+
 
 .bill-container {
     border: 2px solid black;
@@ -51,6 +68,19 @@ th {
     font-family: Arial, sans-serif;
 }
 
+.title-container {
+    text-align: center;
+}
+.title-container h1, 
+    .title-container h4, 
+    .title-container h5, 
+    .title-container h3 {
+        margin: 0; /* Remove spaces */
+}
+
+.date-label {
+        margin-left: 100px; /* Adjust the value as needed */
+}
 
 .create-bill {
     text-align: center;
@@ -70,4 +100,21 @@ th {
 .create-bill button:hover {
     background-color: blue; /* Background color on hover */
     color: white; /* Text color on hover */
+}
+
+.total-sum-text {
+    border: none; 
+}
+
+.sign-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.input-wrapper {
+    float: left;
+    width: 48%;
+    margin: 1%;
+    box-sizing: border-box;
 }
