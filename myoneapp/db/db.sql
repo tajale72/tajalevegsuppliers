@@ -65,3 +65,17 @@ CREATE TABLE Payment (
     amount DECIMAL(10, 2) NOT NULL,
     payment_status VARCHAR(50) NOT NULL
 );
+
+
+CREATE TABLE bills (
+    id SERIAL PRIMARY KEY,
+    seller_name TEXT NOT NULL,
+    seller_pan_num TEXT NOT NULL,
+    customer_name TEXT NOT NULL,
+    customer_location TEXT NOT NULL,
+    customer_phone_number TEXT NOT NULL,
+    customer_pan_container TEXT NOT NULL,
+    bill_number TEXT NOT NULL,
+    bill_date DATE NOT NULL,
+    items JSONB NOT NULL
+);
