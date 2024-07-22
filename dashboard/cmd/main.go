@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	router := gin.Default()
@@ -8,5 +12,11 @@ func main() {
 	// Serve static files from the "static" directory
 	router.Static("/dashboard", "./")
 
+	router.GET("/", Welcome)
+
 	router.Run(":3000")
+}
+
+func Welcome(c *gin.Context) {
+	c.JSON(http.StatusOK, "Home Page")
 }
