@@ -79,3 +79,18 @@ CREATE TABLE bills (
     bill_date DATE NOT NULL,
     items JSONB NOT NULL
 );
+
+-- Create the bill_details table with items stored as JSONB
+CREATE TABLE bill_details (
+    id SERIAL PRIMARY KEY,
+    bill_number VARCHAR(255) NOT NULL,
+    bill_date DATE NOT NULL,
+    bill_total_amount  VARCHAR(255) NOT NULL,
+    seller_name VARCHAR(255) NOT NULL,
+    seller_pan_num VARCHAR(255) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_location VARCHAR(255) NOT NULL,
+    customer_phone_number VARCHAR(20) NOT NULL,
+    customer_pan_container VARCHAR(255) NOT NULL,
+    items JSONB -- Store items as JSONB
+);

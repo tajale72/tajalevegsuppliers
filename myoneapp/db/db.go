@@ -46,28 +46,43 @@ func (dbClient *DBClient) Close() {
 }
 
 func (dbClient *DBClient) CreateTable(data []byte) error {
+	// Unmarshal JSON data into the request model
 	var req model.Request
 	if err := json.Unmarshal(data, &req); err != nil {
-		log.Println("Unmarshal", err)
+		log.Println("Unmarshal error:", err)
 		return fmt.Errorf("error unmarshaling request: %w", err)
 	}
 
-	// Convert the products slice to a JSON string
-	productsJSON, err := json.Marshal(req.Products)
+	// Marshal items slice to JSON
+	itemsJSON, err := json.Marshal(req.Items)
 	if err != nil {
-		log.Println("Marshal", err)
-		return fmt.Errorf("error marshaling products: %w", err)
+		log.Println("Marshal error:", err)
+		return fmt.Errorf("error marshaling items: %w", err)
 	}
 
 	// SQL statement with placeholders
 	sqlStatement := `
-    INSERT INTO Bill_Details (bill_name, bill_date, bill_place, bill_number, customer_phonenumber, customer_pan_num, products, bill_total_amount)
-    VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8);`
+INSERT INTO Bill_Details (
+	bill_number, 
+	bill_date,
+	bill_total_amount, 
+	seller_name, 
+	seller_pan_num, 
+	customer_name, 
+	customer_location, 
+	customer_phone_number, 
+	customer_pan_container, 
+	items
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9, $10::jsonb);
+`
+
+	fmt.Println("bill amount", req.BillTotalAmount)
 
 	// Execute the SQL query with specific values
-	_, err = dbClient.DB.Exec(sqlStatement, req.BillName, req.BillDate, req.BillPlace, req.BillNumber, req.CustomerPhonenumber, req.CustomerPanNum, productsJSON, req.BillTotalAmount)
+	_, err = dbClient.DB.Exec(sqlStatement, req.BillNumber, req.BillDate, req.BillTotalAmount, req.SellerName, req.SellerPanNum, req.CustomerName, req.CustomerLocation, req.CustomerPhoneNumber, req.CustomerPanContainer, itemsJSON)
 	if err != nil {
-		log.Println("error Exec statement", err)
+		log.Println("Exec statement error:", err)
 		return fmt.Errorf("error executing SQL statement: %w", err)
 	}
 
@@ -85,17 +100,32 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 	var listOfBills []model.Request
 	for rows.Next() {
 		var bill model.Request
-		var productsJSON string
-		if err := rows.Scan(&bill.ID, &bill.BillName, &bill.BillDate, &bill.BillPlace, &productsJSON, &bill.BillNumber, &bill.CustomerPanNum, &bill.CustomerPhonenumber, &bill.BillTotalAmount); err != nil {
+		var productsJSON sql.RawBytes // Use sql.RawBytes to handle JSONB data
+
+		// Update the Scan call to match the number of columns
+		if err := rows.Scan(
+			&bill.ID,
+			&bill.BillNumber,
+			&bill.BillDate,
+			&bill.BillTotalAmount,
+			&bill.SellerName,
+			&bill.SellerPanNum,
+			&bill.CustomerName,
+			&bill.CustomerLocation,
+			&bill.CustomerPhoneNumber,
+			&bill.CustomerPanContainer,
+			&productsJSON,
+		); err != nil {
 			log.Println("Error scanning row:", err)
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 
-		// Unmarshal the JSON string into the Products field of the bill
-		if err := json.Unmarshal([]byte(productsJSON), &bill.Products); err != nil {
+		// Unmarshal the JSONB data into the Items field of the bill
+		if err := json.Unmarshal(productsJSON, &bill.Items); err != nil {
 			log.Println("Error unmarshaling products:", err)
 			return nil, fmt.Errorf("error unmarshaling products: %w", err)
 		}
+
 		listOfBills = append(listOfBills, bill)
 	}
 
@@ -109,17 +139,18 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 
 func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
 	var bill model.Request
-	var productsJSON string
+	var itemsJSON string
 
+	// Use a pointer for itemsJSON
 	err := dbClient.DB.QueryRow("SELECT * FROM Bill_Details WHERE id = $1;", id).
-		Scan(&bill.ID, &bill.BillName, &bill.BillDate, &bill.BillPlace, &productsJSON, &bill.BillNumber, &bill.CustomerPanNum, &bill.CustomerPhonenumber, &bill.BillTotalAmount)
+		Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON)
 	if err != nil {
 		log.Println("Error getting data from the database:", err)
 		return bill, fmt.Errorf("Error getting data from the database: %w", err)
 	}
 
 	// Unmarshal the JSON string into the Products field of the bill
-	if err := json.Unmarshal([]byte(productsJSON), &bill.Products); err != nil {
+	if err := json.Unmarshal([]byte(itemsJSON), &bill.Items); err != nil {
 		log.Println("Error unmarshaling products:", err)
 		return bill, fmt.Errorf("error unmarshaling products: %w", err)
 	}
