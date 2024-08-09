@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -22,22 +23,31 @@ type Product struct {
 	Price    int    `json:"price"`
 }
 
+// Item represents a single item in the bill.
+type Item struct {
+	Kra     string `json:"kra"`
+	Sa      string `json:"sa"`
+	Sankhya string `json:"sankhya"`
+	Dar     string `json:"dar"`
+	Rakam   string `json:"rakam"`
+}
+
 type Request struct {
-	ID                  int       `json:"id"`
-	BillName            string    `json:"billName"`
-	BillPlace           string    `json:"billPlace"`
-	BillDate            string    `json:"billDate"`
-	Products            []Product `json:"products"`
-	BillNumber          string    `json:"billNumber"`
-	BillTotalAmount     float64   `json:"billTotalAmount"`
-	SellerPanNum        string    `json:"sellerPanNum"`
-	CustomerLocation    string    `json:"customerLocation"`
-	CustomerPanNum      string    `json:"customerPanNumber"`
-	CustomerPhonenumber string    `json:"customerPhoneNumber"`
-	//CustomerInfo        CustomerInfo `json:"customerInfo"`
+	ID                   int             `json:"id"`
+	BillNumber           string          `json:"billNumber"`
+	BillDate             string          `json:"billDate"`
+	BillTotalAmount      string          `json:"billTotalAmount"`
+	SellerName           string          `json:"sellerName"`
+	SellerPanNum         string          `json:"sellerPanNum"`
+	CustomerName         string          `json:"customerName"`
+	CustomerLocation     string          `json:"customerLocation"`
+	CustomerPhoneNumber  string          `json:"customerPhoneNumber"`
+	CustomerPanContainer string          `json:"customerPanContainer"`
+	Items                json.RawMessage `json:"items"` // Use RawMessage to handle JSON data
 }
-type CustomerInfo struct {
-	CustomerLocation    string `json:"customerLocation"`
-	CustomerPanNum      string `json:"customerPanNumber"`
-	CustomerPhonenumber string `json:"customerPhoneNumber"`
-}
+
+// type CustomerInfo struct {
+// 	CustomerLocation    string `json:"customerLocation"`
+// 	CustomerPanNum      string `json:"customerPanNumber"`
+// 	CustomerPhonenumber string `json:"customerPhoneNumber"`
+// }

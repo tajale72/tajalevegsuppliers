@@ -2,6 +2,11 @@
     
 # tools
     - go , postgres@16
+
+
+# things required to start the service
+    - brew services start postgresql@16
+    - psql postgres
     
 
 # Create a migration file
