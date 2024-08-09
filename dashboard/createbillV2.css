@@ -63,7 +63,7 @@ th {
 .bill-container {
     border: 2px solid black;
     padding: 20px;
-    width: 600px;
+    width: 50%;
     margin: auto;
     font-family: Arial, sans-serif;
 }
@@ -121,24 +121,26 @@ th {
 
 
 .navbar {
-    background-color: #333;
+    background-color: #fff;
+    color: black;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
 }
 
 .navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
+    display: inline-block;
+    margin: 0 15px;
+    color: black;
     text-decoration: none;
     font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .navbar a:hover {
-    background-color: #575757;
-    color: white;
+    color: #333;
+}
+
+.center-align {
+    text-align: center;
 }

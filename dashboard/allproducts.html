@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="createbillV2.css" />
+    <title>Bill Details</title>
+    <!-- <style>
+        body {
+            font-family: "Courier New", Courier, monospace; /* Monospaced font for receipt-like appearance */
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            background-color: #fff;
+            color: black;
+            overflow: hidden;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navbar a {
+            display: inline-block;
+            margin: 0 15px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: #333;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            color: red;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            text-align: center; /* Center-align header cell contents */
+        }
+
+        .center-align {
+            text-align: center;
+        }
+
+        /* Alternating row colors */
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Light grey for even rows */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff; /* White for odd rows */
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Slightly darker grey for hovered rows */
+        }
+
+        .items-column {
+            max-width: 200px; /* Adjust width as needed */
+            max-height: 100px; /* Adjust height as needed */
+            overflow-y: auto; /* Enable vertical scrolling if content overflows */
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            font-family: monospace; /* Monospace font for better readability */
+        }
+    </style> -->
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="createbillv2.html">Create Bill Products</a>
+        <a href="allproducts.html">Product Lists</a>
+        <a href="getbilldetailsbyid.html">Bill Details</a>
+    </div>
+
+    <!-- <div id="loader" class="loader"></div>
+    <div id="error-message" class="error-message"></div> -->
+
+    <div class="bill-container">
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Bill Number</th>
+                    <th>Bill Date</th>
+                    <th>Seller Name</th>
+                    <th class="center-align">Seller PAN Number</th>
+                    <th class="center-align">Customer Name</th>
+                    <th class="center-align">Customer Location</th>
+                    <th class="center-align">Customer Phone Number</th>
+                    <th class="center-align">Customer PAN Container</th>
+                    <th>Items</th>
+                    <th class="center-align">Bill Total Amount /-</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+        </table>
+    </div>
+
+   
+
+    <script>
+        const loader = document.getElementById("loader");
+        const errorMessage = document.getElementById("error-message");
+        const productTableBody = document.getElementById("productTableBody");
+
+        // Show loading spinner while fetching data
+        loader.style.display = "block";
+
+        // Fetch data from the API endpoint
+        fetch("http://localhost:8080/products")
+            .then((response) => response.json())
+            .then((data) => {
+                // Hide loading spinner when data is loaded
+                loader.style.display = "none";
+
+                // Populate the table with the API response data
+                data.forEach((product) => {
+                    const row = document.createElement("tr");
+                    row.classList.add("clickable-row"); // Add a class to make the row clickable
+
+                    // Convert items JSON to a string for display, and limit content length
+                    const itemsString = JSON.stringify(
+                        product.items.slice(0, 5),
+                        null,
+                        2
+                    ); // Show only the first 5 items
+                    const truncatedItems =
+                        itemsString.length > 100
+                            ? itemsString.substring(10, 20)
+                            : itemsString; // Truncate if too long
+
+                    row.innerHTML = `
+                        <td>${product.id}</td>
+                        <td>${product.billNumber}</td>
+                        <td>${new Date(
+                          product.billDate
+                        ).toLocaleDateString()}</td>
+                        <td>${product.sellerName}</td>
+                        <td class="center-align">${product.sellerPanNum}</td>
+                        <td class="center-align">${product.customerName}</td>
+                        <td class="center-align">${product.customerLocation}</td>
+                        <td class="center-align">${product.customerPhoneNumber}</td>
+                        <td class="center-align">${product.customerPanContainer}</td>
+                        <td class="items-column"><pre>${truncatedItems}</pre></td>
+                        <td class="center-align">${product.billTotalAmount} /-</td>
+                    `;
+
+                    // Add a click event listener to the row
+                    row.addEventListener("click", () => {
+                        // Change the window location to the bill details page and pass product ID as a URL parameter
+                        window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
+                    });
+                    productTableBody.appendChild(row);
+                });
+            })
+            .catch((error) => {
+                // Hide loading spinner and display error message
+                loader.style.display = "none";
+                errorMessage.textContent =
+                    "Error loading data. Please try again later.";
+                console.error("Error:", error);
+            });
+    </script>
+</body>
+</html>

@@ -23,7 +23,7 @@
 
     <div class="navbar">
       <a href="createbillv2.html">Create Bill Products</a>
-        <a href="getproducts.html">Product Lists</a>
+        <a href="allproducts.html">Product Lists</a>
         <a href="getbilldetailsbyid.html">Bill Details</a>
     </div>
     <div class="bill-container">
@@ -53,11 +53,11 @@
       <table id="billTable">
         <thead>
           <tr>
-            <th>क्र स</th>
-            <th>विवरण</th>
-            <th>मात्रा</th>
-            <th>दर</th>
-            <th>रकम</th>
+            <th class="center-align" style="width:10%">क्र स</th>
+            <th class="center-align" style="width:30%">विवरण</th>
+            <th class="center-align" style="width:10%">मात्रा</th>
+            <th class="center-align" style="width:10%">दर</th>
+            <th class="center-align" style="width:10%">रकम</th>
           </tr>
         </thead>
         <tbody>
@@ -67,10 +67,10 @@
               document.write(`
                             <tr>
                                 <td>${i + 1}</td>
-                                <td><input type="text" class="table-input" /></td>
-                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td><input type="text" class="table-input" readonly /></td>
+                                <td class="center-align ><input type="text" class="table-input" /></td>
+                                <td class="center-align><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+                                <td class="center-align><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+                                <td class="center-align><input type="text" class="table-input" readonly /></td>
                             </tr>`);
             }
           </script>
@@ -191,6 +191,7 @@
           const customerName = document.getElementById("customerName").value;
           const customerLocation = document.getElementById("location").value;
           const customerPhoneNumber = document.getElementById("customerPhoneNumber").value;
+          const billTotalAmount =  document.getElementById("grandTotal").value
           const customerPanContainer = Array.from(
             document.querySelectorAll("#customer-panContainer input")
           )
@@ -207,6 +208,7 @@
             customerLocation: customerLocation,
             customerPhoneNumber : customerPhoneNumber,
             customerPanContainer: customerPanContainer,
+            billTotalAmount : billTotalAmount,
             items: [],
           };
 
