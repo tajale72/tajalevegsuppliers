@@ -2,26 +2,7 @@ package model
 
 import (
 	"encoding/json"
-	"time"
 )
-
-// BillDetails represents the structure of the Vegetable_Bill.Bill_Details table
-type BillDetails struct {
-	ID          int       `json:"id"`
-	BillName    string    `json:"bill_name"`
-	BillDate    time.Time `json:"bill_date"`
-	ProductName string    `json:"product_name"`
-	Quantity    float64   `json:"quantity"`
-	RatePerKg   float64   `json:"rate_per_kg"`
-	Price       float64   `json:"price"`
-}
-
-type Product struct {
-	Name     string `json:"name"`
-	Quantity int    `json:"quantity"`
-	Rate     int    `json:"rate"`
-	Price    int    `json:"price"`
-}
 
 // Item represents a single item in the bill.
 type Item struct {
@@ -34,20 +15,14 @@ type Item struct {
 
 type Request struct {
 	ID                   int             `json:"id"`
-	BillNumber           string          `json:"billNumber"`
-	BillDate             string          `json:"billDate"`
-	BillTotalAmount      string          `json:"billTotalAmount"`
-	SellerName           string          `json:"sellerName"`
-	SellerPanNum         string          `json:"sellerPanNum"`
-	CustomerName         string          `json:"customerName"`
-	CustomerLocation     string          `json:"customerLocation"`
-	CustomerPhoneNumber  string          `json:"customerPhoneNumber"`
-	CustomerPanContainer string          `json:"customerPanContainer"`
-	Items                json.RawMessage `json:"items"` // Use RawMessage to handle JSON data
+	BillNumber           string          `json:"billNumber" validate:"required"`
+	BillDate             string          `json:"billDate" validate:"required"`
+	BillTotalAmount      string          `json:"billTotalAmount" validate:"required"`
+	SellerName           string          `json:"sellerName" validate:"required"`
+	SellerPanNum         string          `json:"sellerPanNum" validate:"required"`
+	CustomerName         string          `json:"customerName" validate:"required"`
+	CustomerLocation     string          `json:"customerLocation" validate:"required"`
+	CustomerPhoneNumber  string          `json:"customerPhoneNumber" validate:"required"`
+	CustomerPanContainer string          `json:"customerPanContainer" validate:"required"`
+	Items                json.RawMessage `json:"items" validate:"required"` // Use RawMessage to handle JSON data
 }
-
-// type CustomerInfo struct {
-// 	CustomerLocation    string `json:"customerLocation"`
-// 	CustomerPanNum      string `json:"customerPanNumber"`
-// 	CustomerPhonenumber string `json:"customerPhoneNumber"`
-// }

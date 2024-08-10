@@ -76,7 +76,9 @@ th {
     .title-container h5, 
     .title-container h3 {
         margin: 0; /* Remove spaces */
-}
+        font-size: 20px;
+    }
+
 
 .date-label {
         margin-left: 100px; /* Adjust the value as needed */

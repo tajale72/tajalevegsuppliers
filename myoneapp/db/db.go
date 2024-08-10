@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 
@@ -45,12 +46,54 @@ func (dbClient *DBClient) Close() {
 	}
 }
 
-func (dbClient *DBClient) CreateTable(data []byte) error {
+// ValidateRequest checks if all required fields in the Request struct are present and valid.
+func ValidateRequest(data []byte) (*model.Request, error) {
 	// Unmarshal JSON data into the request model
 	var req model.Request
 	if err := json.Unmarshal(data, &req); err != nil {
 		log.Println("Unmarshal error:", err)
-		return fmt.Errorf("error unmarshaling request: %w", err)
+		return nil, fmt.Errorf("error unmarshaling request: %w", err)
+	}
+
+	if req.BillNumber == "" {
+		return nil, errors.New("BillNumber is required")
+	}
+	if req.BillDate == "" {
+		return nil, errors.New("BillDate is required")
+	}
+	if req.CustomerName == "" {
+		return nil, errors.New("CustomerName is required")
+	}
+	if req.CustomerLocation == "" {
+		return nil, errors.New("CustomerLocation is required")
+	}
+	if req.CustomerPhoneNumber == "" {
+		return nil, errors.New("CustomerPhoneNumber is required")
+	}
+	if req.CustomerPanContainer == "" {
+		return nil, errors.New("CustomerPanContainer is required")
+	}
+	if req.BillTotalAmount == "" {
+		return nil, errors.New("BillTotalAmount is required")
+	}
+	if req.SellerName == "" {
+		return nil, errors.New("SellerName is required")
+	}
+	if req.SellerPanNum == "" {
+		return nil, errors.New("SellerPanNum is required")
+	}
+
+	if len(req.Items) == 0 {
+		return nil, errors.New("items are required")
+	}
+	return &req, nil
+}
+
+func (dbClient *DBClient) CreateTable(data []byte) error {
+	req, err := ValidateRequest(data)
+	if err != nil {
+		log.Println("error validating the feild:", err)
+		return fmt.Errorf("error marshaling items: %w", err)
 	}
 
 	// Marshal items slice to JSON

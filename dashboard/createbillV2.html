@@ -30,20 +30,20 @@
       <div class="title-container">
         <h1 id="title">तजले भेज सप्लायर्स</h1>
         <h3 id="slogan">आलु प्याज तथा तरकारी भण्डार</h3>
-        <h4 id="sellerlocation">कमलबिनायक-१०, भक्तपुर</h4>
-        <h5 id="phone">फोन: ०१-६६१६२७७ मो:९८४१६९२२११</h5>
+        <p id="sellerlocation">कमलबिनायक-१०, भक्तपुर</p>
+        <p id="phone">फोन: ०१-६६१६२७७ मो:९८४१६९२२११</p>
       </div>
       <p>बिल नं <input type="text" id="billNumber" required /></p>
       <p>
         पान.नं: <span id="panContainer"></span>
-        <span class="date-label">मिति:</span>
+      <span class="date-label">मिति:</span>
         <input
           type="text"
           id="nepali-datepicker"
           placeholder="Select Nepali Date"
         />
       </p>
-      <p>श्री:<input type="text" class="input-field" id="customerName" /></p>
+      <p>श्री: &nbsp;<input type="text" class="input-field" id="customerName" /></p>
       <p>
         ठेगाना:<input type="text" class="input-field" id="location" />
         फोन:<input type="text" class="input-field" id="customerPhoneNumber"/>
@@ -53,11 +53,11 @@
       <table id="billTable">
         <thead>
           <tr>
-            <th class="center-align" style="width:10%">क्र स</th>
-            <th class="center-align" style="width:30%">विवरण</th>
-            <th class="center-align" style="width:10%">मात्रा</th>
-            <th class="center-align" style="width:10%">दर</th>
-            <th class="center-align" style="width:10%">रकम</th>
+            <th class="center-align">क्र स</th>
+            <th class="center-align">विवरण</th>
+            <th class="center-align">मात्रा</th>
+            <th class="center-align">दर</th>
+            <th class="center-align">रकम</th>
           </tr>
         </thead>
         <tbody>
@@ -67,10 +67,10 @@
               document.write(`
                             <tr>
                                 <td>${i + 1}</td>
-                                <td class="center-align ><input type="text" class="table-input" /></td>
-                                <td class="center-align><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td class="center-align><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td class="center-align><input type="text" class="table-input" readonly /></td>
+                                <td><input type="text" class="table-input" /></td>
+                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+                                <td><input type="text" class="table-input" readonly /></td>
                             </tr>`);
             }
           </script>
@@ -240,12 +240,22 @@
             },
             body: JSON.stringify(billData),
           })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("Success:", data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
+          .then((response) => {
+    if (!response.ok) {
+      // If the response status is not OK (i.e., status is not 200), throw an error
+      return response.json().then((errorData) => {
+        throw new Error(`Error ${response.status}: ${errorData.message || response.statusText}`);
+      });
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log("Success:", data);
+    alert("Bill created successfully!");
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    alert(`An error occurred while creating the bill: ${error.message}. Please try again later.`);
             });
         });
     </script>

@@ -33,20 +33,20 @@ func (dbClient *DBClient) Submit(c *gin.Context) {
 	mongoClient, err := mongoDB.GetDBConnection()
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Connecting to mongo Server Error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
 	err = mongoClient.CreateTable(data)
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Creating mongo table Server Error"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	err = dbClient.DB.CreateTable(data)
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -57,14 +57,14 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 	lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error getting the products"})
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
 	//lisofProducts, err := dbClient.DB.GetProducts()
 	if err != nil {
 		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error getting the products"})
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
