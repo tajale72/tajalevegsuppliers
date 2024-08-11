@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="dropdownVeg.css" />
+</head>
+<body style="background-color:white;">
+
+<h2>Search/Filter Dropdown</h2>
+<p>Click on the button to open the dropdown menu, and use the input field to search for a specific dropdown link.</p>
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    <a href="#">Cauliflower (काउली)</a>
+    <a href="#">Tomato (टमाटर)</a>
+    <a href="#">Potato (आलु)</a>
+    <a href="#">Cabbage (बन्दगोभी)</a>
+    <a href="#">Spinach (पालुङ्गो)</a>
+    <a href="#">Carrot (गाजर)</a>
+    <a href="#">Radish (मूला)</a>
+    <a href="#">Broccoli (ब्रोकोली)</a>
+    <a href="#">Pumpkin (फर्सी)</a>
+    <a href="#">Bitter Gourd (करेला)</a>
+    <a href="#">Beans (सिमी)</a>
+    <a href="#">Eggplant (भिण्डी)</a>
+    <a href="#">Capsicum (क्याप्सिकम)</a>
+    <a href="#">Peas (केराउ)</a>
+    <a href="#">Onion (प्याज)</a>
+    <a href="#">Garlic (लसुन)</a>
+    <a href="#">Ginger (अदुवा)</a>
+    <a href="#">Chili (खुर्सानी)</a>
+    <a href="#">Cucumber (काक्रो)</a>
+    <a href="#">Green Onion (हरियो प्याज)</a>
+    <a href="#">Green Chillies (हरियो खुर्सानी)</a>
+    <a href="#">Dhaniya (धनियाँ)</a>
+    <a href="#">Kagati (कागती)</a>
+    <a href="#">Small Tomato (सानो टमाटर)</a>
+    <a href="#">Vede Khursani (भेडे खुर्सानी)</a>
+    <a href="#">Beet (चकुन्दर)</a>
+    <a href="#">Salad Patta (सलाद पत्ता)</a>
+    <a href="#">Golo Chyau (गोलो च्याउ)</a>
+    <a href="#">Chyau Patey (च्याउ पाते)</a>
+    <a href="#">Hariyo Simi (हरियो सिमी)</a>
+    <a href="#">Lapsi Mada (लप्सी माडा)</a>
+    <a href="#">Rayo Saag (रायो साग)</a>
+    <a href="#">Sukeko Pyaaj (सुकाएको प्याज)</a>
+    <a href="#">Celery (अजमोदा)</a>
+    <a href="#">Parsley (धनिया)</a>
+    <a href="#">Maywa (मैवा)</a>
+    <a href="#">Watermelon (खरबुजा)</a>
+    <a href="#">Grapes (अंगुर)</a>
+    <a href="#">Banana (केरा)</a>
+    <a href="#">Black Mushroom (कालो च्याउ)</a>
+    <a href="#">Pudina (पुदिना)</a>
+    <a href="#">Ramtoria (रामतोरिया)</a>
+    <a href="#">Zucchini (जुचिनी)</a>
+    <a href="#">Artichoke (आर्टिचोक)</a>
+    <a href="#">Asparagus (अस्पैरेगस)</a>
+    <a href="#">Bell Pepper (बेल पेपर)</a>
+    <a href="#">Corn (मक्का)</a>
+    <a href="#">Mushroom (च्याउ)</a>
+    <a href="#">Radicchio (राडिचिओ)</a>
+    <a href="#">Leek (लेक)</a>
+    <a href="#">Rhubarb (रhubarb)</a>
+    <a href="#">Pomegranate (अनार)</a>
+    <a href="#">Apple (स्याउ)</a>
+    <a href="#">Orange (सुन्तला)</a>
+    <a href="#">Pear (नासपाती)</a>
+    <a href="#">Peach (आडु)</a>
+    <a href="#">Plum (आलुबलु)</a>
+    <a href="#">Strawberry (स्त्रबेरी)</a>
+    <a href="#">Kiwi (कीवी)</a>
+    <a href="#">Pineapple (अनानास)</a>
+  </div>
+</div>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  const input = document.getElementById("myInput");
+  const filter = input.value.toUpperCase();
+  const div = document.getElementById("myDropdown");
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+
+</body>
+</html>

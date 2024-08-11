@@ -23,7 +23,7 @@
 
     <div class="navbar">
       <a href="createbillv2.html">Create Bill Products</a>
-        <a href="allproducts.html">Product Lists</a>
+      <a href="allproducts.html">Product Lists</a>
         <a href="getbilldetailsbyid.html">Bill Details</a>
     </div>
     <div class="bill-container">
@@ -60,20 +60,8 @@
             <th class="center-align">रकम</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Generate 20 rows -->
-          <script>
-            for (let i = 0; i < 20; i++) {
-              document.write(`
-                            <tr>
-                                <td>${i + 1}</td>
-                                <td><input type="text" class="table-input" /></td>
-                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
-                                <td><input type="text" class="table-input" readonly /></td>
-                            </tr>`);
-            }
-          </script>
+        <tbody id="tableBody">
+          <!-- Rows will be inserted here -->
         </tbody>
         <tfoot>
           <tr class="sum-row">
@@ -102,9 +90,15 @@
     
       </div>
     </div>
-    <div class="create-bill">
-      <button id="createBillButton">Create Bill</button>
+    <div class="bill-container">
+      <div class="create-bill">
+        <button id="createBillButton">Create Bill</button>
+      </div>
+      <div class="save-bill">
+        <button id="saveBillButton">Save</button>
+      </div>
     </div>
+  
 
 
 
@@ -212,25 +206,25 @@
             items: [],
           };
 
-          // Get the table data
-          const table = document.getElementById("billTable");
-          if (table) {
-            const tbody = table.getElementsByTagName("tbody")[0];
-            if (tbody) {
-              const rows = tbody.getElementsByTagName("tr");
-              for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName("td");
-                const item = {
-                  kra: cells[0].innerText,
-                  sa: cells[1].getElementsByTagName("input")[0].value,
-                  sankhya: cells[2].getElementsByTagName("input")[0].value,
-                  dar: cells[3].getElementsByTagName("input")[0].value,
-                  rakam: cells[4].getElementsByTagName("input")[0].value,
-                };
-                billData.items.push(item);
-              }
-            }
-          }
+        // Get the table data
+        const table = document.getElementById("billTable");
+if (table) {
+  const tbody = table.getElementsByTagName("tbody")[0];
+  if (tbody) {
+    const rows = tbody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName("td");
+      const item = {
+        kra: cells[0].innerText, // Get the index (Kra) from the first cell
+        sa: cells[1].getElementsByTagName("input")[0].value, // Get value from the vegetable input field
+        sankhya: cells[2].getElementsByTagName("input")[0].value, // Get the quantity from the input field
+        dar: cells[3].getElementsByTagName("input")[0].value, // Get the price from the input field
+        rakam: cells[4].getElementsByTagName("input")[0].value, // Get the total amount from the input field
+      };
+      billData.items.push(item); // Add the item to the billData array
+    }
+  }
+}
 
           // Example API call to send the data
           fetch("http://localhost:8080/submit", {
@@ -295,3 +289,111 @@
   });
 </script>
 
+<script>
+  // Generate table rows dynamically
+  const tableBody = document.getElementById('tableBody');
+
+  for (let i = 0; i < 20; i++) {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>
+          <input type="text" placeholder="Search.." id="myInput${i}" onkeyup="autoComplete(${i})" onfocus="showAllOptions(${i})">
+          <datalist id="vegetableList${i}">
+            <option value="Cauliflower (काउली)"></option>
+            <option value="Tomato (टमाटर)"></option>
+            <option value="Potato (आलु)"></option>
+            <option value="Cabbage (बन्दगोभी)"></option>
+            <option value="Spinach (पालुङ्गो)"></option>
+            <option value="Carrot (गाजर)"></option>
+            <option value="Radish (मूला)"></option>
+            <option value="Broccoli (ब्रोकोली)"></option>
+            <option value="Pumpkin (फर्सी)"></option>
+            <option value="Bitter Gourd (करेला)"></option>
+            <option value="Beans (सिमी)"></option>
+            <option value="Eggplant (भिण्डी)"></option>
+            <option value="Capsicum (क्याप्सिकम)"></option>
+            <option value="Peas (केराउ)"></option>
+            <option value="Onion (प्याज)"></option>
+            <option value="Garlic (लसुन)"></option>
+            <option value="Ginger (अदुवा)"></option>
+            <option value="Chili (खुर्सानी)"></option>
+            <option value="Cucumber (काक्रो)"></option>
+            <option value="Green Onion (हरियो प्याज)"></option>
+            <option value="Green Chillies (हरियो खुर्सानी)"></option>
+            <option value="Dhaniya (धनियाँ)"></option>
+            <option value="Kagati (कागती)"></option>
+            <option value="Small Tomato (सानो टमाटर)"></option>
+            <option value="Vede Khursani (भेडे खुर्सानी)"></option>
+            <option value="Beet (चकुन्दर)"></option>
+            <option value="Salad Patta (सलाद पत्ता)"></option>
+            <option value="Golo Chyau (गोलो च्याउ)"></option>
+            <option value="Chyau Patey (च्याउ पाते)"></option>
+            <option value="Hariyo Simi (हरियो सिमी)"></option>
+            <option value="Lapsi Mada (लप्सी माडा)"></option>
+            <option value="Rayo Saag (रायो साग)"></option>
+            <option value="Sukeko Pyaaj (सुकाएको प्याज)"></option>
+            <option value="Celery (अजमोदा)"></option>
+            <option value="Parsley (धनिया)"></option>
+            <option value="Maywa (मैवा)"></option>
+            <option value="Watermelon (खरबुजा)"></option>
+            <option value="Grapes (अंगुर)"></option>
+            <option value="Banana (केरा)"></option>
+            <option value="Black Mushroom (कालो च्याउ)"></option>
+            <option value="Pudina (पुदिना)"></option>
+            <option value="Ramtoria (रामतोरिया)"></option>
+            <option value="Zucchini (जुचिनी)"></option>
+            <option value="Artichoke (आर्टिचोक)"></option>
+            <option value="Asparagus (अस्पैरेगस)"></option>
+            <option value="Bell Pepper (बेल पेपर)"></option>
+            <option value="Corn (मक्का)"></option>
+            <option value="Mushroom (च्याउ)"></option>
+            <option value="Radicchio (राडिचिओ)"></option>
+            <option value="Leek (लेक)"></option>
+            <option value="Rhubarb (रhubarb)"></option>
+            <option value="Pomegranate (अनार)"></option>
+            <option value="Apple (स्याउ)"></option>
+            <option value="Orange (सुन्तला)"></option>
+            <option value="Pear (नासपाती)"></option>
+            <option value="Peach (आडु)"></option>
+            <option value="Plum (आलुबलु)"></option>
+            <option value="Strawberry (स्त्रबेरी)"></option>
+            <option value="Kiwi (कीवी)"></option>
+            <option value="Pineapple (अनानास)"></option>
+          </datalist>
+        </td>
+        <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+        <td><input type="number" class="table-input" oninput="calculateTotal()" /></td>
+        <td><input type="text" class="table-input" readonly /></td>
+      </tr>`;
+  }
+
+  function autoComplete(index) {
+    const input = document.getElementById(`myInput${index}`);
+    const list = document.getElementById(`vegetableList${index}`);
+    input.setAttribute("list", `vegetableList${index}`);
+  }
+
+  function showAllOptions(index) {
+    const input = document.getElementById(`myInput${index}`);
+    const list = document.getElementById(`vegetableList${index}`);
+    input.setAttribute("list", `vegetableList${index}`);
+  }
+
+  function calculateTotal() {
+        const table = document.getElementById("billTable");
+        let grandTotal = 0;
+        for (let i = 0; i < 20; i++) {
+          const quantity =
+            table.rows[i + 1].cells[2].getElementsByTagName("input")[0].value;
+          const price =
+            table.rows[i + 1].cells[3].getElementsByTagName("input")[0].value;
+          const totalCell =
+            table.rows[i + 1].cells[4].getElementsByTagName("input")[0];
+          const total = quantity * price;
+          totalCell.value = total;
+          grandTotal += total;
+        }
+        document.getElementById("grandTotal").value = grandTotal;
+      }
+</script>
