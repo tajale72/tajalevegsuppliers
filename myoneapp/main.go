@@ -11,7 +11,6 @@ import (
 
 	"myoneapp/db"
 	d "myoneapp/db"
-	mongoDB "myoneapp/mongo"
 )
 
 type DBClient struct {
@@ -21,20 +20,20 @@ type DBClient struct {
 func (dbClient *DBClient) Submit(c *gin.Context) {
 	body := c.Request.Body
 	data, _ := io.ReadAll(body)
-	mongoClient, err := mongoDB.GetDBConnection()
-	if err != nil {
-		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
-	}
+	// mongoClient, err := mongoDB.GetDBConnection()
+	// if err != nil {
+	// 	log.Println("Error CreateTable: ", err)
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+	// 	return
+	// }
 
-	err = mongoClient.CreateTable(data)
-	if err != nil {
-		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-	err = dbClient.DB.CreateTable(data)
+	// err = mongoClient.CreateTable(data)
+	// if err != nil {
+	// 	log.Println("Error CreateTable: ", err)
+	// 	c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	// 	return
+	// }
+	err := dbClient.DB.CreateTable(data)
 	if err != nil {
 		log.Println("Error CreateTable: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
