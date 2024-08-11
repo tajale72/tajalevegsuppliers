@@ -10,7 +10,7 @@ func main() {
 	router := gin.Default()
 
 	// Serve static files from the "static" directory
-	router.Static("/dashboard", "./")
+	router.Static("/dashboard/static", "./static")
 
 	router.GET("/", Welcome)
 
