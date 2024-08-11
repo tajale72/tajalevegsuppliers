@@ -16,7 +16,7 @@ import (
 const (
 	host     = "localhost"
 	port     = 5432
-	user     = "" // Empty string for no username
+	user     = "postrge" // Empty string for no username
 	password = "" // Empty string for no password
 	dbname   = "tajalevegsuppliers"
 	sslmode  = "disable"
