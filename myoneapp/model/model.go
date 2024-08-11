@@ -26,3 +26,7 @@ type Request struct {
 	CustomerPanContainer string          `json:"customerPanContainer" validate:"required"`
 	Items                json.RawMessage `json:"items" validate:"required"` // Use RawMessage to handle JSON data
 }
+
+type Result struct {
+	BillNumber int64 `json:"billNumber"`
+}

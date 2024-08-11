@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -20,6 +19,7 @@ type Database interface {
 	CreateTable(data []byte) error
 	GetProducts() ([]model.Request, error)
 	GetProductByID(id int) (model.Request, error)
+	GetLastBillNumber() (model.Result, error)
 	// Add other database-related methods if needed
 }
 
@@ -92,20 +92,13 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 }
 
 func (dbClient *DBClient) GetBillNumber(c *gin.Context) {
-	mongoClient, err := mongoDB.GetDBConnection()
-	if err != nil {
-		log.Println("Error CreateTable: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Connecting to mongo Server Error"})
-		return
-	}
-
-	id, err := mongoClient.GetLastBillNumber()
+	id, err := dbClient.DB.GetLastBillNumber()
 	if err != nil {
 		log.Println("Error getting product details: ", err)
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println("id", id)
+	log.Println("bill number", id)
 
 	c.JSON(http.StatusOK, id)
 }

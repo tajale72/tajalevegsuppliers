@@ -147,15 +147,11 @@ func (dbClient *DBClient) DeleteUser(id int) error {
 	return nil
 }
 
-type Result struct {
-	BillNumber int64 `json:"billNumber"`
-}
-
-func (dbClient *DBClient) GetLastBillNumber() (Result, error) {
+func (dbClient *DBClient) GetLastBillNumber() (model.Result, error) {
 	collection := dbClient.DB.Collection(collName)
 	billnumber, _ := collection.CountDocuments(context.Background(), bson.M{})
 	// opts := options.FindOne().SetSort(bson.D{{"billNumber", -1}})
-	var result Result
+	var result model.Result
 	result.BillNumber = billnumber + 1
 	return result, nil
 }
