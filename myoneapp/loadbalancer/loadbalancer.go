@@ -44,7 +44,6 @@ func (lb *LoadBalancer) handleRequest(c *gin.Context) {
 
 	// Forward the request to the selected backend server
 	targetURL := fmt.Sprintf("http://%s:%d%s", server.Address, server.Port, c.Request.RequestURI)
-	fmt.Printf("targetURL", targetURL)
 	resp, err := http.Get(targetURL)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to forward the request"})
