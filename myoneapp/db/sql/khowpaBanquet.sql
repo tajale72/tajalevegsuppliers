@@ -15,3 +15,28 @@ hariyo simi 5kg , 200/kg
 lapsi mada 5kg , 200/kg 
 rayo saag 50kg, 250/kg 
 sukeko pyaaj 108kg, 100/kg
+
+
+cucmber 
+green onion  
+green chillies 
+dhaniya 
+kagati 
+small tomato 
+vede khorsani 
+beet 
+salad patta 
+golo chyau 
+chyau patey 
+hariyo simi 
+lapsi mada 
+rayo saag
+sukeko pyaaj
+celery 
+parsley
+maywa 
+watermelon 
+grapes
+banana 
+black mushroom 
+

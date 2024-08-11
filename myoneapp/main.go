@@ -9,22 +9,13 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
+	"myoneapp/db"
 	d "myoneapp/db"
-	"myoneapp/model"
 	mongoDB "myoneapp/mongo"
 )
 
-// Define a database interface or type from myoneapp/db package
-type Database interface {
-	CreateTable(data []byte) error
-	GetProducts() ([]model.Request, error)
-	GetProductByID(id int) (model.Request, error)
-	GetLastBillNumber() (model.Result, error)
-	// Add other database-related methods if needed
-}
-
 type DBClient struct {
-	DB Database
+	DB db.Database
 }
 
 func (dbClient *DBClient) Submit(c *gin.Context) {

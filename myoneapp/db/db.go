@@ -1,7 +1,6 @@
 package db
 
 import (
-	"context"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -12,6 +11,15 @@ import (
 
 	"myoneapp/model"
 )
+
+// Define a database interface or type from myoneapp/db package
+type Database interface {
+	CreateTable(data []byte) error
+	GetProducts() ([]model.Request, error)
+	GetProductByID(id int) (model.Request, error)
+	GetLastBillNumber() (model.Result, error)
+	// Add other database-related methods if needed
+}
 
 const (
 	host     = "localhost"
@@ -88,158 +96,4 @@ func ValidateRequest(data []byte) (*model.Request, error) {
 		return nil, errors.New("items are required")
 	}
 	return &req, nil
-}
-
-func (dbClient *DBClient) CreateTable(data []byte) error {
-	req, err := ValidateRequest(data)
-	if err != nil {
-		log.Println("error validating the feild:", err)
-		return fmt.Errorf("error marshaling items: %w", err)
-	}
-
-	// Marshal items slice to JSON
-	itemsJSON, err := json.Marshal(req.Items)
-	if err != nil {
-		log.Println("Marshal error:", err)
-		return fmt.Errorf("error marshaling items: %w", err)
-	}
-
-	// SQL statement with placeholders
-	sqlStatement := `
-INSERT INTO Bill_Details (
-	bill_number, 
-	bill_date,
-	bill_total_amount, 
-	seller_name, 
-	seller_pan_num, 
-	customer_name, 
-	customer_location, 
-	customer_phone_number, 
-	customer_pan_container, 
-	items
-)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9, $10::jsonb);
-`
-
-	fmt.Println("bill amount", req.BillTotalAmount)
-
-	// Execute the SQL query with specific values
-	_, err = dbClient.DB.Exec(sqlStatement, req.BillNumber, req.BillDate, req.BillTotalAmount, req.SellerName, req.SellerPanNum, req.CustomerName, req.CustomerLocation, req.CustomerPhoneNumber, req.CustomerPanContainer, itemsJSON)
-	if err != nil {
-		log.Println("Exec statement error:", err)
-		return fmt.Errorf("error executing SQL statement: %w", err)
-	}
-
-	return nil
-}
-
-func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
-	rows, err := dbClient.DB.Query("SELECT * FROM Bill_Details;")
-	if err != nil {
-		log.Println("Error querying database:", err)
-		return nil, fmt.Errorf("error querying database: %w", err)
-	}
-	defer rows.Close()
-
-	var listOfBills []model.Request
-	for rows.Next() {
-		var bill model.Request
-		var productsJSON sql.RawBytes // Use sql.RawBytes to handle JSONB data
-
-		// Update the Scan call to match the number of columns
-		if err := rows.Scan(
-			&bill.ID,
-			&bill.BillNumber,
-			&bill.BillDate,
-			&bill.BillTotalAmount,
-			&bill.SellerName,
-			&bill.SellerPanNum,
-			&bill.CustomerName,
-			&bill.CustomerLocation,
-			&bill.CustomerPhoneNumber,
-			&bill.CustomerPanContainer,
-			&productsJSON,
-		); err != nil {
-			log.Println("Error scanning row:", err)
-			return nil, fmt.Errorf("error scanning row: %w", err)
-		}
-
-		// Unmarshal the JSONB data into the Items field of the bill
-		if err := json.Unmarshal(productsJSON, &bill.Items); err != nil {
-			log.Println("Error unmarshaling products:", err)
-			return nil, fmt.Errorf("error unmarshaling products: %w", err)
-		}
-
-		listOfBills = append(listOfBills, bill)
-	}
-
-	if err := rows.Err(); err != nil {
-		log.Println("Error iterating over rows:", err)
-		return nil, fmt.Errorf("error iterating over rows: %w", err)
-	}
-
-	return listOfBills, nil
-}
-
-func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
-	var bill model.Request
-	var itemsJSON string
-
-	// Use a pointer for itemsJSON
-	err := dbClient.DB.QueryRow("SELECT * FROM Bill_Details WHERE id = $1;", id).
-		Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON)
-	if err != nil {
-		log.Println("Error getting data from the database:", err)
-		return bill, fmt.Errorf("Error getting data from the database: %w", err)
-	}
-
-	// Unmarshal the JSON string into the Products field of the bill
-	if err := json.Unmarshal([]byte(itemsJSON), &bill.Items); err != nil {
-		log.Println("Error unmarshaling products:", err)
-		return bill, fmt.Errorf("error unmarshaling products: %w", err)
-	}
-
-	return bill, nil
-}
-
-func (dbClient *DBClient) UpdateUser(id int, newUsername, newEmail string) error {
-	_, err := dbClient.DB.Exec("UPDATE users SET username=$1, email=$2 WHERE id=$3", newUsername, newEmail, id)
-	if err != nil {
-		log.Println("Error updating user:", err)
-		return fmt.Errorf("error updating user: %w", err)
-	}
-	return nil
-}
-
-func (dbClient *DBClient) DeleteUser(id int) error {
-	_, err := dbClient.DB.Exec("DELETE FROM users WHERE id=$1", id)
-	if err != nil {
-		log.Println("Error deleting user:", err)
-		return fmt.Errorf("error deleting user: %w", err)
-	}
-	return nil
-}
-
-func (dbClient *DBClient) GetLastBillNumber() (model.Result, error) {
-	var result model.Result
-
-	// Query to count the number of rows in the bills table
-	query := "SELECT COUNT(*) FROM bill_details"
-
-	// Execute the query
-	err := dbClient.DB.QueryRowContext(context.Background(), query).Scan(&result.BillNumber)
-	if err != nil {
-		return result, fmt.Errorf("failed to count records: %v", err)
-	}
-
-	// Increment the BillNumber by 1
-	result.BillNumber += 1
-
-	return result, nil
-}
-
-type User struct {
-	ID       int
-	Username string
-	Email    string
 }
