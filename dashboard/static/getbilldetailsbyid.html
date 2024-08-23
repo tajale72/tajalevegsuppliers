@@ -98,6 +98,11 @@
         <p>तजले भेजसप्लायर्स  : <input type="text" class="input-field" id="sellerSignature" /></p>
     </div>
 </div>
+<div class="bill-container">
+  <div class="create-bill">
+    <button id="updateBillButton">Update Bill</button>
+  </div>
+</div>
 <script>
     // Extract product ID from the URL parameter
     const urlParams = new URLSearchParams(window.location.search);
@@ -161,6 +166,52 @@
 
         document.getElementById('grandTotal').value = grandTotal.toFixed(2);
     }
+
+
+    // Event listener for the Update Bill button
+    document.getElementById('updateBillButton').addEventListener('click', () => {
+        // Extract the updated data from the form
+        const billData = {
+            id: productId,
+            billNumber: document.getElementById('billNumber').value,
+            customerName: document.getElementById('customerName').value,
+            customerLocation: document.getElementById('location').value,
+            customerPanContainer: document.getElementById('customer-panContainer').textContent,
+            customerPhoneNumber: document.getElementById('customerPhoneNumber').value,
+            billDate: document.getElementById('nepali-datepicker').value,
+            billTotalAmount: document.getElementById('grandTotal').value,
+            items: []
+        };
+
+        const rows = document.querySelectorAll("#billTable tbody tr");
+        rows.forEach(row => {
+            const item = {
+                sa: row.cells[1].querySelector('input').value,
+                sankhya: row.cells[2].querySelector('input').value,
+                dar: row.cells[3].querySelector('input').value,
+                rakam: row.cells[4].querySelector('input').value
+            };
+            billData.items.push(item);
+        });
+        console.log("billdate" ,billData )
+
+        // Send the updated data to the API endpoint
+        fetch(`http://localhost:8080/updateBill/${productId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(billData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Bill updated successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error updating bill:', error);
+        });
+    });
+    
 </script>
 
 
