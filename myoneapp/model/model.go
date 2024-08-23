@@ -2,15 +2,17 @@ package model
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // Item represents a single item in the bill.
 type Item struct {
-	Kra     string `json:"kra"`
-	Sa      string `json:"sa"`
-	Sankhya string `json:"sankhya"`
-	Dar     string `json:"dar"`
-	Rakam   string `json:"rakam"`
+	ID            int       `json:"id"`
+	VegetableName string    `json:"sa"`      // विवरण (Description)
+	QuantitySold  string    `json:"sankhya"` // मात्रा (Quantity)
+	Rate          string    `json:"dar"`     // दर (Rate)
+	Amount        string    `json:"rakam"`   // रकम (Amount)
+	CreatedAt     time.Time `json:"created_at"`
 }
 
 type Request struct {

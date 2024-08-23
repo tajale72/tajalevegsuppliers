@@ -8,7 +8,15 @@ import (
 	"myoneapp/model"
 )
 
-func (dbClient *DBClient) UpdateBill(bill model.Request) error {
+func (dbClient *DBClient) UpdateBill(data []byte) error {
+	var bill model.Request
+	err := json.Unmarshal(data, &bill)
+	if err != nil {
+		log.Println("Error unmarshalling the bill data:", err)
+		return fmt.Errorf("error unmarshalling the bill data: %w", err)
+	}
+	bill.SellerName = "तजले भेज सप्लायर्स"
+	bill.SellerPanNum = "६०१०८६४८९"
 	// Marshal the bill.Items into a JSON string
 	itemsJSON, err := json.Marshal(bill.Items)
 	if err != nil {
@@ -30,7 +38,7 @@ func (dbClient *DBClient) UpdateBill(bill model.Request) error {
 			customer_phone_number = $8,
 			customer_pan_container = $9,
 			items = $10
-		WHERE id = $11;
+		WHERE bill_number = $11;
 	`
 
 	// Execute the update query
@@ -46,7 +54,7 @@ func (dbClient *DBClient) UpdateBill(bill model.Request) error {
 		bill.CustomerPhoneNumber,
 		bill.CustomerPanContainer,
 		string(itemsJSON), // Convert JSON to string for storage
-		bill.ID,
+		bill.BillNumber,
 	)
 
 	if err != nil {

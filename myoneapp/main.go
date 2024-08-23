@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -51,12 +52,12 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 		return
 	}
 
-	//lisofProducts, err := dbClient.DB.GetProducts()
-	if err != nil {
-		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, err)
-		return
-	}
+	// //lisofProducts, err := dbClient.DB.GetProducts()
+	// if err != nil {
+	// 	log.Println("Error getting products: ", err)
+	// 	c.JSON(http.StatusInternalServerError, err)
+	// 	return
+	// }
 
 	c.JSON(http.StatusAccepted, lisofProducts)
 }
@@ -93,6 +94,20 @@ func (dbClient *DBClient) GetBillNumber(c *gin.Context) {
 	c.JSON(http.StatusOK, id)
 }
 
+func (dbClient *DBClient) UpdateBill(c *gin.Context) {
+	fmt.Println("UpdateBill....")
+	body := c.Request.Body
+	data, _ := io.ReadAll(body)
+	err := dbClient.DB.UpdateBill(data)
+	if err != nil {
+		log.Println("Error getting product details: ", err)
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, "bill updated")
+}
+
 type BillNumber struct {
 	billNumber string `json:"billNumber"`
 }
@@ -112,6 +127,7 @@ func main() {
 	r.POST("/submit", dbClient.Submit)
 	r.GET("/products", dbClient.GetProductsDetails)
 	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
+	r.PUT("updateBill/:id", dbClient.UpdateBill)
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 
 	r.Run()

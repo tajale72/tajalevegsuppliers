@@ -6,6 +6,7 @@
 
 # things required to start the service
     - brew services start postgresql@16
+    - source ~/.bash_profile
     - psql postgres
     
 

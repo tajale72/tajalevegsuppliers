@@ -18,6 +18,7 @@ type Database interface {
 	GetProducts() ([]model.Request, error)
 	GetProductByID(id int) (model.Request, error)
 	GetLastBillNumber() (model.Result, error)
+	UpdateBill(data []byte) error
 	// Add other database-related methods if needed
 }
 
