@@ -16,6 +16,7 @@ import (
 type Database interface {
 	CreateTable(data []byte) error
 	GetProducts() ([]model.Request, error)
+	GetVegetableCount() ([]model.Item, error)
 	GetProductByID(id int) (model.Request, error)
 	GetLastBillNumber() (model.Result, error)
 	UpdateBill(data []byte) error

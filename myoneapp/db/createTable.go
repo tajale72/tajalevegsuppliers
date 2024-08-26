@@ -63,7 +63,6 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 }
 
 func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber string) error {
-
 	var items []model.Item
 	err := json.Unmarshal(data, &items)
 	if err != nil {
@@ -81,15 +80,23 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 		created_at, 
 		bill_number
 	) VALUES ($1, $2, $3, $4, $5, $6, $7)
-	ON CONFLICT (bill_number, vegetable_name) 
+	ON CONFLICT (vegetable_name) 
 	DO UPDATE SET 
 		sale_date = EXCLUDED.sale_date,
-		quantity_sold = EXCLUDED.quantity_sold,
+		quantity_sold = dailyvegetablesales.quantity_sold + EXCLUDED.quantity_sold,
 		rate = EXCLUDED.rate,
-		total_amount = EXCLUDED.total_amount,
+		total_amount = dailyvegetablesales.total_amount + EXCLUDED.total_amount,
 		created_at = EXCLUDED.created_at;`
 
+	log.Println("Items", items)
+
 	for _, v := range items {
+		// Validate and sanitize data
+		if v.VegetableName == "" {
+			log.Println("Skipping item due to missing vegetable name:", v)
+			break
+		}
+
 		createdAt := time.Now()
 
 		// Handle empty QuantitySold by defaulting to 0
@@ -122,7 +129,7 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 			}
 		}
 
-		_, err = dbClient.DB.Exec(
+		_, err := dbClient.DB.Exec(
 			query,
 			v.VegetableName,
 			createdAt,

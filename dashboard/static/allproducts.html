@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="createbillV2.css" />
+    <link rel="stylesheet" href="allprodutcs.css" />
     <title>Bill Details</title>
 </head>
 
@@ -12,6 +12,7 @@
         <a href="createbillv2.html">Create Bill Products</a>
         <a href="allproducts.html">Product Lists</a>
         <a href="getbilldetailsbyid.html">Bill Details</a>
+        <a href="vegetablecount.html">Vegetable Count</a>
     </div>
 
     <div id="loader" class="loader"></div>
@@ -30,15 +31,12 @@
                     <th class="center-align">Customer Location</th>
                     <th class="center-align">Customer Phone Number</th>
                     <th class="center-align">Customer PAN Container</th>
-                    <!-- <th>Items</th> -->
                     <th class="center-align">Bill Total Amount /-</th>
                 </tr>
             </thead>
             <tbody id="productTableBody"></tbody>
         </table>
     </div>
-
-   
 
     <script>
         const loader = document.getElementById("loader");
@@ -60,23 +58,10 @@
                     const row = document.createElement("tr");
                     row.classList.add("clickable-row"); // Add a class to make the row clickable
 
-                    // Convert items JSON to a string for display, and limit content length
-                    const itemsString = JSON.stringify(
-                        product.items.slice(0, 5),
-                        null,
-                        2
-                    ); // Show only the first 5 items
-                    const truncatedItems =
-                        itemsString.length > 100
-                            ? itemsString.substring(10, 20)
-                            : itemsString; // Truncate if too long
-
                     row.innerHTML = `
                         <td>${product.id}</td>
                         <td>${product.billNumber}</td>
-                        <td>${new Date(
-                          product.billDate
-                        ).toLocaleDateString()}</td>
+                        <td>${new Date(product.billDate).toLocaleDateString()}</td>
                         <td>${product.sellerName}</td>
                         <td class="center-align">${product.sellerPanNum}</td>
                         <td class="center-align">${product.customerName}</td>
@@ -84,22 +69,18 @@
                         <td class="center-align">${product.customerPhoneNumber}</td>
                         <td class="center-align">${product.customerPanContainer}</td>
                         <td class="center-align">${product.billTotalAmount} /-</td>
-    
                     `;
 
                     // Add a click event listener to the row
                     row.addEventListener("click", () => {
-                        // Change the window location to the bill details page and pass product ID as a URL parameter
                         window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
                     });
                     productTableBody.appendChild(row);
                 });
             })
             .catch((error) => {
-                // Hide loading spinner and display error message
                 loader.style.display = "none";
-                errorMessage.textContent =
-                    "Error loading data. Please try again later.";
+                errorMessage.textContent = "Error loading data. Please try again later.";
                 console.error("Error:", error);
             });
     </script>

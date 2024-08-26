@@ -9,6 +9,7 @@ import (
 )
 
 func (dbClient *DBClient) UpdateBill(data []byte) error {
+	log.Println(string(data))
 	var bill model.Request
 	err := json.Unmarshal(data, &bill)
 	if err != nil {

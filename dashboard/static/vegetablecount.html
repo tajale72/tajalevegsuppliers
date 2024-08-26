@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="allprodutcs.css" />
+    <title>Bill Details</title>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="createbillv2.html">Create Bill Products</a>
+      <a href="allproducts.html">Product Lists</a>
+      <a href="getbilldetailsbyid.html">Bill Details</a>
+      <a href="vegetablecount.html">Vegetable Count</a>
+    </div>
+
+    <div id="loader" class="loader"></div>
+    <div id="error-message" class="error-message"></div>
+
+    <div class="bill-container">
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Bill Number</th>
+            <th>Vegetable Name</th>
+            <th>Sale Date</th>
+            <th>Quantity Sold</th>
+            <th>Rate</th>
+            <th>Total Amount /-</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      const loader = document.getElementById("loader");
+      const errorMessage = document.getElementById("error-message");
+      const productTableBody = document.getElementById("productTableBody");
+
+      // Show loading spinner while fetching data
+      loader.style.display = "block";
+
+     // Fetch data from the API endpoint
+fetch("http://localhost:8080/vegetablecount")
+  .then((response) => response.json())
+  .then((data) => {
+    // Hide loading spinner when data is loaded
+    loader.style.display = "none";
+
+    // Populate the table with the API response data
+    data.forEach((product) => {
+      const row = document.createElement("tr");
+      row.classList.add("clickable-row"); // Add a class to make the row clickable
+
+      row.innerHTML = `
+        <td>${product.id}</td>
+        <td>${product.billNumber}</td>
+        <td>${product.sa}</td> <!-- Vegetable name -->
+        <td>${new Date(product.created_at).toLocaleDateString()}</td> <!-- Sale Date -->
+        <td>${product.sankhya !== undefined ? product.sankhya : 'N/A'}</td> <!-- Quantity Sold -->
+        <td>${isFinite(product.dar) ? parseFloat(product.dar).toFixed(2) : 'N/A'}</td> <!-- Rate -->
+        <td>${isFinite(product.rakam) ? parseFloat(product.rakam).toFixed(2) : 'N/A'}</td> <!-- Total Amount -->
+        <td>${new Date(product.created_at).toLocaleDateString()}</td> <!-- Created At -->
+      `;
+
+    //   // Add a click event listener to the row
+    //   row.addEventListener("click", () => {
+    //     window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
+    //   });
+
+    productTableBody.appendChild(row);
+    });
+  })
+  .catch((error) => {
+    loader.style.display = "none";
+    errorMessage.textContent = "Error loading data. Please try again later.";
+    console.error("Error:", error);
+  });
+    </script>
+  </body>
+</html>

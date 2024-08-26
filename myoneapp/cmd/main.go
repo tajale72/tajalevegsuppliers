@@ -108,6 +108,24 @@ func (dbClient *DBClient) UpdateBill(c *gin.Context) {
 	c.JSON(http.StatusOK, "bill updated")
 }
 
+func (dbClient *DBClient) GetVegetableCount(c *gin.Context) {
+	lisofVegtableCount, err := dbClient.DB.GetVegetableCount()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	// //lisofProducts, err := dbClient.DB.GetProducts()
+	// if err != nil {
+	// 	log.Println("Error getting products: ", err)
+	// 	c.JSON(http.StatusInternalServerError, err)
+	// 	return
+	// }
+
+	c.JSON(http.StatusAccepted, lisofVegtableCount)
+}
+
 type BillNumber struct {
 	billNumber string `json:"billNumber"`
 }
@@ -129,6 +147,7 @@ func main() {
 	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
 	r.PUT("updateBill/:id", dbClient.UpdateBill)
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
+	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
 	r.Run()
 }

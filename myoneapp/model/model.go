@@ -8,6 +8,7 @@ import (
 // Item represents a single item in the bill.
 type Item struct {
 	ID            int       `json:"id"`
+	BillNumber    string    `json:"billNumber" validate:"required"`
 	VegetableName string    `json:"sa"`      // विवरण (Description)
 	QuantitySold  string    `json:"sankhya"` // मात्रा (Quantity)
 	Rate          string    `json:"dar"`     // दर (Rate)
@@ -16,7 +17,7 @@ type Item struct {
 }
 
 type Request struct {
-	ID                   int             `json:"id"`
+	ID                   string          `json:"id"`
 	BillNumber           string          `json:"billNumber" validate:"required"`
 	BillDate             string          `json:"billDate" validate:"required"`
 	BillTotalAmount      string          `json:"billTotalAmount" validate:"required"`
