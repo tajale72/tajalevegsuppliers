@@ -26,8 +26,8 @@ type Database interface {
 const (
 	host     = "localhost"
 	port     = 5432
-	user     = "" // Empty string for no username
-	password = "" // Empty string for no password
+	user     = "postgres" // Empty string for no username
+	password = "admin"    // Empty string for no password
 	dbname   = "tajalevegsuppliers"
 	sslmode  = "disable"
 )
