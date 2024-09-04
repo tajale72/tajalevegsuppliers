@@ -80,9 +80,8 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 		created_at, 
 		bill_number
 	) VALUES ($1, $2, $3, $4, $5, $6, $7)
-	ON CONFLICT (vegetable_name) 
+	ON CONFLICT (bill_number, vegetable_name, sale_date) 
 	DO UPDATE SET 
-		sale_date = EXCLUDED.sale_date,
 		quantity_sold = dailyvegetablesales.quantity_sold + EXCLUDED.quantity_sold,
 		rate = EXCLUDED.rate,
 		total_amount = dailyvegetablesales.total_amount + EXCLUDED.total_amount,

@@ -23,5 +23,7 @@ CREATE TABLE DailyVegetableSales (
     quantity_sold INT NOT NULL,  -- Quantity of vegetables sold
     rate NUMERIC(10, 2) NOT NULL,  -- Rate per unit of the vegetable
     total_amount NUMERIC(10, 2) NOT NULL,  -- Total amount for the sale
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Record creation timestamp
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Record creation timestamp
+    UNIQUE (bill_number, vegetable_name, sale_date)  -- Updated unique constraint
 );
+

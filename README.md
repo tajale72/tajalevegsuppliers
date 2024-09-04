@@ -8,6 +8,10 @@
     - brew services start postgresql@16
     - source ~/.bash_profile
     - psql postgres
+
+# docker run 
+    docker run --name postgres-container -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=tajalevegsuppliers -p 5432:5432 -d postgres
+
     
 
 # Create a migration file
