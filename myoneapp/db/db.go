@@ -44,8 +44,9 @@ func GetDBConnection() (*DBClient, error) {
 	}
 
 	if err := db.Ping(); err != nil {
-		db.Close()
+		log.Fatal("error pinging database: %w", err)
 		return nil, fmt.Errorf("error pinging database: %w", err)
+
 	}
 
 	return &DBClient{DB: db}, nil

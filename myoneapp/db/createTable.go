@@ -77,17 +77,14 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 		quantity_sold, 
 		rate, 
 		total_amount, 
-		created_at, 
-		bill_number
-	) VALUES ($1, $2, $3, $4, $5, $6, $7)
-	ON CONFLICT (bill_number, vegetable_name, sale_date) 
+		created_at
+	) VALUES ($1, $2, $3, $4, $5, $6)
+	ON CONFLICT (vegetable_name, sale_date) 
 	DO UPDATE SET 
 		quantity_sold = dailyvegetablesales.quantity_sold + EXCLUDED.quantity_sold,
 		rate = EXCLUDED.rate,
 		total_amount = dailyvegetablesales.total_amount + EXCLUDED.total_amount,
 		created_at = EXCLUDED.created_at;`
-
-	log.Println("Items", items)
 
 	for _, v := range items {
 		// Validate and sanitize data
@@ -136,7 +133,6 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 			rate,
 			amount,
 			createdAt,
-			billNumber,
 		)
 		if err != nil {
 			log.Println("Error updating item in the database:", err)

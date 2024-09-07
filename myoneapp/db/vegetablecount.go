@@ -21,7 +21,6 @@ func (dbClient *DBClient) GetVegetableCount() ([]model.Item, error) {
 
 		if err := rows.Scan(
 			&sale.ID,
-			&sale.BillNumber,
 			&sale.VegetableName,
 			&sale.CreatedAt,
 			&sale.QuantitySold,

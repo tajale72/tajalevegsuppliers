@@ -13,6 +13,7 @@
       <a href="allproducts.html">Product Lists</a>
       <a href="getbilldetailsbyid.html">Bill Details</a>
       <a href="vegetablecount.html">Vegetable Count</a>
+      <a href="ledger.html">Ledger</a>
     </div>
 
     <div id="loader" class="loader"></div>
@@ -23,7 +24,6 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Bill Number</th>
             <th>Vegetable Name</th>
             <th>Sale Date</th>
             <th>Quantity Sold</th>
@@ -58,7 +58,6 @@ fetch("http://localhost:8080/vegetablecount")
 
       row.innerHTML = `
         <td>${product.id}</td>
-        <td>${product.billNumber}</td>
         <td>${product.sa}</td> <!-- Vegetable name -->
         <td>${new Date(product.created_at).toLocaleDateString()}</td> <!-- Sale Date -->
         <td>${product.sankhya !== undefined ? product.sankhya : 'N/A'}</td> <!-- Quantity Sold -->
