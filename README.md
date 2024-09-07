@@ -12,7 +12,17 @@
 # docker run 
     docker run --name postgres-container -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=tajalevegsuppliers -p 5432:5432 -d postgres
 
+# docker run to use the local volume
+     docker run --name postgres-container \                        
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=admin \
+  -e POSTGRES_DB=tajalevegsuppliers \
+  -p 5432:5432 \
+  -v ~/postgres-data:/var/lib/postgresql/data \
+  -d postgres
     
+# docker run 
+    docker exec -it postgres-container psql -U postgres -d tajalevegsuppliers
 
 # Create a migration file
 migrate create -ext sql -dir migrations -seq create_tables
