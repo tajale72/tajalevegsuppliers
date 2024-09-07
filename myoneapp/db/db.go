@@ -15,6 +15,9 @@ import (
 // Define a database interface or type from myoneapp/db package
 type Database interface {
 	CreateTable(data []byte) error
+	CreateLedger(data []byte) error
+	GetLedgerEntries() ([]model.LedgerEntry, error)
+
 	GetProducts() ([]model.Request, error)
 	GetVegetableCount() ([]model.Item, error)
 	GetProductByID(id int) (model.Request, error)

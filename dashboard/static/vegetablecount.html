@@ -9,9 +9,9 @@
 
   <body>
     <div class="navbar">
-      <a href="createbillv2.html">Create Bill Products</a>
-      <a href="allproducts.html">Product Lists</a>
-      <a href="getbilldetailsbyid.html">Bill Details</a>
+      <a href="createbillv2.html">Create Bill</a>
+      <a href="allproducts.html">Transactions</a>
+     
       <a href="vegetablecount.html">Vegetable Count</a>
       <a href="ledger.html">Ledger</a>
     </div>
@@ -24,12 +24,11 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Vegetable Name</th>
             <th>Sale Date</th>
+            <th>Vegetable Name</th>
             <th>Quantity Sold</th>
             <th>Rate</th>
             <th>Total Amount /-</th>
-            <th>Created At</th>
           </tr>
         </thead>
         <tbody id="productTableBody"></tbody>
@@ -58,12 +57,11 @@ fetch("http://localhost:8080/vegetablecount")
 
       row.innerHTML = `
         <td>${product.id}</td>
+        <td>${new Date(product.created_at).toLocaleString()}</td> <!-- Created At -->
         <td>${product.sa}</td> <!-- Vegetable name -->
-        <td>${new Date(product.created_at).toLocaleDateString()}</td> <!-- Sale Date -->
         <td>${product.sankhya !== undefined ? product.sankhya : 'N/A'}</td> <!-- Quantity Sold -->
         <td>${isFinite(product.dar) ? parseFloat(product.dar).toFixed(2) : 'N/A'}</td> <!-- Rate -->
         <td>${isFinite(product.rakam) ? parseFloat(product.rakam).toFixed(2) : 'N/A'}</td> <!-- Total Amount -->
-        <td>${new Date(product.created_at).toLocaleDateString()}</td> <!-- Created At -->
       `;
 
     //   // Add a click event listener to the row

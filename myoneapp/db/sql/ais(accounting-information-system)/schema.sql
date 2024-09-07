@@ -1,140 +1,78 @@
--- General Ledger Accounts Table
-CREATE TABLE GL_Accounts (
-    account_id SERIAL PRIMARY KEY,
-    account_name VARCHAR(255) NOT NULL,
-    account_type VARCHAR(50) NOT NULL, -- Examples: 'Asset', 'Liability', 'Equity', 'Revenue', 'Expense'
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE DATABASE tajalevegsuppliers;
 
--- General Ledger Transactions Table
-CREATE TABLE GL_Transactions (
-    transaction_id SERIAL PRIMARY KEY,
-    transaction_date DATE NOT NULL,
-    description VARCHAR(255),
-    debit_account_id INT NOT NULL REFERENCES GL_Accounts(account_id),
-    credit_account_id INT NOT NULL REFERENCES GL_Accounts(account_id),
-    amount DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Customers Table
-CREATE TABLE Customers (
-    customer_id SERIAL PRIMARY KEY,
+-- Create the bill_details table with items stored as JSONB
+CREATE TABLE bill_details (
+    id SERIAL PRIMARY KEY,
+    bill_number VARCHAR(255) NOT NULL,
+    bill_date DATE NOT NULL,
+    bill_total_amount  VARCHAR(255) NOT NULL,
+    seller_name VARCHAR(255) NOT NULL,
+    seller_pan_num VARCHAR(255) NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
-    contact_number VARCHAR(15),
-    address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    customer_location VARCHAR(255) NOT NULL,
+    customer_phone_number VARCHAR(20) NOT NULL,
+    customer_pan_container VARCHAR(255) NOT NULL,
+    items JSONB -- Store items as JSONB
 );
 
--- Suppliers Table
-CREATE TABLE Suppliers (
-    supplier_id SERIAL PRIMARY KEY,
+CREATE TABLE DailyVegetableSales (
+    id SERIAL PRIMARY KEY,
+    vegetable_name VARCHAR(255) NOT NULL,  -- Name of the vegetable sold
+    sale_date DATE NOT NULL,  -- Date of the sale
+    quantity_sold INT NOT NULL,  -- Quantity of vegetables sold
+    rate NUMERIC(10, 2) NOT NULL,  -- Rate per unit of the vegetable
+    total_amount NUMERIC(10, 2) NOT NULL,  -- Total amount for the sale
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Record creation timestamp
+    UNIQUE (vegetable_name, sale_date)  -- Updated unique constraint
+);
+
+CREATE TABLE ledger_entries (
+    id SERIAL PRIMARY KEY,
+    date DATE NOT NULL,
+    account VARCHAR(255) NOT NULL,
+    billNumber VARCHAR(255) NOT NULL,
+    debit DECIMAL(10, 2) DEFAULT 0.00,
+    credit DECIMAL(10, 2) DEFAULT 0.00,
+    balance_amount DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE sale_ledger (
+    id SERIAL PRIMARY KEY,
+    bill_id INT REFERENCES bill_details(id) ON DELETE CASCADE,
+    bill_number VARCHAR(255) NOT NULL,
+    bill_date DATE NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_phone_number VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    paid_amount DECIMAL(10, 2) DEFAULT 0.00,
+    remaining_balance DECIMAL(10, 2) GENERATED ALWAYS AS (total_amount - paid_amount) STORED,
+    payment_status ENUM('Pending', 'Partially Paid', 'Paid') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE purchase_ledger (
+    id SERIAL PRIMARY KEY,
+    bill_id INT REFERENCES bill_details(id) ON DELETE CASCADE,
+    bill_number VARCHAR(255) NOT NULL,
+    bill_date DATE NOT NULL,
     supplier_name VARCHAR(255) NOT NULL,
-    contact_number VARCHAR(15),
-    address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    total_amount DECIMAL(10, 2) NOT NULL,
+    paid_amount DECIMAL(10, 2) DEFAULT 0.00,
+    remaining_balance DECIMAL(10, 2) GENERATED ALWAYS AS (total_amount - paid_amount) STORED,
+    payment_status ENUM('Pending', 'Partially Paid', 'Paid') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Products Table
-CREATE TABLE Products (
-    product_id SERIAL PRIMARY KEY,
-    product_name VARCHAR(255) NOT NULL,
-    category VARCHAR(255),
-    unit_price DECIMAL(10, 2) NOT NULL,
-    stock_quantity INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+CREATE TABLE balance_sheet (
+    id SERIAL PRIMARY KEY,
+    account_type VARCHAR(50) NOT NULL,    -- Asset, Liability, Equity
+    account_name VARCHAR(255) NOT NULL,   -- Cash, Inventory, Payables
+    debit NUMERIC(10, 2),                 -- Debit amount for transactions
+    credit NUMERIC(10, 2),                -- Credit amount for transactions
+    balance NUMERIC(10, 2) NOT NULL,      -- Account balance
+    transaction_date DATE NOT NULL,       -- Date of the transaction
+    created_at TIMESTAMP DEFAULT NOW()    -- Timestamp of creation
 );
 
--- Sales Invoices Table
-CREATE TABLE Sales_Invoices (
-    invoice_id SERIAL PRIMARY KEY,
-    customer_id INT NOT NULL REFERENCES Customers(customer_id),
-    invoice_date DATE NOT NULL,
-    total_amount DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Sales Invoice Details Table
-CREATE TABLE Sales_Invoice_Details (
-    invoice_detail_id SERIAL PRIMARY KEY,
-    invoice_id INT NOT NULL REFERENCES Sales_Invoices(invoice_id),
-    product_id INT NOT NULL REFERENCES Products(product_id),
-    quantity INT NOT NULL,
-    price_per_unit DECIMAL(10, 2) NOT NULL,
-    total_price DECIMAL(15, 2) NOT NULL
-);
-
--- Purchase Orders Table
-CREATE TABLE Purchase_Orders (
-    purchase_order_id SERIAL PRIMARY KEY,
-    supplier_id INT NOT NULL REFERENCES Suppliers(supplier_id),
-    order_date DATE NOT NULL,
-    total_amount DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Purchase Order Details Table
-CREATE TABLE Purchase_Order_Details (
-    purchase_order_detail_id SERIAL PRIMARY KEY,
-    purchase_order_id INT NOT NULL REFERENCES Purchase_Orders(purchase_order_id),
-    product_id INT NOT NULL REFERENCES Products(product_id),
-    quantity INT NOT NULL,
-    price_per_unit DECIMAL(10, 2) NOT NULL,
-    total_price DECIMAL(15, 2) NOT NULL
-);
-
--- Payments Table
-CREATE TABLE Payments (
-    payment_id SERIAL PRIMARY KEY,
-    payment_date DATE NOT NULL,
-    supplier_id INT NOT NULL REFERENCES Suppliers(supplier_id),
-    amount_paid DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Receipts Table
-CREATE TABLE Receipts (
-    receipt_id SERIAL PRIMARY KEY,
-    receipt_date DATE NOT NULL,
-    customer_id INT NOT NULL REFERENCES Customers(customer_id),
-    amount_received DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Inventory Adjustments Table
-CREATE TABLE Inventory_Adjustments (
-    adjustment_id SERIAL PRIMARY KEY,
-    product_id INT NOT NULL REFERENCES Products(product_id),
-    adjustment_date DATE NOT NULL,
-    adjustment_type VARCHAR(50) NOT NULL, -- Examples: 'Increase', 'Decrease'
-    quantity INT NOT NULL,
-    reason TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Expenses Table
-CREATE TABLE Expenses (
-    expense_id SERIAL PRIMARY KEY,
-    expense_date DATE NOT NULL,
-    description TEXT,
-    amount DECIMAL(15, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Reports Table
-CREATE TABLE Reports (
-    report_id SERIAL PRIMARY KEY,
-    report_type VARCHAR(255) NOT NULL, -- Examples: 'Profit and Loss', 'Balance Sheet'
-    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

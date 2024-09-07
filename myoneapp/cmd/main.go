@@ -18,6 +18,63 @@ type DBClient struct {
 	DB db.Database
 }
 
+func main() {
+	r := gin.Default()
+	r.Use(cors.Default())
+	db, err := d.GetDBConnection()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+	}
+	dbClient := &DBClient{
+		DB: db, // Assuming GetDBConnection returns a Database object
+	}
+	r.GET("/", GetProductsDetails)
+
+	r.POST("/submit", dbClient.Submit)
+	r.POST("/ledger", dbClient.Ledger)
+	r.GET("/ledger", dbClient.GetLedgerEntries)
+
+	r.GET("/products", dbClient.GetProductsDetails)
+	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
+	r.PUT("updateBill/:id", dbClient.UpdateBill)
+	r.GET("/getBillNumber", dbClient.GetBillNumber)
+	r.GET("/vegetablecount", dbClient.GetVegetableCount)
+
+	r.Run()
+}
+
+func (dbClient *DBClient) GetLedgerEntries(c *gin.Context) {
+	lisofProducts, err := dbClient.DB.GetLedgerEntries()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	// //lisofProducts, err := dbClient.DB.GetProducts()
+	// if err != nil {
+	// 	log.Println("Error getting products: ", err)
+	// 	c.JSON(http.StatusInternalServerError, err)
+	// 	return
+	// }
+
+	c.JSON(http.StatusAccepted, lisofProducts)
+}
+
+func (dbClient *DBClient) Ledger(c *gin.Context) {
+	body := c.Request.Body
+	data, _ := io.ReadAll(body)
+
+	err := dbClient.DB.CreateLedger(data)
+	if err != nil {
+		log.Println("Error CreateTable: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusAccepted, "Successfully created the bill")
+}
+
 func (dbClient *DBClient) Submit(c *gin.Context) {
 	body := c.Request.Body
 	data, _ := io.ReadAll(body)
@@ -126,31 +183,9 @@ func (dbClient *DBClient) GetVegetableCount(c *gin.Context) {
 	c.JSON(http.StatusAccepted, lisofVegtableCount)
 }
 
-type BillNumber struct {
-	billNumber string `json:"billNumber"`
-}
-
-func main() {
-	r := gin.Default()
-	r.Use(cors.Default())
-	db, err := d.GetDBConnection()
-	if err != nil {
-		log.Println("Error getting products: ", err)
-	}
-	dbClient := &DBClient{
-		DB: db, // Assuming GetDBConnection returns a Database object
-	}
-	r.GET("/", GetProductsDetails)
-
-	r.POST("/submit", dbClient.Submit)
-	r.GET("/products", dbClient.GetProductsDetails)
-	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
-	r.PUT("updateBill/:id", dbClient.UpdateBill)
-	r.GET("/getBillNumber", dbClient.GetBillNumber)
-	r.GET("/vegetablecount", dbClient.GetVegetableCount)
-
-	r.Run()
-}
+// type BillNumber struct {
+// 	billNumber string `json:"billNumber"`
+// }
 
 func GetProductsDetails(c *gin.Context) {
 	c.JSON(http.StatusAccepted, "succes from 8080")
