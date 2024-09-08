@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +12,7 @@
     <div class="navbar">
         <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
-       
+
         <a href="vegetablecount.html">Vegetable Count</a>
         <a href="ledger.html">Ledger</a>
     </div>
@@ -33,6 +34,7 @@
                     <th class="center-align">Customer Phone Number</th>
                     <th class="center-align">Customer PAN Container</th>
                     <th class="center-align">Bill Total Amount /-</th>
+                    <th class="center-align">Delete</th>
                 </tr>
             </thead>
             <tbody id="productTableBody"></tbody>
@@ -70,6 +72,9 @@
                         <td class="center-align">${product.customerPhoneNumber}</td>
                         <td class="center-align">${product.customerPanContainer}</td>
                         <td class="center-align">${product.billTotalAmount} /-</td>
+                        <td class="center-align">
+                        <button class="delete-btn" data-id="${product.id}">Delete</button>
+                        </td>
                     `;
 
                     // Add a click event listener to the row
@@ -77,6 +82,16 @@
                         window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
                     });
                     productTableBody.appendChild(row);
+
+                    // Add event listener for delete button
+                    const deleteButton = row.querySelector(".delete-btn");
+                    deleteButton.addEventListener("click", (event) => {
+                        event.stopPropagation(); // Prevent row click event
+                        const id = deleteButton.getAttribute("data-id");
+                        if (confirm("Are you sure you want to delete this entry?")) {
+                            deleteEntry(id);
+                        }
+                    });
                 });
             })
             .catch((error) => {
@@ -84,6 +99,29 @@
                 errorMessage.textContent = "Error loading data. Please try again later.";
                 console.error("Error:", error);
             });
+
+        function deleteEntry(id) {
+            fetch(`http://localhost:8080/billtransaction/${id}`, {
+                method: 'DELETE',
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete entry.');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    // Remove the deleted row from the table
+                    const rowToDelete = document.querySelector(`button[data-id="${id}"]`).closest("tr");
+                    rowToDelete.remove();
+                    alert('Entry deleted successfully.');
+                })
+                .catch((error) => {
+                    console.error('Error deleting entry:', error);
+                    alert('Failed to delete entry. Please try again.');
+                });
+        }
     </script>
 </body>
+
 </html>

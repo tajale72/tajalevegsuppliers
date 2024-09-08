@@ -66,3 +66,20 @@ table {
     color: red;
     text-align: center;
 }
+
+/* Style for delete button */
+button.delete-btn {
+    background-color: #f44336; /* Default red background color */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Add some padding */
+    font-size: 16px; /* Set font size */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    border-radius: 4px; /* Add rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for delete button */
+button.delete-btn:hover {
+    background-color: #d32f2f; /* Darker red background color on hover */
+}

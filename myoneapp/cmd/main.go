@@ -33,6 +33,7 @@ func main() {
 	r.POST("/billtransaction", dbClient.Submit)
 	r.GET("/billtransaction", dbClient.GetProductsDetails)
 	r.GET("/billtransaction/:id", dbClient.GetProductsDetailsByID)
+	r.DELETE("/billtransaction/:id", dbClient.DeleteProductsDetailsByID)
 	r.PUT("billtransaction/:id", dbClient.UpdateBill)
 
 	r.POST("/ledger", dbClient.Ledger)
@@ -138,6 +139,26 @@ func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, productDetails)
+}
+
+func (dbClient *DBClient) DeleteProductsDetailsByID(c *gin.Context) {
+	id := c.Param("id") // Assuming you get the ID from the request URL
+
+	// Convert id to int
+	productID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	deleteResponse, err := dbClient.DB.DeleteProductByID(productID)
+	if err != nil {
+		log.Println("Error getting product details: ", err)
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, deleteResponse)
 }
 
 func (dbClient *DBClient) GetBillNumber(c *gin.Context) {

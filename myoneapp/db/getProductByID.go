@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -27,4 +28,17 @@ func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
 	}
 
 	return bill, nil
+}
+
+// DeleteProductByID deletes a product by its ID and returns the deleted product's details.
+func (dbClient *DBClient) DeleteProductByID(id int) (sql.Result, error) {
+
+	// Delete the bill from the database
+	result, err := dbClient.DB.Exec("DELETE FROM Bill_Details WHERE id = $1;", id)
+	if err != nil {
+		log.Println("Error deleting data from the database:", err)
+		return nil, fmt.Errorf("error deleting data from the database: %w", err)
+	}
+
+	return result, nil
 }

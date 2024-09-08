@@ -21,6 +21,8 @@ type Database interface {
 	GetProducts() ([]model.Request, error)
 	GetVegetableCount() ([]model.Item, error)
 	GetProductByID(id int) (model.Request, error)
+	DeleteProductByID(id int) (sql.Result, error)
+
 	GetLastBillNumber() (model.Result, error)
 	UpdateBill(data []byte) error
 	// Add other database-related methods if needed
