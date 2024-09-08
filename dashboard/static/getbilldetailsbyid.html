@@ -111,7 +111,7 @@
     const productId = urlParams.get('id');
 
     // Make a GET request to the API endpoint using the extracted product ID
-    fetch(`http://localhost:8080/products/${productId}`)
+    fetch(`http://localhost:8080/billtransaction/${productId}`)
         .then(response => response.json())
         .then(billData => {
             console.log(billData);

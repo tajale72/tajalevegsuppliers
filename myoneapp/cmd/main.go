@@ -30,13 +30,14 @@ func main() {
 	}
 	r.GET("/", GetProductsDetails)
 
-	r.POST("/submit", dbClient.Submit)
+	r.POST("/billtransaction", dbClient.Submit)
+	r.GET("/billtransaction", dbClient.GetProductsDetails)
+	r.GET("/billtransaction/:id", dbClient.GetProductsDetailsByID)
+	r.PUT("billtransaction/:id", dbClient.UpdateBill)
+
 	r.POST("/ledger", dbClient.Ledger)
 	r.GET("/ledger", dbClient.GetLedgerEntries)
 
-	r.GET("/products", dbClient.GetProductsDetails)
-	r.GET("/products/:id", dbClient.GetProductsDetailsByID)
-	r.PUT("updateBill/:id", dbClient.UpdateBill)
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
@@ -182,10 +183,6 @@ func (dbClient *DBClient) GetVegetableCount(c *gin.Context) {
 
 	c.JSON(http.StatusAccepted, lisofVegtableCount)
 }
-
-// type BillNumber struct {
-// 	billNumber string `json:"billNumber"`
-// }
 
 func GetProductsDetails(c *gin.Context) {
 	c.JSON(http.StatusAccepted, "succes from 8080")
