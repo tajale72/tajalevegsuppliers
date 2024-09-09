@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,11 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         h1 {
             text-align: center;
         }
+
         form {
             max-width: 600px;
             margin: 0 auto;
@@ -21,13 +24,17 @@
             border-radius: 8px;
             background-color: #f9f9f9;
         }
-        input[type="text"], input[type="number"], input[type="date"] {
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
             width: calc(100% - 20px);
             padding: 8px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         button {
             width: 100%;
             padding: 10px;
@@ -37,163 +44,173 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
-        th, td {
+
+        th,
+        td {
             padding: 10px;
             text-align: center;
         }
+
         th {
             background-color: #f2f2f2;
         }
     </style>
 </head>
+
 <body>
     <div class="navbar">
         <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
-       
+
         <a href="vegetablecount.html">Vegetable Count</a>
         <a href="ledger.html">Ledger</a>
     </div>
 
-<form id="ledgerForm">
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required>
-    
-    <label for="account">Account Name:</label>
-    <input type="text" id="account" name="account" placeholder="Enter Account Name" required>
+    <form id="ledgerForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
 
-    <label for="account">Bill No:</label>
-    <input type="text" id="billNumber" name="billNumber" placeholder="Enter billNumber" required>
-    
-    <label for="debit">Debit Amount:</label>
-    <input type="number" id="debit" name="debit" placeholder="Enter Debit Amount" step="0.01">
-    
-    <label for="credit">Credit Amount:</label>
-    <input type="number" id="credit" name="credit" placeholder="Enter Credit Amount" step="0.01">
+        <label for="account">Account Name:</label>
+        <input type="text" id="account" name="account" placeholder="Enter Account Name" required>
 
-    <label for="credit">Balance Amount:</label>
-    <input type="number" id="balanceAmount" name="balanceAmount" placeholder="Enter Balance Amount" step="0.01">
-    
-    <button type="button" onclick="addEntry()">Add Entry</button>
-</form>
+        <label for="account">Bill No:</label>
+        <input type="text" id="billNumber" name="billNumber" placeholder="Enter billNumber" required>
 
-<h2>Ledger Entries</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Account Name</th>
-            <th>Bill No: </th>
-            <th>Debit</th>
-            <th>Credit</th>
-            <th>Balance Amount /-</th>
-        </tr>
-    </thead>
-    <tbody id="ledgerEntries">
-        <!-- Entries will be dynamically added here -->
-    </tbody>
-</table>
+        <label for="debit">Debit Amount:</label>
+        <input type="number" id="debit" name="debit" placeholder="Enter Debit Amount" step="0.01">
 
-<script>
-    // Function to fetch and display ledger entries
-    async function fetchLedgerEntries() {
-        try {
-            const response = await fetch('http://localhost:8080/ledger');
-            if (!response.ok) {
-                throw new Error('Failed to fetch ledger entries.');
+        <label for="credit">Credit Amount:</label>
+        <input type="number" id="credit" name="credit" placeholder="Enter Credit Amount" step="0.01">
+
+        <label for="credit">Balance Amount:</label>
+        <input type="number" id="balanceAmount" name="balanceAmount" placeholder="Enter Balance Amount" step="0.01">
+
+        <button type="button" onclick="addEntry()">Add Entry</button>
+    </form>
+
+    <h2>Ledger Entries</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Account Name</th>
+                <th>Bill No: </th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Balance Amount /-</th>
+            </tr>
+        </thead>
+        <tbody id="ledgerEntries">
+            <!-- Entries will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch and display ledger entries
+        async function fetchLedgerEntries() {
+            try {
+                const response = await fetch('http://localhost:8080/ledger');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch ledger entries.');
+                }
+
+                const entries = await response.json();
+                const ledgerEntries = document.getElementById('ledgerEntries');
+
+                // Clear existing table rows
+                ledgerEntries.innerHTML = '';
+
+                // Populate table with fetched entries
+                entries.forEach(entry => {
+                    const newRow = ledgerEntries.insertRow();
+                    newRow.insertCell(0).textContent = entry.id;
+                    newRow.insertCell(1).textContent = entry.date;
+                    newRow.insertCell(2).textContent = entry.account;
+                    newRow.insertCell(3).textContent = entry.billNumber;
+                    newRow.insertCell(4).textContent = entry.debit || '';
+                    newRow.insertCell(5).textContent = entry.credit || '';
+                    newRow.insertCell(6).textContent = entry.balanceAmount || '';
+                });
+            } catch (error) {
+                console.error('Error fetching ledger entries:', error);
+                alert('Failed to load ledger entries. Please try again.');
+            }
+        }
+
+        async function addEntry() {
+            // Collect form values
+            const date = document.getElementById('date').value;
+            const account = document.getElementById('account').value;
+            const billNumber = document.getElementById('billNumber').value;
+            const debit = document.getElementById('debit').value;
+            const credit = document.getElementById('credit').value;
+            const balanceAmount = document.getElementById('balanceAmount').value;
+
+            // Validate required fields
+            if (!date || !account || !billNumber || (!debit && !credit)) {
+                alert('Please fill in all required fields.');
+                return;
             }
 
-            const entries = await response.json();
-            const ledgerEntries = document.getElementById('ledgerEntries');
+            // Prepare data for the backend
+            const entryData = {
+                date: date,
+                account: account,
+                billNumber: billNumber,
+                debit: debit ? parseFloat(debit) : null,
+                credit: credit ? parseFloat(credit) : null,
+                balanceAmount: balanceAmount ? parseFloat(balanceAmount) : null
+            };
 
-            // Clear existing table rows
-            ledgerEntries.innerHTML = '';
+            try {
+                // Send the data to the backend via POST request
+                const response = await fetch('http://localhost:8080/ledger', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(entryData)
+                });
 
-            // Populate table with fetched entries
-            entries.forEach(entry => {
-                const newRow = ledgerEntries.insertRow();
-                newRow.insertCell(0).textContent = entry.id;
-                newRow.insertCell(1).textContent = entry.date;
-                newRow.insertCell(2).textContent = entry.account;
-                newRow.insertCell(3).textContent = entry.billNumber;
-                newRow.insertCell(4).textContent = entry.debit || '';
-                newRow.insertCell(5).textContent = entry.credit || '';
-                newRow.insertCell(6).textContent = entry.balanceAmount || '';
-            });
-        } catch (error) {
-            console.error('Error fetching ledger entries:', error);
-            alert('Failed to load ledger entries. Please try again.');
-        }
-    }
+                // Handle the response from the backend
+                if (!response.ok) {
+                    throw new Error('Failed to save ledger entry.');
+                }
 
-    async function addEntry() {
-        // Collect form values
-        const date = document.getElementById('date').value;
-        const account = document.getElementById('account').value;
-        const billNumber = document.getElementById('billNumber').value;
-        const debit = document.getElementById('debit').value;
-        const credit = document.getElementById('credit').value;
-        const balanceAmount = document.getElementById('balanceAmount').value;
+                // Fetch and display updated ledger entries
+                fetchLedgerEntries();
 
-        // Validate required fields
-        if (!date || !account || !billNumber || (!debit && !credit)) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        // Prepare data for the backend
-        const entryData = {
-            date: date,
-            account: account,
-            billNumber: billNumber,
-            debit: debit ? parseFloat(debit).toFixed(2) : null,
-            credit: credit ? parseFloat(credit).toFixed(2) : null,
-            balanceAmount: balanceAmount ? parseFloat(balanceAmount).toFixed(2) : null
-        };
-
-        try {
-            // Send the data to the backend via POST request
-            const response = await fetch('http://localhost:8080/ledger', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(entryData)
-            });
-
-            // Handle the response from the backend
-            if (!response.ok) {
-                throw new Error('Failed to save ledger entry.');
+                // Reset the form
+                document.getElementById('ledgerForm').reset();
+            } catch (error) {
+                console.error('Error adding ledger entry:', error);
+                alert('Failed to add ledger entry. Please try again.');
             }
-
-            // Fetch and display updated ledger entries
-            fetchLedgerEntries();
-
-            // Reset the form
-            document.getElementById('ledgerForm').reset();
-        } catch (error) {
-            console.error('Error adding ledger entry:', error);
-            alert('Failed to add ledger entry. Please try again.');
         }
-    }
 
-    // Initial call to load ledger entries when the page loads
-    document.addEventListener('DOMContentLoaded', fetchLedgerEntries);
-</script>
+        // Initial call to load ledger entries when the page loads
+        document.addEventListener('DOMContentLoaded', fetchLedgerEntries);
+    </script>
 
 
 
 </body>
+
 </html>

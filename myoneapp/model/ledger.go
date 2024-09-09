@@ -15,9 +15,9 @@ type LedgerEntry struct {
 	Date          string    `json:"date"`          // Date of the transaction
 	Account       string    `json:"account"`       // Account associated with the entry
 	BillNumber    string    `json:"billNumber"`    // Account associated with the entry
-	Debit         Float64   `json:"debit"`         // Debit amount (custom type)
-	Credit        Float64   `json:"credit"`        // Credit amount (custom type)
-	BalanceAmount Float64   `json:"balanceAmount"` // Remaining balance (custom type)
+	Debit         string    `json:"debit"`         // Debit amount (custom type)
+	Credit        string    `json:"credit"`        // Credit amount (custom type)
+	BalanceAmount string    `json:"balanceAmount"` // Remaining balance (custom type)
 	CreatedAt     time.Time `json:"created_at" gorm:"autoCreateTime"`
 }
 

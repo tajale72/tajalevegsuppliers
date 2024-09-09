@@ -142,3 +142,19 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 
 	return nil
 }
+
+// func (dbClient *DBClient) CreateCustomer(req model.Request) error {
+// 	_, err := dbClient.DB.Exec(
+// 		query,
+// 		v.VegetableName,
+// 		createdAt,
+// 		quantitySold,
+// 		rate,
+// 		amount,
+// 		createdAt,
+// 	)
+// 	if err != nil {
+// 		log.Println("Error updating item in the database:", err)
+// 		return fmt.Errorf("error updating item in the database: %w", err)
+// 	}
+// }
