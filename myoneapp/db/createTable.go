@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -56,6 +57,23 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 		log.Println("Exec statement error:", err)
 		return fmt.Errorf("error executing SQL statement: %w", err)
 	}
+	if dbClient.AivenDB != nil {
+		// Execute the SQL query with specific values
+		_, err = dbClient.AivenDB.Exec(sqlStatement,
+			req.BillNumber,
+			req.BillDate,
+			req.BillTotalAmount,
+			req.SellerName,
+			req.SellerPanNum,
+			req.CustomerName,
+			req.CustomerLocation,
+			req.CustomerPhoneNumber,
+			req.CustomerPanContainer, itemsJSON)
+		if err != nil {
+			log.Println("Exec statement error:", err)
+			return fmt.Errorf("error executing SQL statement: %w", err)
+		}
+	}
 
 	dbClient.CalucaltedVegTableQuantitySold(itemsJSON, req.BillNumber)
 
@@ -63,6 +81,8 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 }
 
 func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber string) error {
+	log.Println("items", string(data))
+
 	var items []model.Item
 	err := json.Unmarshal(data, &items)
 	if err != nil {
@@ -71,72 +91,80 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 	}
 
 	query := `
-	INSERT INTO dailyvegetablesales (
-		vegetable_name, 
-		sale_date, 
-		quantity_sold, 
-		rate, 
-		total_amount, 
-		created_at
-	) VALUES ($1, $2, $3, $4, $5, $6)
-	ON CONFLICT (vegetable_name, sale_date) 
-	DO UPDATE SET 
-		quantity_sold = dailyvegetablesales.quantity_sold + EXCLUDED.quantity_sold,
-		rate = EXCLUDED.rate,
-		total_amount = dailyvegetablesales.total_amount + EXCLUDED.total_amount,
-		created_at = EXCLUDED.created_at;`
+        INSERT INTO dailyvegetablesales (
+            vegetable_name, 
+            sale_date, 
+            quantity_sold, 
+            rate, 
+            total_amount, 
+            created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (vegetable_name, sale_date) 
+        DO UPDATE SET 
+            quantity_sold = dailyvegetablesales.quantity_sold + EXCLUDED.quantity_sold,
+            rate = EXCLUDED.rate,
+            total_amount = dailyvegetablesales.total_amount + EXCLUDED.total_amount,
+            created_at = EXCLUDED.created_at;`
 
-	for _, v := range items {
-		// Validate and sanitize data
-		if v.VegetableName == "" {
-			log.Println("Skipping item due to missing vegetable name:", v)
-			break
-		}
+	// Function to execute the query on a given DB
+	executeQuery := func(db *sql.DB) error {
+		for _, v := range items {
+			if v.VegetableName == "" {
+				log.Println("Skipping item due to missing vegetable name:", v)
+				continue
+			}
 
-		createdAt := time.Now()
+			createdAt := time.Now()
 
-		// Handle empty QuantitySold by defaulting to 0
-		quantitySold := 0
-		if v.QuantitySold != "" {
-			quantitySold, err = strconv.Atoi(v.QuantitySold)
+			// Convert QuantitySold, Rate, and Amount from string to float64
+			quantitySold, err := strconv.ParseFloat(v.QuantitySold, 64)
 			if err != nil {
 				log.Printf("Invalid quantity_sold value: %v. Using 0 instead.", v.QuantitySold)
-				quantitySold = 0
+				quantitySold = 0.00
 			}
-		}
 
-		// Handle empty Rate by defaulting to 0.00
-		rate := 0.00
-		if v.Rate != "" {
-			rate, err = strconv.ParseFloat(v.Rate, 64)
+			rate, err := strconv.ParseFloat(v.Rate, 64)
 			if err != nil {
 				log.Printf("Invalid rate value: %v. Using 0.00 instead.", v.Rate)
 				rate = 0.00
 			}
-		}
 
-		// Handle empty Amount by defaulting to 0.00
-		amount := 0.00
-		if v.Amount != "" {
-			amount, err = strconv.ParseFloat(v.Amount, 64)
+			amount, err := strconv.ParseFloat(v.Amount, 64)
 			if err != nil {
 				log.Printf("Invalid amount value: %v. Using 0.00 instead.", v.Amount)
 				amount = 0.00
 			}
-		}
 
-		_, err := dbClient.DB.Exec(
-			query,
-			v.VegetableName,
-			createdAt,
-			quantitySold,
-			rate,
-			amount,
-			createdAt,
-		)
-		if err != nil {
-			log.Println("Error updating item in the database:", err)
-			return fmt.Errorf("error updating item in the database: %w", err)
+			// Log the values before executing the query for debugging
+			log.Printf("Inserting/updating vegetable: %v, QuantitySold: %v, Rate: %v, Amount: %v", v.VegetableName, quantitySold, rate, amount)
+
+			_, err = db.Exec(
+				query,
+				v.VegetableName,
+				createdAt,
+				quantitySold,
+				rate,
+				amount,
+				createdAt,
+			)
+			if err != nil {
+				log.Println("Error updating item in the database:", err)
+				return fmt.Errorf("error updating item in the database: %w", err)
+			}
+		}
+		return nil
+	}
+
+	// Execute the query on the local DB
+	if err := executeQuery(dbClient.DB); err != nil {
+		return err
+	}
+
+	// Execute the query on the Aiven DB if available
+	if dbClient.AivenDB != nil {
+		if err := executeQuery(dbClient.AivenDB); err != nil {
+			log.Println("Error updating item in the Aiven database:", err)
+			return fmt.Errorf("error updating item in the Aiven database: %w", err)
 		}
 	}
 

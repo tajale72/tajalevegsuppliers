@@ -11,5 +11,10 @@ func (dbClient *DBClient) DeleteUser(id int) error {
 		log.Println("Error deleting user:", err)
 		return fmt.Errorf("error deleting user: %w", err)
 	}
+	_, err = dbClient.AivenDB.Exec("DELETE FROM users WHERE id=$1", id)
+	if err != nil {
+		log.Println("Error deleting user:", err)
+		return fmt.Errorf("error deleting user: %w", err)
+	}
 	return nil
 }

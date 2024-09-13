@@ -10,11 +10,32 @@ import (
 )
 
 func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
-	rows, err := dbClient.DB.Query("SELECT * FROM Bill_Details;")
-	if err != nil {
-		log.Println("Error querying database:", err)
-		return nil, fmt.Errorf("error querying database: %w", err)
+	var rows *sql.Rows
+	var err error
+
+	// Always try to query the local DB first
+	if dbClient.DB != nil {
+		rows, err = dbClient.DB.Query("SELECT * FROM Bill_Details;")
+		if err != nil {
+			log.Printf("Error querying local DB: %v", err)
+		} else {
+			log.Println("Queried local DB successfully")
+		}
 	}
+
+	// If the local DB query fails or local DB is not connected, try AivenDB
+	if rows == nil && dbClient.AivenDB != nil {
+		rows, err = dbClient.AivenDB.Query("SELECT * FROM Bill_Details;")
+		if err != nil {
+			log.Printf("Error querying AivenDB: %v", err)
+			return nil, fmt.Errorf("error querying AivenDB: %w", err)
+		}
+		log.Println("Queried AivenDB successfully")
+	} else if rows == nil {
+		// If both queries failed or no database is connected
+		return nil, fmt.Errorf("no available database to query from")
+	}
+
 	defer rows.Close()
 
 	var listOfBills []model.Request
@@ -22,7 +43,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 		var bill model.Request
 		var productsJSON sql.RawBytes // Use sql.RawBytes to handle JSONB data
 
-		// Update the Scan call to match the number of columns
+		// Scan the columns from the result set
 		if err := rows.Scan(
 			&bill.ID,
 			&bill.BillNumber,

@@ -15,13 +15,13 @@ CREATE TABLE bill_details (
     items JSONB -- Store items as JSONB
 );
 
-CREATE TABLE DailyVegetableSales (
+CREATE TABLE dailyvegetablesales (
     id SERIAL PRIMARY KEY,
     vegetable_name VARCHAR(255) NOT NULL,  -- Name of the vegetable sold
     sale_date DATE NOT NULL,  -- Date of the sale
-    quantity_sold INT NOT NULL,  -- Quantity of vegetables sold
-    rate NUMERIC(10, 2) NOT NULL,  -- Rate per unit of the vegetable
-    total_amount NUMERIC(10, 2) NOT NULL,  -- Total amount for the sale
+    quantity_sold DECIMAL(10, 2) DEFAULT 0.00,  -- Quantity of vegetables sold
+    rate DECIMAL(10, 2) DEFAULT 0.00,  -- Rate per unit of the vegetable
+    total_amount DECIMAL(10, 2) DEFAULT 0.00,  -- Total amount for the sale
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Record creation timestamp
     UNIQUE (vegetable_name, sale_date)  -- Updated unique constraint
 );

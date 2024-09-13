@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -9,11 +10,32 @@ import (
 
 // GetLedgerEntries retrieves all ledger entries from the database.
 func (dbClient *DBClient) GetLedgerEntries() ([]model.LedgerEntry, error) {
-	rows, err := dbClient.DB.Query("SELECT * FROM ledger_entries;")
-	if err != nil {
-		log.Println("Error querying database:", err)
-		return nil, fmt.Errorf("error querying database: %w", err)
+	var rows *sql.Rows
+	var err error
+
+	// Try querying the local DB first
+	if dbClient.DB != nil {
+		rows, err = dbClient.DB.Query("SELECT * FROM ledger_entries;")
+		if err != nil {
+			log.Printf("Error querying local DB: %v", err)
+		} else {
+			log.Println("Queried local DB successfully")
+		}
 	}
+
+	// If local DB query fails or local DB is not connected, try AivenDB
+	if rows == nil && dbClient.AivenDB != nil {
+		rows, err = dbClient.AivenDB.Query("SELECT * FROM ledger_entries;")
+		if err != nil {
+			log.Printf("Error querying AivenDB: %v", err)
+			return nil, fmt.Errorf("error querying AivenDB: %w", err)
+		}
+		log.Println("Queried AivenDB successfully")
+	} else if rows == nil {
+		// If both queries failed or no database is connected
+		return nil, fmt.Errorf("no available database to query from")
+	}
+
 	defer rows.Close()
 
 	var listOfEntries []model.LedgerEntry

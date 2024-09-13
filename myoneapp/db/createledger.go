@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"time"
+
 	// replace with your actual package path
 
 	"myoneapp/model"
@@ -56,6 +57,21 @@ func (dbClient *DBClient) CreateLedger(data []byte) error {
 	if err != nil {
 		log.Println("Exec statement error:", err)
 		return fmt.Errorf("error executing SQL statement: %w", err)
+	}
+
+	if dbClient.AivenDB != nil {
+		// Execute the SQL query with values from ledgerData
+		_, err = dbClient.AivenDB.Exec(sqlStatement,
+			date,
+			ledgerData.Account,
+			ledgerData.BillNumber,
+			ledgerData.Debit,
+			ledgerData.Credit,
+			ledgerData.BalanceAmount)
+		if err != nil {
+			log.Println("Exec statement error:", err)
+			return fmt.Errorf("error executing SQL statement: %w", err)
+		}
 	}
 
 	return nil

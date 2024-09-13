@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/lib/pq"
 
+	"myoneapp/db/aiven"
 	"myoneapp/model"
 )
 
@@ -38,23 +39,56 @@ const (
 )
 
 type DBClient struct {
-	DB *sql.DB
+	DB      *sql.DB
+	AivenDB *sql.DB
 }
 
 func GetDBConnection() (*DBClient, error) {
-	connStr := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
-	db, err := sql.Open("postgres", connStr)
+	// Try to connect to AivenDB first
+	var aivendb, localdb *sql.DB
+	var err error
+
+	aivendb, err = aiven.ConnectDBAivenPostgres()
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to postgres db: %w", err)
+		log.Printf("Error connecting to AivenDB: %v", err)
+	} else {
+		log.Println("Connected to AivenDB successfully")
 	}
 
-	if err := db.Ping(); err != nil {
-		log.Fatal("error pinging database: %w", err)
-		return nil, fmt.Errorf("error pinging database: %w", err)
-
+	// Now attempt to connect to the local DB
+	connStr := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
+	localdb, err = sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, fmt.Errorf("error connecting to local postgres DB: %w", err)
 	}
 
-	return &DBClient{DB: db}, nil
+	// Ping the local DB to ensure it's connected
+	if err := localdb.Ping(); err != nil {
+		return nil, fmt.Errorf("error pinging local database: %w", err)
+	}
+
+	log.Println("Connected to local DB successfully")
+
+	// If both AivenDB and local DB are connected, return both
+	if aivendb != nil && localdb != nil {
+		log.Println("Both AivenDB and local DB connections successful")
+		return &DBClient{DB: localdb, AivenDB: aivendb}, nil
+	}
+
+	// If only local DB is connected, return that
+	if aivendb == nil {
+		log.Println("AivenDB connection failed, using only local DB")
+		return &DBClient{DB: localdb, AivenDB: nil}, nil
+	}
+
+	// If AivenDB is connected but local DB is not
+	if err != nil {
+		log.Println("Local DB connection failed, using only AivenDB")
+		return &DBClient{DB: nil, AivenDB: aivendb}, nil
+	}
+
+	// Return an error if both connections fail
+	return nil, fmt.Errorf("both AivenDB and local DB connections failed")
 }
 
 func (dbClient *DBClient) Close() {
