@@ -149,7 +149,8 @@ func main() {
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
-	r.Run()
+	r.Run("0.0.0.0:8080") // listen and serve on 0.0.0.0:8080
+
 }
 
 func GetProductsDetails(c *gin.Context) {
