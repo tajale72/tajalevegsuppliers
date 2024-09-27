@@ -203,3 +203,50 @@ th {
   .dropdown a:hover {background-color: #ddd;}
   
   .show {display: block;}
+
+  /* Responsive Styles */
+@media (max-width: 768px) {
+    /* Adjust layout for tablets and smaller devices */
+    .bill-container {
+        padding: 10px;
+        margin: 10px;
+        width: 90%; /* Increase width for better fit on smaller screens */
+    }
+
+    th, td {
+        padding: 6px;
+    }
+
+    .navbar {
+        padding: 8px 0;
+    }
+
+    .navbar a {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .input-wrapper {
+        width: 100%; /* Full width for input wrappers */
+        margin: 5px 0; /* Space between input fields */
+    }
+
+    .create-bill button, .save-bill button {
+        width: 100%; /* Full width buttons for mobile */
+    }
+
+    table {
+        font-size: 14px; /* Smaller text for better fit */
+    }
+
+    .navbar a {
+        display: block; /* Stack navbar links vertically */
+        margin: 5px 0;
+    }
+
+    .loader, .error-message {
+        font-size: 14px; /* Smaller font for messages */
+    }
+}

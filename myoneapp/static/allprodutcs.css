@@ -66,3 +66,44 @@ table {
     color: red;
     text-align: center;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    /* Adjust the padding and margins for smaller screens */
+    .bill-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+
+    .navbar {
+        padding: 8px 0;
+    }
+
+    .navbar a {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .bill-container {
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    table {
+        font-size: 14px; /* Smaller text for better fit */
+    }
+
+    .navbar a {
+        display: block; /* Stack navbar links vertically */
+        margin: 5px 0;
+    }
+
+    .loader, .error-message {
+        font-size: 14px; /* Smaller font for messages */
+    }
+}
