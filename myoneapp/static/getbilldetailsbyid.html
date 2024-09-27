@@ -110,7 +110,7 @@
     const productId = urlParams.get('id');
 
     // Make a GET request to the API endpoint using the extracted product ID
-    fetch(`http://localhost:8080/products/${productId}`)
+    fetch(`http://52.90.87.147:8080/products/${productId}`)
         .then(response => response.json())
         .then(billData => {
             console.log(billData);
@@ -197,7 +197,7 @@
         console.log("billdate" ,billData )
 
         // Send the updated data to the API endpoint
-        fetch(`http://localhost:8080/updateBill/${productId}`, {
+        fetch(`http://52.90.87.147:8080/updateBill/${productId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

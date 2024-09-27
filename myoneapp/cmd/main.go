@@ -140,6 +140,9 @@ func main() {
 	dbClient := &DBClient{
 		DB: db, // Assuming GetDBConnection returns a Database object
 	}
+	// Serve static files from the "static" directory
+	r.Static("/myoneapp/static", "./static")
+
 	r.GET("/", GetProductsDetails)
 
 	r.POST("/submit", dbClient.Submit)
