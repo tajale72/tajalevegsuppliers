@@ -133,6 +133,15 @@ type BillNumber struct {
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
+	// Middleware to log requests
+	r.Use(func(c *gin.Context) {
+		ip := c.ClientIP()                                                 // Get the client's IP address
+		userAgent := c.Request.UserAgent()                                 // Get the user agent
+		log.Printf("Request from IP: %s, User-Agent: %s\n", ip, userAgent) // Log the details
+
+		c.Next() // Call the next handler
+	})
+
 	db, err := d.GetDBConnection()
 	if err != nil {
 		log.Println("Error getting products: ", err)
