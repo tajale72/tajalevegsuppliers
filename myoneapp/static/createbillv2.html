@@ -109,7 +109,7 @@
     function calculateTotal() {
       const table = document.getElementById("billTable");
       let grandTotal = 0;
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 30; i++) {
         const quantity =
           table.rows[i + 1].cells[2].getElementsByTagName("input")[0].value;
         const price =
@@ -289,7 +289,7 @@
   // Generate table rows dynamically
   const tableBody = document.getElementById('tableBody');
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     tableBody.innerHTML += `
       <tr>
         <td>${i + 1}</td>
@@ -389,7 +389,7 @@
   function calculateTotal() {
     const table = document.getElementById("billTable");
     let grandTotal = 0;
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
       const quantity =
         table.rows[i + 1].cells[2].getElementsByTagName("input")[0].value;
       const price =
