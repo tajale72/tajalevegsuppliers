@@ -50,7 +50,7 @@
         loader.style.display = "block";
 
         // Fetch data from the API endpoint
-        fetch("http://3.86.146.170:8080/billtransaction")
+        fetch("http://localhost:8080/billtransaction")
             .then((response) => response.json())
             .then((data) => {
                 // Hide loading spinner when data is loaded
@@ -101,7 +101,7 @@
             });
 
         function deleteEntry(id) {
-            fetch(`http://3.86.146.170:8080/billtransaction/${id}`, {
+            fetch(`http://localhost:8080/billtransaction/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
