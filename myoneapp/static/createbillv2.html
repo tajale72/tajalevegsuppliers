@@ -222,7 +222,7 @@
         }
 
         // Example API call to send the data
-        fetch("http://localhost:8080/billtransaction", {
+        fetch("http://3.86.146.170:8080/billtransaction", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -254,7 +254,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    fetch("http://localhost:8080/getBillNumber")
+    fetch("http://3.86.146.170:8080/getBillNumber")
       .then((response) => response.json())
       .then((data) => {
         // Assuming the bill number is returned in the 'billNumber' property of the response
