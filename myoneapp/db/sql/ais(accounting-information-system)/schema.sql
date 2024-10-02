@@ -15,6 +15,7 @@ CREATE TABLE bill_details (
     items JSONB -- Store items as JSONB
 );
 
+
 CREATE TABLE dailyvegetablesales (
     id SERIAL PRIMARY KEY,
     vegetable_name VARCHAR(255) NOT NULL,  -- Name of the vegetable sold
@@ -76,3 +77,16 @@ CREATE TABLE balance_sheet (
     created_at TIMESTAMP DEFAULT NOW()    -- Timestamp of creation
 );
 
+ GRANT ALL PRIVILEGES ON TABLE bill_details TO romit;
+
+ GRANT ALL PRIVILEGES ON TABLE dailyvegetablesales TO romit;
+
+ GRANT ALL PRIVILEGES ON TABLE ledger_entries TO romit;
+                    
+
+
+ GRANT USAGE, SELECT, UPDATE ON SEQUENCE bill_details_id_seq TO romit;
+
+ GRANT USAGE, SELECT, UPDATE ON SEQUENCE dailyvegetablesales_id_seq TO romit;
+
+ GRANT USAGE, SELECT, UPDATE ON SEQUENCE ledger_entries_id_seq TO romit;

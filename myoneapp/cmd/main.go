@@ -21,6 +21,9 @@ type DBClient struct {
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
+	// Serve static files from the "static" directory
+	r.Static("/myoneapp/static", "./static")
+
 	db, err := d.GetDBConnection()
 	if err != nil {
 		log.Println("Error getting products: ", err)
