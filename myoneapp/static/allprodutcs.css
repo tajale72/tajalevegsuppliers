@@ -122,3 +122,32 @@ button.delete-btn:hover {
   .dropdown a:hover {background-color: #ddd;}
   
   .show {display: block;}
+  .search-container {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-container input[type="text"] {
+    width: 90%; /* Increased width to cover more space */
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 5px; /* Reduced margin to minimize space between input and button */
+}
+
+.search-container button {
+    width: 8%; /* Adjust button width */
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-container button:hover {
+    background-color: #218838;
+}

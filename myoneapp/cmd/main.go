@@ -12,6 +12,7 @@ import (
 
 	"myoneapp/db"
 	d "myoneapp/db"
+	"myoneapp/model"
 )
 
 type DBClient struct {
@@ -107,21 +108,31 @@ func (dbClient *DBClient) Submit(c *gin.Context) {
 }
 
 func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
-	lisofProducts, err := dbClient.DB.GetProducts()
+
+	// Retrieve the 'search' parameter from the query string
+	searchQuery := c.Query("search")
+
+	fmt.Printf("searchq", searchQuery)
+
+	var listOfProducts []model.Request
+	var err error
+
+	// Check if a search query is provided
+	if searchQuery != "" {
+		// If a search query is provided, get filtered products based on the search term
+		listOfProducts, err = dbClient.DB.GetProductsBySearch(searchQuery)
+	} else {
+		// If no search query is provided, get all products
+		listOfProducts, err = dbClient.DB.GetProducts()
+	}
+
 	if err != nil {
 		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve products"})
 		return
 	}
 
-	// //lisofProducts, err := dbClient.DB.GetProducts()
-	// if err != nil {
-	// 	log.Println("Error getting products: ", err)
-	// 	c.JSON(http.StatusInternalServerError, err)
-	// 	return
-	// }
-
-	c.JSON(http.StatusAccepted, lisofProducts)
+	c.JSON(http.StatusOK, listOfProducts)
 }
 
 func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {

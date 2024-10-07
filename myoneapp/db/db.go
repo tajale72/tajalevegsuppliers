@@ -20,6 +20,7 @@ type Database interface {
 	GetLedgerEntries() ([]model.LedgerEntry, error)
 
 	GetProducts() ([]model.Request, error)
+	GetProductsBySearch(searchQuery string) ([]model.Request, error)
 	GetVegetableCount() ([]model.Item, error)
 	GetProductByID(id int) (model.Request, error)
 	DeleteProductByID(id int) (sql.Result, error)
