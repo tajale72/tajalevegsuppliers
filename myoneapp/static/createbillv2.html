@@ -92,11 +92,41 @@
     <div class="save-bill">
       <button id="saveBillButton">Save</button>
     </div>
+
+    <div>
+      <form id="uploadForm" action="http://localhost:8080/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <p id="responseMessage"></p>
+    </div>
   </div>
 
 
 
+  <script>
+    const form = document.getElementById('uploadForm');
+    const responseMessage = document.getElementById('responseMessage');
 
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const text = await response.text();
+            responseMessage.textContent = text;
+        } catch (error) {
+            responseMessage.textContent = 'An error occurred while uploading the file.';
+        }
+    });
+</script>
 
 
 
@@ -222,7 +252,7 @@
         }
 
         // Example API call to send the data
-        fetch("http://3.86.146.170:8080/billtransaction", {
+        fetch("http://localhost:8080/billtransaction", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -254,7 +284,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    fetch("http://3.86.146.170:8080/getBillNumber")
+    fetch("http://localhost:8080/getBillNumber")
       .then((response) => response.json())
       .then((data) => {
         // Assuming the bill number is returned in the 'billNumber' property of the response

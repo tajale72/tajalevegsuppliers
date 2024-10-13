@@ -15,7 +15,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 
 	// Always try to query the local DB first
 	if dbClient.DB != nil {
-		rows, err = dbClient.DB.Query("SELECT * FROM Bill_Details;")
+		rows, err = dbClient.DB.Query("SELECT * FROM Bill_Details ORDER BY customer_name;")
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
@@ -25,7 +25,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 
 	// If the local DB query fails or local DB is not connected, try AivenDB
 	if rows == nil && dbClient.AivenDB != nil {
-		rows, err = dbClient.AivenDB.Query("SELECT * FROM Bill_Details;")
+		rows, err = dbClient.AivenDB.Query("SELECT * FROM Bill_Details ORDER BY customer_name;")
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 			return nil, fmt.Errorf("error querying AivenDB: %w", err)
@@ -66,6 +66,8 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 			log.Println("Error unmarshaling products:", err)
 			return nil, fmt.Errorf("error unmarshaling products: %w", err)
 		}
+
+		dbClient.CalucaltedVegTableQuantitySold([]byte(bill.Items), bill.BillNumber)
 
 		listOfBills = append(listOfBills, bill)
 	}

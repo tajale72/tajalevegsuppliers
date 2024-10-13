@@ -12,6 +12,7 @@ import (
 
 	"myoneapp/db"
 	d "myoneapp/db"
+	"myoneapp/imageprocessing"
 	"myoneapp/model"
 )
 
@@ -46,7 +47,29 @@ func main() {
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
+	r.POST("/upload", UploadImageHandler)
+
 	r.Run()
+}
+
+func UploadImageHandler(c *gin.Context) {
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.String(http.StatusBadRequest, "Error retrieving the file")
+		return
+	}
+
+	// Example: Save the file to a temporary location
+	tempFilePath := "/tmp/" + file.Filename
+	if err := c.SaveUploadedFile(file, tempFilePath); err != nil {
+		c.String(http.StatusInternalServerError, "Error saving the file")
+		return
+	}
+
+	imageprocessing.SendImageToPythonService(tempFilePath)
+
+	// Send a success response with the file location
+	c.String(http.StatusOK, fmt.Sprintf("File uploaded successfully: %s", tempFilePath))
 }
 
 func (dbClient *DBClient) GetLedgerEntries(c *gin.Context) {
