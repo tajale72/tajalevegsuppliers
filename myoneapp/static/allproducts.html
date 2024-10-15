@@ -62,13 +62,14 @@
         const productTableBody = document.getElementById("productTableBody");
         const searchForm = document.getElementById("searchForm");
         const searchInput = document.getElementById("searchInput");
+        const finalTotalAmountElement = document.getElementById("finalTotalAmount");
 
         // Function to fetch and display bills
         function fetchBills(searchQuery = "") {
             loader.style.display = "block"; // Show loader
 
             // Prepare API URL with search parameter if provided
-            let apiUrl = "http://54.204.70.243:8080 /billtransaction";
+            let apiUrl = "http://54.204.70.243:8080/billtransaction";
             if (searchQuery) {
                 apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
             }
@@ -82,8 +83,11 @@
 
                     if (data.length === 0) {
                         productTableBody.innerHTML = "<tr><td colspan='11'>No results found.</td></tr>";
+                        finalTotalAmount.textContent = "0.00 /-";
                         return;
                     }
+
+                    let overallTotalAmount = 0; // Initialize total for all bills
 
                     // Populate table with fetched data
                     data.forEach((product) => {
@@ -122,7 +126,14 @@
                         });
 
                         productTableBody.appendChild(row);
+
+                        // Accumulate final total amount for all products
+                        overallTotalAmount += parseFloat(product.finalTotalAmount) || 0;
                     });
+
+                        // Update the overall total amount in the footer
+                        finalTotalAmount.textContent = `${overallTotalAmount.toFixed(2)} /-`;
+
                 })
                 .catch((error) => {
                     loader.style.display = "none"; // Hide loader
@@ -140,7 +151,7 @@
 
         // Function to delete an entry
         function deleteEntry(id) {
-            fetch(`http://54.204.70.243:8080 /billtransaction/${id}`, {
+            fetch(`http://54.204.70.243:8080/billtransaction/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {

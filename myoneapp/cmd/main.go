@@ -163,14 +163,11 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 			finalTotalAmount += amount
 		}
 	}
-
-	// Create a response with the list of products and the final total amount
-	response := gin.H{
-		"products":         listOfProducts,
-		"finalTotalAmount": fmt.Sprintf("%.2f", finalTotalAmount),
+	if len(listOfProducts) > 0 {
+		listOfProducts[0].FinalTotalAmount = finalTotalAmount
 	}
 
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, listOfProducts)
 }
 
 func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {

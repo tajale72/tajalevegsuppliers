@@ -126,7 +126,7 @@
         // Function to fetch and display ledger entries
         async function fetchLedgerEntries() {
             try {
-                const response = await fetch('http://54.204.70.243:8080 /ledger');
+                const response = await fetch('http://54.204.70.243:8080/ledger');
                 if (!response.ok) {
                     throw new Error('Failed to fetch ledger entries.');
                 }
@@ -181,7 +181,7 @@
 
             try {
                 // Send the data to the backend via POST request
-                const response = await fetch('http://54.204.70.243:8080 /ledger', {
+                const response = await fetch('http://54.204.70.243:8080/ledger', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
