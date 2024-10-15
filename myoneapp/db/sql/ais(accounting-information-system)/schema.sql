@@ -90,3 +90,5 @@ CREATE TABLE balance_sheet (
  GRANT USAGE, SELECT, UPDATE ON SEQUENCE dailyvegetablesales_id_seq TO romit;
 
  GRANT USAGE, SELECT, UPDATE ON SEQUENCE ledger_entries_id_seq TO romit;
+
+ GRANT USAGE, CREATE ON SCHEMA public TO romit;

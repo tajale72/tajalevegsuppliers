@@ -155,7 +155,22 @@ func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, listOfProducts)
+	// Calculate the final total amount
+	var finalTotalAmount float64
+	for _, product := range listOfProducts {
+		amount, err := strconv.ParseFloat(product.BillTotalAmount, 64)
+		if err == nil {
+			finalTotalAmount += amount
+		}
+	}
+
+	// Create a response with the list of products and the final total amount
+	response := gin.H{
+		"products":         listOfProducts,
+		"finalTotalAmount": fmt.Sprintf("%.2f", finalTotalAmount),
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {

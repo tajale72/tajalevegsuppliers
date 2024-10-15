@@ -94,7 +94,7 @@
     </div>
 
     <div>
-      <form id="uploadForm" action="http://3.91.208.44:8080/upload" method="post" enctype="multipart/form-data">
+      <form id="uploadForm" action="http://54.204.70.243:8080 /upload" method="post" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/*" required>
         <button type="submit">Upload</button>
     </form>
@@ -252,7 +252,7 @@
         }
 
         // Example API call to send the data
-        fetch("http://3.91.208.44:8080/billtransaction", {
+        fetch("http://54.204.70.243:8080 /billtransaction", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -284,7 +284,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    fetch("http://3.91.208.44:8080/getBillNumber")
+    fetch("http://54.204.70.243:8080 /getBillNumber")
       .then((response) => response.json())
       .then((data) => {
         // Assuming the bill number is returned in the 'billNumber' property of the response
@@ -327,72 +327,85 @@
           <input type="text" placeholder="Search.." id="myInput${i}" onkeyup="autoComplete(${i})" onfocus="showAllOptions(${i})">
           <datalist id="vegetableList${i}">
             <option value="Apple - स्याउ (Syaau)">Apple - स्याउ (Syaau)</option>
-            <option value="Artichoke - आर्टिचोक (Artichoke)"></option>
-            <option value="Asparagus - अस्पैरेगस (Asparagus)"></option>
-            <option value="Banana - केरा (Kera)"></option>
-            <option value="Beans - सिमी (Simi)"></option>
-            <option value="Beet - चकुन्दर (Chakundar)"></option>
-            <option value="Bell Pepper - बेल पेपर (Bell Pepper)"></option>
-            <option value="Bitter Gourd - करेले (Karela)"></option>
-            <option value="Black Mushroom - कालो च्याउ (Kalo Chyau)"></option>
+            <option value="Artichoke - आर्टिचोक (Artichoke)">Artichoke - आर्टिचोक (Artichoke)</option>
+            <option value="Asparagus - अस्पैरेगस (Asparagus)">Asparagus - अस्पैरेगस (Asparagus)</option>
+            <option value="Banana - केरा (Kera)">Banana - केरा (Kera)</option>
+            <option value="Beans - सिमी (Simi)">Beans - सिमी (Simi)</option>
+            <option value="Beet - चकुन्दर (Chakundar)">Beet - चकुन्दर (Chakundar)</option>
+            <option value="Bell Pepper - बेल पेपर (Bell Pepper)">Bell Pepper - बेल पेपर (Bell Pepper)</option>
+            <option value="Bitter Gourd - करेले (Karela)">Bitter Gourd - करेले (Karela)</option>
+            <option value="Black Mushroom - कालो च्याउ (Kalo Chyau)">Black Mushroom - कालो च्याउ (Kalo Chyau)</option>
             <option value="Bodi - बोडी (Bodi)">Bodi - बोडी (Bodi)</option>
-            <option value="Broccoli - ब्रोकोली (Broccoli)"></option>
-            <option value="Cabbage - बन्दगोभी (Bandgobhi)"></option>
-            <option value="Capsicum - क्याप्सिकम (Capsicum)"></option>
-            <option value="Carrot - गाजर (Gajar)"></option>
-            <option value="Cauliflower - काउली (Cauliflower)"></option>
-            <option value="Celery - सेलेरी (Celery)"></option>
-            <option value="Chili - खुर्सानी (Khursani)"></option>
-            <option value="Chyau Patey - च्याउ पाते (Chyau Patey)"></option>
-            <option value="Corn - मक्का (Makka)"></option>
-            <option value="Cucumber - काक्रो (Kakro)"></option>
-            <option value="Dhaniya - धनियाँ (Dhaniya)"></option>
-            <option value="Eggplant - भिण्डी (Bhindi)"></option>
-            <option value="Garlic - लसुन (Lasun)"></option>
-            <option value="Ginger - अदुवा (Aduwa)"></option>
-            <option value="Golo Chyau - गोलो च्याउ (Golo Chyau)"></option>
-            <option value="Grapes - अंगुर (Angur)"></option>
-            <option value="Green Chillies - हरियो खुर्सानी (Hariyo Khursani)"></option>
-            <option value="Green Onion - हरियो प्याज (Hariyo Pyaj)"></option>
-            <option value="Gundruk - गुन्द्रुक (Gundruk)"></option>
-            <option value="Hariyo Simi - हरियो सिमी (Hariyo Simi)"></option>
-            <option value="Kagati - कागती (Kagati)"></option>
-            <option value="Kiwi - कीवी (Kiwi)"></option>
-            <option value="Lapsi Mada - लप्सी माडा (Lapsi Mada)"></option>
-            <option value="Leek - लेक (Leek)"></option>
+            <option value="Brinjal - भाँटा (Bhanta)">Brinjal - भाँटा (Bhanta)</option>
+            <option value="Broccoli - ब्रोकोली (Broccoli)">Broccoli - ब्रोकोली (Broccoli)</option>
+            <option value="Cabbage - बन्दगोभी (Bandgobhi)">Cabbage - बन्दगोभी (Bandgobhi)</option>
+            <option value="Capsicum - क्याप्सिकम (Capsicum)">Capsicum - क्याप्सिकम (Capsicum)</option>
+            <option value="Carrot - गाजर (Gajar)">Carrot - गाजर (Gajar)</option>
+            <option value="Cauliflower - काउली (Cauliflower)">Cauliflower - काउली (Cauliflower)</option>
+            <option value="Cardinier - कार्डिनियर (Cardinier)">Cardinier - कार्डिनियर (Cardinier)</option>
+            <option value="Cardinier Leaves - कार्डिनियर पात (Cardinier Leaves)">Cardinier Leaves - कार्डिनियर पात (Cardinier Leaves)</option>
+            <option value="Celery - सेलेरी (Celery)">Celery - सेलेरी (Celery)</option>
+            <option value="Chili - खुर्सानी (Khursani)">Chili - खुर्सानी (Khursani)</option>
+            <option value="Chyau Patey - च्याउ पाते (Chyau Patey)">Chyau Patey - च्याउ पाते (Chyau Patey)</option>
+            <option value="Corn - मक्का (Makka)">Corn - मक्का (Makka)</option>
+            <option value="Cucumber - काक्रो (Kakro)">Cucumber - काक्रो (Kakro)</option>
+            <option value="Dhaniya - धनियाँ (Dhaniya)">Dhaniya - धनियाँ (Dhaniya)</option>
+            <option value="Eggplant - भिण्डी (Bhindi)">Eggplant - भिण्डी (Bhindi)</option>
+            <option value="Garlic - लसुन (Lasun)">Garlic - लसुन (Lasun)</option>
+            <option value="Ghiraula - घिरौंला (Ghiraula)">Ghiraula - घिरौंला (Ghiraula)</option>
+            <option value="Ginger - अदुवा (Aduwa)">Ginger - अदुवा (Aduwa)</option>
+            <option value="Golo Chyau - गोलो च्याउ (Golo Chyau)">Golo Chyau - गोलो च्याउ (Golo Chyau)</option>
+            <option value="Grapes - अंगुर (Angur)">Grapes - अंगुर (Angur)</option>
+            <option value="Green Chillies - हरियो खुर्सानी (Hariyo Khursani)">Green Chillies - हरियो खुर्सानी (Hariyo Khursani)</option>
+            <option value="Green Onion - हरियो प्याज (Hariyo Pyaj)">Green Onion - हरियो प्याज (Hariyo Pyaj)</option>
+            <option value="Gundruk - गुन्द्रुक (Gundruk)">Gundruk - गुन्द्रुक (Gundruk)</option>
+            <option value="Hariyo Lasun - हरियो लसुन (Hariyo Lasun)">Hariyo Lasun - हरियो लसुन (Hariyo Lasun)</option>
+            <option value="Hariyo Simi - हरियो सिमी (Hariyo Simi)">Hariyo Simi - हरियो सिमी (Hariyo Simi)</option>
+            <option value="Iskus - इस्कुस (Iskus)">Iskus - इस्कुस (Iskus)</option>
+            <option value="Kagati - कागती (Kagati)">Kagati - कागती (Kagati)</option>
+            <option value="Karela - करेला (Karela)">Karela - करेला (Karela)</option>
+            <option value="Kiwi - कीवी (Kiwi)">Kiwi - कीवी (Kiwi)</option>
+            <option value="Lapsi Mada - लप्सी माडा (Lapsi Mada)">Lapsi Mada - लप्सी माडा (Lapsi Mada)</option>
+            <option value="Leek - लेक (Leek)">Leek - लेक (Leek)</option>
+            <option value="Lemon - कागती (Lemon)">Lemon - कागती (Lemon)</option>
             <option value="Mango - आँप (Aap)">Mango - आँप (Aap)</option>
-            <option value="Maywa - मैवा (Maywa)"></option>
-            <option value="Mushroom - च्याउ (Chyau)"></option>
-            <option value="Onion - प्याज (Pyaj)"></option>
-            <option value="Orange - सुन्तला (Suntala)"></option>
+            <option value="Maywa - मैवा (Maywa)">Maywa - मैवा (Maywa)</option>
+            <option value="Mushroom - च्याउ (Chyau)">Mushroom - च्याउ (Chyau)</option>
+            <option value="Naspati - नासपाती (Naspati)">Naspati - नासपाती (Naspati)</option>
+            <option value="Onion - प्याज (Pyaj)">Onion - प्याज (Pyaj)</option>
+            <option value="Orange - सुन्तला (Suntala)">Orange - सुन्तला (Suntala)</option>
+            <option value="Pakucha Saag - पक्कुचा साग (Pakucha Saag)">Pakucha Saag - पक्कुचा साग (Pakucha Saag)</option>
+            <option value="Palak Sag - पालक साग (Palak Sag)">Palak Sag - पालक साग (Palak Sag)</option>
             <option value="Papaya - पपया (Papaya)">Papaya - पपया (Papaya)</option>
-            <option value="Parsley - पार्स्ले (Parsley)">Parsley - पार्स्ले (Parsley) or साजपात (Sajpaat)</option>
+            <option value="Parsley - पार्स्ले (Parsley)">Parsley - पार्स्ले (Parsley)</option>
             <option value="Parwal - परवल (Parwal)">Parwal - परवल (Parwal)</option>
-            <option value="Palak - पालक (Palak)">Palak (Spinach) - पालक (Palak)</option>
-            <option value="Pakucha Saag - पाकुचा साग (Pakucha Saag)"></option>
-            <option value="Peach - आडु (Aadu)"></option>
-            <option value="Peas - केराउ (Keraau)"></option>
-            <option value="Pear - नासपाती (Nasapati)"></option>
-            <option value="Pineapple - अनानास (Ananas)"></option>
-            <option value="Plum - आलुबलु (Alublu)"></option>
-            <option value="Pomegranate - अनार (Anar)"></option>
-            <option value="Potato - आलु (Aalu)"></option>
-            <option value="Pumpkin - फर्सी (Pharsi)"></option>
-            <option value="Pudina - पुदिना (Pudina)"></option>
-            <option value="Radicchio - राडिचिओ (Radicchio)"></option>
-            <option value="Radish - मूला (Mula)"></option>
-            <option value="Ramtoria - रामतोरिया (Ramtoria)"></option>
-            <option value="Rayo Saag - रायो साग (Rayo Saag)"></option>
-            <option value="Rhubarb - रhubarb (Rhubarb)"></option>
-            <option value="Salad Patta - सलाद पत्ता (Salad Patta)"></option>
-            <option value="Small Tomato - सानो टमाटर (Sano Tamatar)"></option>
-            <option value="Spinach - पालुङ्गो (Palungo)"></option>
-            <option value="Strawberry - स्त्रबेरी (Strawberry)"></option>
-            <option value="Sukeko Pyaaj - सुकाएको प्याज (Sukeko Pyaaj)"></option>
-            <option value="Tomato - टमाटर (Tamatar)"></option>
-            <option value="Vede Khursani - भेडे खुर्सानी (Bhede Khursani)"></option>
-            <option value="Watermelon - खरबुजा (Kharbuja)"></option>
-            <option value="Zucchini - जुचिनी (Zucchini)"></option>
+            <option value="Peach - आडु (Aadu)">Peach - आडु (Aadu)</option>
+            <option value="Peas - केराउ (Keraau)">Peas - केराउ (Keraau)</option>
+            <option value="Pear - नासपाती (Nasapati)">Pear - नासपाती (Nasapati)</option>
+            <option value="Pineapple - अनानास (Ananas)">Pineapple - अनानास (Ananas)</option>
+            <option value="Plum - आलुबलु (Alublu)">Plum - आलुबलु (Alublu)</option>
+            <option value="Pomegranate - अनार (Anar)">Pomegranate - अनार (Anar)</option>
+            <option value="Potato - आलु (Aalu)">Potato - आलु (Aalu)</option>
+            <option value="Pumpkin - फर्सी (Pharsi)">Pumpkin - फर्सी (Pharsi)</option>
+            <option value="Pudina - पुदिना (Pudina)">Pudina - पुदिना (Pudina)</option>
+            <option value="Radicchio - राडिचिओ (Radicchio)">Radicchio - राडिचिओ (Radicchio)</option>
+            <option value="Radish - मूला (Mula)">Radish - मूला (Mula)</option>
+            <option value="Ramtoria - रामतोरिया (Ramtoria)">Ramtoria - रामतोरिया (Ramtoria)</option>
+            <option value="Rayo Saag - रायो साग (Rayo Saag)">Rayo Saag - रायो साग (Rayo Saag)</option>
+            <option value="Rhubarb - र्हुबर्ब (Rhubarb)">Rhubarb - र्हुबर्ब (Rhubarb)</option>
+            <option value="Salad Patta - सलाद पत्ता (Salad Patta)">Salad Patta - सलाद पत्ता (Salad Patta)</option>
+            <option value="Saag - साग (Saag)">Saag - साग (Saag)</option>
+            <option value="Small Tomato - सानो टमाटर (Sano Tamatar)">Small Tomato - सानो टमाटर (Sano Tamatar)</option>
+            <option value="Spinach - पालुङ्गो (Palungo)">Spinach - पालुङ्गो (Palungo)</option>
+            <option value="Spring Garlic - हरियो लसुन (Spring Garlic)">Spring Garlic - हरियो लसुन (Spring Garlic)</option>
+            <option value="Spring Ginger - हरियो अदुवा (Spring Ginger)">Spring Ginger - हरियो अदुवा (Spring Ginger)</option>
+            <option value="Strawberry - स्ट्रबेरी (Strawberry)">Strawberry - स्ट्रबेरी (Strawberry)</option>
+            <option value="Sukeko Pyaaj - सुकाएको प्याज (Sukeko Pyaaj)">Sukeko Pyaaj - सुकाएको प्याज (Sukeko Pyaaj)</option>
+            <option value="Tomato - टमाटर (Tamatar)">Tomato - टमाटर (Tamatar)</option>
+            <option value="Vede Khursani - भेडे खुर्सानी (Bhede Khursani)">Vede Khursani - भेडे खुर्सानी (Bhede Khursani)</option>
+            <option value="Watermelon - खरबुजा (Kharbuja)">Watermelon - खरबुजा (Kharbuja)</option>
+            <option value="Zucchini - जुचिनी (Zucchini)">Zucchini - जुचिनी (Zucchini)</option>
+
 
 
 
