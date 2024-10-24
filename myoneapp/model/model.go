@@ -27,6 +27,7 @@ type Request struct {
 	CustomerLocation     string          `json:"customerLocation" validate:"required"`
 	CustomerPhoneNumber  string          `json:"customerPhoneNumber" validate:"required"`
 	CustomerPanContainer string          `json:"customerPanContainer" validate:"required"`
+	FinalTotalAmount     float64         `json:"finalTotalAmount"`
 	Items                json.RawMessage `json:"items" validate:"required"` // Use RawMessage to handle JSON data
 }
 

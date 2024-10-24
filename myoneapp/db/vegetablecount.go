@@ -14,7 +14,7 @@ func (dbClient *DBClient) GetVegetableCount() ([]model.Item, error) {
 
 	// Try querying AivenDB first if it's connected
 	if dbClient.AivenDB != nil {
-		rows, err = dbClient.AivenDB.Query("SELECT * FROM dailyvegetablesales;")
+		rows, err = dbClient.AivenDB.Query("SELECT * FROM dailyvegetablesales ORDER BY vegetable_name;")
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 		} else {
@@ -24,7 +24,7 @@ func (dbClient *DBClient) GetVegetableCount() ([]model.Item, error) {
 
 	// If AivenDB is not available or the query failed, try the local DB
 	if rows == nil && dbClient.DB != nil {
-		rows, err = dbClient.DB.Query("SELECT * FROM dailyvegetablesales;")
+		rows, err = dbClient.DB.Query("SELECT * FROM dailyvegetablesales ORDER BY vegetable_name;")
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 			return nil, fmt.Errorf("error querying local DB: %w", err)

@@ -3,3 +3,7 @@
 
 
 TRUNCATE TABLE bill_details RESTART IDENTITY;
+
+nohup ./build_deploy.sh > output.log 2>&1 &
+
+sudo lsof -i :8080

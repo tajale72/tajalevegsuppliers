@@ -12,6 +12,8 @@ import (
 
 	"myoneapp/db"
 	d "myoneapp/db"
+	"myoneapp/imageprocessing"
+	"myoneapp/model"
 )
 
 type DBClient struct {
@@ -45,7 +47,29 @@ func main() {
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
+	r.POST("/upload", UploadImageHandler)
+
 	r.Run()
+}
+
+func UploadImageHandler(c *gin.Context) {
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.String(http.StatusBadRequest, "Error retrieving the file")
+		return
+	}
+
+	// Example: Save the file to a temporary location
+	tempFilePath := "/tmp/" + file.Filename
+	if err := c.SaveUploadedFile(file, tempFilePath); err != nil {
+		c.String(http.StatusInternalServerError, "Error saving the file")
+		return
+	}
+
+	imageprocessing.SendImageToPythonService(tempFilePath)
+
+	// Send a success response with the file location
+	c.String(http.StatusOK, fmt.Sprintf("File uploaded successfully: %s", tempFilePath))
 }
 
 func (dbClient *DBClient) GetLedgerEntries(c *gin.Context) {
@@ -107,21 +131,43 @@ func (dbClient *DBClient) Submit(c *gin.Context) {
 }
 
 func (dbClient *DBClient) GetProductsDetails(c *gin.Context) {
-	lisofProducts, err := dbClient.DB.GetProducts()
+
+	// Retrieve the 'search' parameter from the query string
+	searchQuery := c.Query("search")
+
+	fmt.Printf("searchq", searchQuery)
+
+	var listOfProducts []model.Request
+	var err error
+
+	// Check if a search query is provided
+	if searchQuery != "" {
+		// If a search query is provided, get filtered products based on the search term
+		listOfProducts, err = dbClient.DB.GetProductsBySearch(searchQuery)
+	} else {
+		// If no search query is provided, get all products
+		listOfProducts, err = dbClient.DB.GetProducts()
+	}
+
 	if err != nil {
 		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve products"})
 		return
 	}
 
-	// //lisofProducts, err := dbClient.DB.GetProducts()
-	// if err != nil {
-	// 	log.Println("Error getting products: ", err)
-	// 	c.JSON(http.StatusInternalServerError, err)
-	// 	return
-	// }
+	// Calculate the final total amount
+	var finalTotalAmount float64
+	for _, product := range listOfProducts {
+		amount, err := strconv.ParseFloat(product.BillTotalAmount, 64)
+		if err == nil {
+			finalTotalAmount += amount
+		}
+	}
+	if len(listOfProducts) > 0 {
+		listOfProducts[0].FinalTotalAmount = finalTotalAmount
+	}
 
-	c.JSON(http.StatusAccepted, lisofProducts)
+	c.JSON(http.StatusOK, listOfProducts)
 }
 
 func (dbClient *DBClient) GetProductsDetailsByID(c *gin.Context) {
