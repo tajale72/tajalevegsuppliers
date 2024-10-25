@@ -75,7 +75,7 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 		}
 	}
 
-	//dbClient.CalucaltedVegTableQuantitySold(itemsJSON, req.BillNumber)
+	dbClient.CalucaltedVegTableQuantitySold(itemsJSON, req.BillNumber)
 
 	return nil
 }
