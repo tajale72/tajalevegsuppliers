@@ -67,7 +67,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 			return nil, fmt.Errorf("error unmarshaling products: %w", err)
 		}
 
-		dbClient.CalucaltedVegTableQuantitySold([]byte(bill.Items), bill.BillNumber)
+		//dbClient.CalucaltedVegTableQuantitySold([]byte(bill.Items), bill.BillNumber)
 
 		listOfBills = append(listOfBills, bill)
 	}
