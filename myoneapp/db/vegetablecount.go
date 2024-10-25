@@ -11,7 +11,7 @@ import (
 
 func (dbClient *DBClient) GetVegetableCount() ([]model.Item, error) {
 
-	//dbClient.updateVegetableData()
+	dbClient.updateVegetableData()
 
 	var rows *sql.Rows
 	var err error
