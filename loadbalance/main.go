@@ -74,7 +74,7 @@ func Server2(wg *sync.WaitGroup, ch2 chan string) {
 	// Use a tool like "http.Client" to send requests to the load balancer
 	// Adjust the request URL and method based on your actual API endpoints
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "http://localhost:8080 ", nil)
+	req, err := http.NewRequest("GET", "http://54.204.70.243:8080 ", nil)
 	if err != nil {
 		fmt.Println("get Request failed:", err)
 	}

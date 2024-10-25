@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// Call the function to add numbers from the file
-	total, err := add.AddNumbersFromFile("add.txt")
+	total, err := add.AddNumbersFromFile("/Users/romittajale/Documents/2024/tajalevegsuppliers/dashboard/cmd/add/add.txt")
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
