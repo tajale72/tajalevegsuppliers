@@ -11,7 +11,6 @@
     <div class="navbar">
       <a href="createbillv2.html">Create Bill</a>
       <a href="allproducts.html">Transactions</a>
-     
       <a href="vegetablecount.html">Vegetable Count</a>
       <a href="ledger.html">Ledger</a>
     </div>
@@ -32,6 +31,12 @@
           </tr>
         </thead>
         <tbody id="productTableBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" class="center-align">Final Total Amount :</td>
+            <td id="finalTotalAmount" style="font-weight: bold;">0.00</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
 
@@ -39,44 +44,53 @@
       const loader = document.getElementById("loader");
       const errorMessage = document.getElementById("error-message");
       const productTableBody = document.getElementById("productTableBody");
+      const finalTotalAmount = document.getElementById("finalTotalAmount");
 
       // Show loading spinner while fetching data
       loader.style.display = "block";
 
-     // Fetch data from the API endpoint
-fetch("http://localhost:8080/vegetablecount")
-  .then((response) => response.json())
-  .then((data) => {
-    // Hide loading spinner when data is loaded
-    loader.style.display = "none";
+      // Fetch data from the API endpoint
+      fetch("http://localhost:8080/vegetablecount")
+        .then((response) => response.json())
+        .then((data) => {
+          // Hide loading spinner when data is loaded
+          loader.style.display = "none";
 
-    // Populate the table with the API response data
-    data.forEach((product) => {
-      const row = document.createElement("tr");
-      row.classList.add("clickable-row"); // Add a class to make the row clickable
+          let totalAmountSum = 0; // Variable to hold the sum of all total amounts
 
-      row.innerHTML = `
-        <td>${product.id}</td>
-        <td>${new Date(product.created_at).toLocaleString()}</td> <!-- Created At -->
-        <td>${product.sa}</td> <!-- Vegetable name -->
-        <td>${isFinite(product.sankhya) ? parseFloat(product.sankhya).toFixed(2) : 'N/A'}</td> <!-- Rate -->
-        <td>${isFinite(product.dar) ? parseFloat(product.dar).toFixed(2) : 'N/A'}</td> <!-- Rate -->
-        <td>${isFinite(product.rakam) ? parseFloat(product.rakam).toFixed(2) : 'N/A'}</td> <!-- Total Amount -->
-      `;
+          // Populate the table with the API response data
+          data.forEach((product) => {
+            const row = document.createElement("tr");
+            row.classList.add("clickable-row"); // Add a class to make the row clickable
 
-    //   // Add a click event listener to the row
-    //   row.addEventListener("click", () => {
-    //     window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
-    //   });
+            // Calculate and format the total amount
+            const totalAmount = isFinite(product.rakam) ? parseFloat(product.rakam).toFixed(2) : 'N/A';
 
-    productTableBody.appendChild(row);
-    });
-  })
-  .catch((error) => {
-    loader.style.display = "none";
-    errorMessage.textContent = "Error loading data. Please try again later.";
-    console.error("Error:", error);
-  });
+            // Add total amount to the sum if it's a valid number
+            if (!isNaN(totalAmount)) {
+              totalAmountSum += parseFloat(totalAmount);
+            }
+
+            row.innerHTML = `
+              <td>${product.id}</td>
+              <td>${new Date(product.created_at).toLocaleString()}</td> <!-- Created At -->
+              <td>${product.sa}</td> <!-- Vegetable name -->
+              <td>${isFinite(product.sankhya) ? parseFloat(product.sankhya).toFixed(2) : 'N/A'}</td> <!-- Quantity Sold -->
+              <td>${isFinite(product.dar) ? parseFloat(product.dar).toFixed(2) : 'N/A'}</td> <!-- Rate -->
+              <td>${totalAmount} /-</td> <!-- Total Amount -->
+            `;
+
+            productTableBody.appendChild(row);
+          });
+
+          // Display the final total amount
+          finalTotalAmount.textContent = `${totalAmountSum.toFixed(2)} /-`;
+        })
+        .catch((error) => {
+          loader.style.display = "none";
+          errorMessage.textContent = "Error loading data. Please try again later.";
+          console.error("Error:", error);
+        });
     </script>
   </body>
 </html>
