@@ -220,6 +220,11 @@
         const customerName = document.getElementById("customerName").value;
         const customerLocation = document.getElementById("location").value;
         const customerPhoneNumber = document.getElementById("customerPhoneNumber").value;
+        
+        // Fetch the total debit and credit values
+        const totalDebit = parseFloat(document.getElementById("totalDebit").value) || 0;
+        const totalCredit = parseFloat(document.getElementById("totalCredit").value) || 0;
+
         const billTotalAmount = document.getElementById("grandTotal").value
         const customerPanContainer = Array.from(
           document.querySelectorAll("#customer-panContainer input")
@@ -237,6 +242,8 @@
           customerLocation: customerLocation,
           customerPhoneNumber: customerPhoneNumber,
           customerPanContainer: customerPanContainer,
+          totalDebit: totalDebit,
+          totalCredit : totalCredit,
           billTotalAmount: billTotalAmount,
           items: [],
         };
