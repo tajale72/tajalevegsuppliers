@@ -29,46 +29,55 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 	// SQL statement with placeholders
 	sqlStatement := `
 	INSERT INTO Bill_Details (
-		bill_number, 
-		bill_date,
-		bill_total_amount, 
-		seller_name, 
-		seller_pan_num, 
-		customer_name, 
-		customer_location, 
-		customer_phone_number, 
-		customer_pan_container, 
-		items
-		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9, $10::jsonb);`
+    bill_number, 
+    bill_date,
+    bill_total_amount, 
+    total_debit,
+    total_credit,
+    seller_name, 
+    seller_pan_num, 
+    customer_name, 
+    customer_location, 
+    customer_phone_number, 
+    customer_pan_container, 
+    items
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb);`
 
 	// Execute the SQL query with specific values
 	_, err = dbClient.DB.Exec(sqlStatement,
 		req.BillNumber,
 		req.BillDate,
 		req.BillTotalAmount,
+		req.TotalDebit,  // Add total_debit
+		req.TotalCredit, // Add total_credit
 		req.SellerName,
 		req.SellerPanNum,
 		req.CustomerName,
 		req.CustomerLocation,
 		req.CustomerPhoneNumber,
-		req.CustomerPanContainer, itemsJSON)
+		req.CustomerPanContainer,
+		itemsJSON)
 	if err != nil {
 		log.Println("Exec statement error:", err)
 		return fmt.Errorf("error executing SQL statement: %w", err)
 	}
+
 	if dbClient.AivenDB != nil {
 		// Execute the SQL query with specific values
 		_, err = dbClient.AivenDB.Exec(sqlStatement,
 			req.BillNumber,
 			req.BillDate,
 			req.BillTotalAmount,
+			req.TotalDebit,  // Add total_debit
+			req.TotalCredit, // Add total_credit
 			req.SellerName,
 			req.SellerPanNum,
 			req.CustomerName,
 			req.CustomerLocation,
 			req.CustomerPhoneNumber,
-			req.CustomerPanContainer, itemsJSON)
+			req.CustomerPanContainer,
+			itemsJSON)
 		if err != nil {
 			log.Println("Exec statement error:", err)
 			return fmt.Errorf("error executing SQL statement: %w", err)

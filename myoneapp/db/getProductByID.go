@@ -17,7 +17,7 @@ func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
 	// Try querying the local DB first
 	if dbClient.DB != nil {
 		err = dbClient.DB.QueryRow("SELECT * FROM Bill_Details WHERE id = $1;", id).
-			Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON)
+			Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON, &bill.TotalDebit, &bill.TotalCredit)
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
@@ -28,7 +28,7 @@ func (dbClient *DBClient) GetProductByID(id int) (model.Request, error) {
 	// If local DB query fails or local DB is not connected, try AivenDB
 	if err != nil && dbClient.AivenDB != nil {
 		err = dbClient.AivenDB.QueryRow("SELECT * FROM Bill_Details WHERE id = $1;", id).
-			Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON)
+			Scan(&bill.ID, &bill.BillNumber, &bill.BillDate, &bill.BillTotalAmount, &bill.SellerName, &bill.SellerPanNum, &bill.CustomerName, &bill.CustomerLocation, &bill.CustomerPhoneNumber, &bill.CustomerPanContainer, &itemsJSON, &bill.TotalDebit, &bill.TotalCredit)
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 			return bill, fmt.Errorf("error querying AivenDB: %w", err)

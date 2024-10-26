@@ -56,6 +56,8 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 			&bill.CustomerPhoneNumber,
 			&bill.CustomerPanContainer,
 			&productsJSON,
+			&bill.TotalDebit,  // Add total_debit
+			&bill.TotalCredit, // Add total_credit
 		); err != nil {
 			log.Println("Error scanning row:", err)
 			return nil, fmt.Errorf("error scanning row: %w", err)
@@ -135,6 +137,8 @@ func (dbClient *DBClient) GetProductsBySearch(searchQuery string) ([]model.Reque
 			&bill.CustomerPhoneNumber,
 			&bill.CustomerPanContainer,
 			&productsJSON,
+			&bill.TotalDebit,  // Add total_debit
+			&bill.TotalCredit, // Add total_credit
 		); err != nil {
 			log.Println("Error scanning row:", err)
 			return nil, fmt.Errorf("error scanning row: %w", err)
