@@ -92,3 +92,9 @@ CREATE TABLE balance_sheet (
  GRANT USAGE, SELECT, UPDATE ON SEQUENCE ledger_entries_id_seq TO romit;
 
  GRANT USAGE, CREATE ON SCHEMA public TO romit;
+
+ -- Add total_debit and total_credit columns to the existing bill_details table as VARCHAR
+ALTER TABLE bill_details
+ADD COLUMN total_debit VARCHAR(255) NOT NULL DEFAULT '0', -- Adds total_debit column
+ADD COLUMN total_credit VARCHAR(255) NOT NULL DEFAULT '0'; -- Adds total_credit column
+
