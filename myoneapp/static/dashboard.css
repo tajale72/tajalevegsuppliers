@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background-color: #ffffff;
+    color: #181616;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  nav {
+    background-color: #004d99;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+
+  nav .nav-link, .dropdown .dropbtn {
+    float: left;
+    display: block;
+    color: #f4f4f4;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #004d99;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  nav .nav-link:hover, .dropdown .dropbtn:hover {
+    background-color: #003366;
+  }
+
+  .dropdown {
+    float: left;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #004d99;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    float: none;
+    color: #f4f4f4;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #003366;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .card {
+    background-color: #ffffff;
+    margin: 10px 0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h3 {
+    color: #004d99;
+    font-weight: bold;
+  }
+
+  button {
+    background-color: #004d99;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #003366;
+  }
