@@ -15,7 +15,7 @@ body {
   }
 
   nav {
-    background-color: #004d99;
+    background-color: #1f4962;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     overflow: hidden;
   }
@@ -29,7 +29,7 @@ body {
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
-    background-color: #004d99;
+    background-color: #1f4962;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -50,7 +50,7 @@ body {
     position: absolute;
     left: 0;
     top: 100%;
-    background-color: #004d99;
+    background-color: #1f4962;
     min-width: 200px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -88,12 +88,12 @@ body {
   }
 
   .card h3 {
-    color: #004d99;
+    color: #1f4962;
     font-weight: bold;
   }
 
   button {
-    background-color: #004d99;
+    background-color: #1f4962;
     color: #ffffff;
     border: none;
     padding: 10px 20px;

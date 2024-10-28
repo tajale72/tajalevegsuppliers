@@ -27,6 +27,8 @@ type Database interface {
 
 	GetLastBillNumber() (model.Result, error)
 	UpdateBill(data []byte) error
+
+	GetCustomers() ([]model.Customer, error)
 	// Add other database-related methods if needed
 }
 

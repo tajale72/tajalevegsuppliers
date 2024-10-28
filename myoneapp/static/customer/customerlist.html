@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="allprodutcs.css" />
+    <title>Bill Details</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="createbillv2.html">Create Bill</a>
+        <a href="allproducts.html">Transactions</a>
+        <a href="vegetablecount.html">Vegetable Count</a>
+        <a href="ledger.html">Ledger</a>
+    </div>
+
+    <div id="loader" class="loader"></div>
+    <div id="error-message" class="error-message"></div>
+
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Search by Bill Number or Seller Name..." name="search" />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="bill-container">
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Bill Number</th>
+                    <th>Bill Date</th>
+                    <th>Seller Name</th>
+                    <th class="center-align">Seller PAN Number</th>
+                    <th class="center-align">Customer Name</th>
+                    <th class="center-align">Customer Location</th>
+                    <th class="center-align">Customer Phone Number</th>
+                    <th class="center-align">Customer PAN Container</th>
+                    <th class="center-align">Bill Total Amount /-</th>
+                    <th class="center-align">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9" class="center-align"><strong>Final Total:</strong></td>
+                    <td class="center-align" id="finalTotalAmount">0.00 /-</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+
+
+    <script>
+        const loader = document.getElementById("loader");
+        const errorMessage = document.getElementById("error-message");
+        const productTableBody = document.getElementById("productTableBody");
+        const searchForm = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const finalTotalAmountElement = document.getElementById("finalTotalAmount");
+
+        // Function to fetch and display bills
+        function fetchBills(searchQuery = "") {
+            loader.style.display = "block"; // Show loader
+
+            // Prepare API URL with search parameter if provided
+            let apiUrl = "http://54.204.70.243:8080/customer";
+            if (searchQuery) {
+                apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
+            }
+
+            // Fetch data from API
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    loader.style.display = "none"; // Hide loader
+                    productTableBody.innerHTML = ""; // Clear existing table rows
+
+                    if (data.length === 0) {
+                        productTableBody.innerHTML = "<tr><td colspan='11'>No results found.</td></tr>";
+                        finalTotalAmount.textContent = "0.00 /-";
+                        return;
+                    }
+
+                    let overallTotalAmount = 0; // Initialize total for all bills
+
+                    // Populate table with fetched data
+                    data.forEach((product) => {
+                        const row = document.createElement("tr");
+                        row.classList.add("clickable-row");
+
+                        row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.billNumber}</td>
+                            <td>${new Date(product.billDate).toLocaleDateString()}</td>
+                            <td>${product.sellerName}</td>
+                            <td class="center-align">${product.sellerPanNum}</td>
+                            <td class="center-align">${product.customerName}</td>
+                            <td class="center-align">${product.customerLocation}</td>
+                            <td class="center-align">${product.customerPhoneNumber}</td>
+                            <td class="center-align">${product.customerPanContainer}</td>
+                            <td class="center-align">${product.billTotalAmount} /-</td>
+                            <td class="center-align">
+                            <button class="delete-btn" data-id="${product.id}">Delete</button>
+                            </td>
+                        `;
+
+                        // Add click event to row for navigation
+                        row.addEventListener("click", () => {
+                            window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
+                        });
+
+                        // Add event listener for delete button
+                        const deleteButton = row.querySelector(".delete-btn");
+                        deleteButton.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            const id = deleteButton.getAttribute("data-id");
+                            if (confirm("Are you sure you want to delete this entry?")) {
+                                deleteEntry(id);
+                            }
+                        });
+
+                        productTableBody.appendChild(row);
+
+                        // Accumulate final total amount for all products
+                        overallTotalAmount += parseFloat(product.finalTotalAmount) || 0;
+                    });
+
+                        // Update the overall total amount in the footer
+                        finalTotalAmount.textContent = `${overallTotalAmount.toFixed(2)} /-`;
+
+                })
+                .catch((error) => {
+                    loader.style.display = "none"; // Hide loader
+                    errorMessage.textContent = "Error loading data. Please try again later.";
+                    console.error("Error:", error);
+                });
+        }
+
+        // Handle form submission for search
+        searchForm.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevent page refresh
+            const searchQuery = searchInput.value.trim(); // Get the search input value
+            fetchBills(searchQuery); // Call fetchBills with the search query
+        });
+
+        // Function to delete an entry
+        function deleteEntry(id) {
+            fetch(`http://54.204.70.243:8080/customer/${id}`, {
+                method: 'DELETE',
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete entry.');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    // Remove the deleted row from the table
+                    const rowToDelete = document.querySelector(`button[data-id="${id}"]`).closest("tr");
+                    rowToDelete.remove();
+                    alert('Entry deleted successfully.');
+                })
+                .catch((error) => {
+                    console.error('Error deleting entry:', error);
+                    alert('Failed to delete entry. Please try again.');
+                });
+        }
+
+        // Initial fetch to load all bills
+        fetchBills();
+    </script>
+</body>
+
+</html>

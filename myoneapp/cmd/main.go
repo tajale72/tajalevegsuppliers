@@ -47,6 +47,8 @@ func main() {
 	r.GET("/getBillNumber", dbClient.GetBillNumber)
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
+	r.GET("/customer", dbClient.GetCustomers)
+
 	r.POST("/upload", UploadImageHandler)
 
 	r.Run()
@@ -256,4 +258,14 @@ func (dbClient *DBClient) GetVegetableCount(c *gin.Context) {
 
 func GetProductsDetails(c *gin.Context) {
 	c.JSON(http.StatusAccepted, "succes from 8080")
+}
+
+func (dbClient *DBClient) GetCustomers(c *gin.Context) {
+	lisofCustomers, err := dbClient.DB.GetCustomers()
+	if err != nil {
+		log.Println("Error getting products: ", err)
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusAccepted, lisofCustomers)
 }
