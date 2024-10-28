@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Account Management Portal</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#customer-management">Customers</a>
+        <a href="#inventory-management">Inventory</a>
+        <a href="#sales-management">Sales</a>
+        <a href="#expense-tracker">Expenses</a>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Dashboard -->
+        <div class="card" id="dashboard">
+            <h3>Dashboard Overview</h3>
+            <p>Total Sales: $5000 | Profit: $2000</p>
+            <p>Top-Selling Vegetables: Tomato, Onion, Potato</p>
+            <button onclick="alert('Generating report...')">Generate Sales Report</button>
+        </div>
+
+        <!-- Customer Management -->
+        <div class="card" id="customer-management">
+            <h3>Customer Management</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Credit</th>
+                </tr>
+                <tr>
+                    <td>John Doe</td>
+                    <td>123-456-7890</td>
+                    <td>$50</td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>098-765-4321</td>
+                    <td>$30</td>
+                </tr>
+            </table>
+            <button onclick="alert('Add New Customer')">Add New Customer</button>
+        </div>
+
+        <!-- Inventory Management -->
+        <div class="card" id="inventory-management">
+            <h3>Inventory Management</h3>
+            <table>
+                <tr>
+                    <th>Vegetable</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td>Tomato</td>
+                    <td>100 kg</td>
+                    <td>$1.5/kg</td>
+                </tr>
+                <tr>
+                    <td>Onion</td>
+                    <td>50 kg</td>
+                    <td>$2.0/kg</td>
+                </tr>
+            </table>
+            <button onclick="alert('Add Stock')">Add Stock</button>
+        </div>
+
+        <!-- Sales Management -->
+        <div class="card" id="sales-management">
+            <h3>Sales Management</h3>
+            <p>Create new bills, apply discounts, and track daily sales.</p>
+            <button onclick="alert('Create Bill')">Create New Bill</button>
+        </div>
+
+        <!-- Expense Tracker -->
+        <div class="card" id="expense-tracker">
+            <h3>Expense Tracker</h3>
+            <table>
+                <tr>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>Transportation</td>
+                    <td>$200</td>
+                </tr>
+                <tr>
+                    <td>Rent</td>
+                    <td>$500</td>
+                </tr>
+            </table>
+            <button onclick="alert('Add Expense')">Add Expense</button>
+        </div>
+    </div>
+</body>
+</html>
