@@ -8,8 +8,7 @@ VALUES
 
 -- Delete multiple entries using OR statements
 DELETE FROM dailyvegetablesales
-WHERE (vegetable_name = 'Zucchini - जुचिनी (Zucchini)';
-        OR vegetable_name = 'Cardinier - कार्डिनियर (Cardinier)'
+WHERE (vegetable_name = 'Cardinier - कार्डिनियर (Cardinier)'
        OR vegetable_name = 'Cucumber (काक्रो)'
        OR vegetable_name = 'Cucumber (काक्रो)30'
        OR vegetable_name = 'Dhaniya (धनियाँ) and lasun'
@@ -19,7 +18,8 @@ WHERE (vegetable_name = 'Zucchini - जुचिनी (Zucchini)';
        OR vegetable_name = 'Lapsi (लप्सी )'
        OR vegetable_name = 'Lapsi Mada (लप्सी माडा)');
 
-
+DELETE FROM dailyvegetablesales
+WHERE (vegetable_name = 'Lapsi (लप्सी )';
 
 
 

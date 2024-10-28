@@ -15,7 +15,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 
 	// Always try to query the local DB first
 	if dbClient.DB != nil {
-		rows, err = dbClient.DB.Query("SELECT * FROM Bill_Details ORDER BY customer_name;")
+		rows, err = dbClient.DB.Query("SELECT * FROM Bill_Details ORDER BY bill_date DESC;")
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
