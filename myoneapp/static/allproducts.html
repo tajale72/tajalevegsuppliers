@@ -11,10 +11,11 @@
 <body>
     <div class="navbar">
         <a href="dashboard.html">Dashboard</a>
- <a href="createbillv2.html">Create Bill</a>
+        <a href="customerlist.html">Customers</a>
+        <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
         <a href="vegetablecount.html">Vegetable Count</a>
-        <a href="ledger.html">Ledger</a>
+        <a href="ledger.html">All Ledger</a>
     </div>
 
     <div id="loader" class="loader"></div>
@@ -70,7 +71,7 @@
             loader.style.display = "block"; // Show loader
 
             // Prepare API URL with search parameter if provided
-            let apiUrl = "http://54.204.70.243:8080 /billtransaction";
+            let apiUrl = "http://54.204.70.243:8080/billtransaction";
             if (searchQuery) {
                 apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
             }
@@ -152,7 +153,7 @@
 
         // Function to delete an entry
         function deleteEntry(id) {
-            fetch(`http://54.204.70.243:8080 /billtransaction/${id}`, {
+            fetch(`http://54.204.70.243:8080/billtransaction/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {

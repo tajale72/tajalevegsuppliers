@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -48,6 +49,7 @@ func main() {
 	r.GET("/vegetablecount", dbClient.GetVegetableCount)
 
 	r.GET("/customer", dbClient.GetCustomers)
+	r.GET("/ledger:customerName", dbClient.GetCustomers)
 
 	r.POST("/upload", UploadImageHandler)
 
@@ -75,21 +77,34 @@ func UploadImageHandler(c *gin.Context) {
 }
 
 func (dbClient *DBClient) GetLedgerEntries(c *gin.Context) {
-	lisofProducts, err := dbClient.DB.GetLedgerEntries()
-	if err != nil {
-		log.Println("Error getting products: ", err)
-		c.JSON(http.StatusInternalServerError, err)
-		return
+	// Get the customerName from the query parameter
+	searchQuery := c.Query("customerName")
+
+	// Trim leading and trailing spaces
+	searchQuery = strings.TrimSpace(searchQuery)
+
+	var lisofLedgerEntries []model.LedgerEntry
+	var err error
+	// Check if a search query is provided
+	if searchQuery != "" {
+		// If a search query is provided, get filtered products based on the search term
+		lisofLedgerEntries, err = dbClient.DB.GetCustomerLedgerByName(searchQuery)
+		if err != nil {
+			log.Println("Error getting lisofLedgerEntries by name: ", err)
+			c.JSON(http.StatusInternalServerError, err)
+			return
+		}
+	} else {
+		// If no search query is provided, get all products
+		lisofLedgerEntries, err = dbClient.DB.GetLedgerEntries()
+		if err != nil {
+			log.Println("Error getting lisofLedgerEntries: ", err)
+			c.JSON(http.StatusInternalServerError, err)
+			return
+		}
 	}
 
-	// //lisofProducts, err := dbClient.DB.GetProducts()
-	// if err != nil {
-	// 	log.Println("Error getting products: ", err)
-	// 	c.JSON(http.StatusInternalServerError, err)
-	// 	return
-	// }
-
-	c.JSON(http.StatusAccepted, lisofProducts)
+	c.JSON(http.StatusAccepted, lisofLedgerEntries)
 }
 
 func (dbClient *DBClient) Ledger(c *gin.Context) {
@@ -268,4 +283,29 @@ func (dbClient *DBClient) GetCustomers(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusAccepted, lisofCustomers)
+}
+
+func (dbClient *DBClient) GetCustomerLedgerByName(c *gin.Context) {
+	// Get the customerName from the query parameter
+	customerName := c.Query("customerName")
+
+	// Trim leading and trailing spaces
+	customerName = strings.TrimSpace(customerName)
+	if customerName == "" {
+		log.Println("Customer name is empty")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer name cannot be empty"})
+		return
+	}
+
+	fmt.Println("Customer Name:", customerName)
+
+	// Query the customer ledger using the trimmed customerName
+	customerLedger, err := dbClient.DB.GetCustomerLedgerByName(customerName)
+	if err != nil {
+		log.Println("Error getting customer ledger: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, customerLedger)
 }

@@ -21,12 +21,14 @@
   <body>
     <div class="navbar">
       <a href="dashboard.html">Dashboard</a>
+ <a href="customerlist.html">Customers</a>
  <a href="createbillv2.html">Create Bill</a>
       <a href="allproducts.html">Transactions</a>
      
       <a href="vegetablecount.html">Vegetable Count</a>
       <a href="ledger.html">Ledger</a>
  <a href="dashboard.html">Dashboard</a>
+ <a href="customerlist.html">Customers</a>
     </div>
     <div class="bill-container">
       <div class="title-container">
@@ -149,7 +151,7 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("http://54.204.70.243:8080 /billtransaction/1")
+        fetch("http://54.204.70.243:8080/billtransaction/1")
           .then(response => response.json())
           .then(data => {
             populateForm(data);

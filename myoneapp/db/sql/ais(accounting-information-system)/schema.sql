@@ -82,6 +82,10 @@ CREATE TABLE balance_sheet (
  GRANT ALL PRIVILEGES ON TABLE dailyvegetablesales TO romit;
 
  GRANT ALL PRIVILEGES ON TABLE ledger_entries TO romit;
+
+ GRANT ALL PRIVILEGES ON TABLE customers TO romit;
+
+
                     
 
 
@@ -90,6 +94,8 @@ CREATE TABLE balance_sheet (
  GRANT USAGE, SELECT, UPDATE ON SEQUENCE dailyvegetablesales_id_seq TO romit;
 
  GRANT USAGE, SELECT, UPDATE ON SEQUENCE ledger_entries_id_seq TO romit;
+
+  GRANT USAGE, SELECT, UPDATE ON SEQUENCE customers_id_seq TO romit;
 
  GRANT USAGE, CREATE ON SCHEMA public TO romit;
 

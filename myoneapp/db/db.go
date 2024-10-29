@@ -29,6 +29,7 @@ type Database interface {
 	UpdateBill(data []byte) error
 
 	GetCustomers() ([]model.Customer, error)
+	GetCustomerLedgerByName(account string) ([]model.LedgerEntry, error)
 	// Add other database-related methods if needed
 }
 

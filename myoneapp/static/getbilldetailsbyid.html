@@ -23,6 +23,7 @@
 
     <div class="navbar">
       <a href="dashboard.html">Dashboard</a>
+ <a href="customerlist.html">Customers</a>
       <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
        
@@ -122,7 +123,7 @@
     const productId = urlParams.get('id');
 
     // Make a GET request to the API endpoint using the extracted product ID
-    fetch(`http://54.204.70.243:8080 /billtransaction/${productId}`)
+    fetch(`http://54.204.70.243:8080/billtransaction/${productId}`)
         .then(response => response.json())
         .then(billData => {
             console.log(billData);
@@ -213,7 +214,7 @@
         console.log("billdate" ,billData )
 
         // Send the updated data to the API endpoint
-        fetch(`http://54.204.70.243:8080 /updateBill/${productId}`, {
+        fetch(`http://54.204.70.243:8080/updateBill/${productId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

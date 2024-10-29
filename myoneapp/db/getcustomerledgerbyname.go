@@ -8,14 +8,14 @@ import (
 	"myoneapp/model"
 )
 
-// GetLedgerEntries retrieves all ledger entries from the database.
-func (dbClient *DBClient) GetLedgerEntries() ([]model.LedgerEntry, error) {
+func (dbClient *DBClient) GetCustomerLedgerByName(account string) ([]model.LedgerEntry, error) {
+
 	var rows *sql.Rows
 	var err error
 
 	// Try querying the local DB first
 	if dbClient.DB != nil {
-		rows, err = dbClient.DB.Query("SELECT * FROM ledger_entries;")
+		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE LOWER(account) LIKE ($1);`, account)
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
@@ -25,7 +25,7 @@ func (dbClient *DBClient) GetLedgerEntries() ([]model.LedgerEntry, error) {
 
 	// If local DB query fails or local DB is not connected, try AivenDB
 	if rows == nil && dbClient.AivenDB != nil {
-		rows, err = dbClient.AivenDB.Query("SELECT * FROM ledger_entries;")
+		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE LOWER(account = $1;`, account)
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 			return nil, fmt.Errorf("error querying AivenDB: %w", err)
@@ -66,6 +66,36 @@ func (dbClient *DBClient) GetLedgerEntries() ([]model.LedgerEntry, error) {
 		return nil, fmt.Errorf("error iterating over rows: %w", err)
 	}
 
-	fmt.Println("listOfEntries", listOfEntries)
+	fmt.Println("listOfEntriesbyname", listOfEntries)
 	return listOfEntries, nil
 }
+
+// func (dbClient *DBClient) DeleteProductByID(id int) (sql.Result, error) {
+// 	var result sql.Result
+// 	var err error
+
+// 	// Try deleting from the local DB first
+// 	if dbClient.DB != nil {
+// 		result, err = dbClient.DB.Exec("DELETE FROM Bill_Details WHERE id = $1;", id)
+// 		if err != nil {
+// 			log.Printf("Error deleting data from local DB: %v", err)
+// 		} else {
+// 			log.Println("Deleted data from local DB successfully")
+// 			return result, nil
+// 		}
+// 	}
+
+// 	// If the local DB query fails or local DB is not connected, try AivenDB
+// 	if dbClient.AivenDB != nil {
+// 		result, err = dbClient.AivenDB.Exec("DELETE FROM Bill_Details WHERE id = $1;", id)
+// 		if err != nil {
+// 			log.Printf("Error deleting data from AivenDB: %v", err)
+// 			return nil, fmt.Errorf("error deleting data from AivenDB: %w", err)
+// 		}
+// 		log.Println("Deleted data from AivenDB successfully")
+// 		return result, nil
+// 	}
+
+// 	// If both databases failed to delete
+// 	return nil, fmt.Errorf("no available database to delete from")
+// }

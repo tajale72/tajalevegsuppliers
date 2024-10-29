@@ -10,6 +10,7 @@
   <body>
     <div class="navbar">
       <a href="dashboard.html">Dashboard</a>
+      <a href="customerlist.html">Customers</a>
       <a href="createbillv2.html">Create Bill</a>
       <a href="allproducts.html">Transactions</a>
       <a href="vegetablecount.html">Vegetable Count</a>
@@ -51,7 +52,7 @@
       loader.style.display = "block";
 
       // Fetch data from the API endpoint
-      fetch("http://54.204.70.243:8080 /vegetablecount")
+      fetch("http://54.204.70.243:8080/vegetablecount")
         .then((response) => response.json())
         .then((data) => {
           // Hide loading spinner when data is loaded

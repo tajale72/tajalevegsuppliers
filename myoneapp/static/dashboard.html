@@ -130,17 +130,13 @@
     
   </head>
   <body>
-    <!-- Header -->
-    <header>
-      <h1>Account Management Portal</h1>
-    </header>
 
     <!-- Navigation Bar -->
     <nav>
       <a href="#dashboard">Dashboard</a>
   
       <div class="dropdown">
-        <a href="#customer-management">Customers</a>
+        <a href="customerlist.html">Customers</a>
         <div class="dropdown-content">
           <a href="customerlist.html">View Customers</a>
           <a href="#" onclick="loadModalContent('addcustomer.html')">Add Customer</a>
@@ -258,7 +254,7 @@
     <!-- JavaScript to Fetch Data -->
     <script>
       // Fetch data from the backend
-      fetch("http://54.204.70.243:8080 /dashboard") // Replace with your actual backend endpoint
+      fetch("http://54.204.70.243:8080/dashboard") // Replace with your actual backend endpoint
         .then((response) => response.json())
         .then((data) => {
           // Update Total Sales and Profit

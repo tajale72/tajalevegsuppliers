@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -11,14 +12,15 @@ import (
 type Float64 float64
 
 type LedgerEntry struct {
-	ID            int       `json:"id" gorm:"primaryKey"`
-	Date          string    `json:"date"`          // Date of the transaction
-	Account       string    `json:"account"`       // Account associated with the entry
-	BillNumber    string    `json:"billNumber"`    // Account associated with the entry
-	Debit         float64   `json:"debit"`         // Debit amount (custom type)
-	Credit        float64   `json:"credit"`        // Credit amount (custom type)
-	BalanceAmount float64   `json:"balanceAmount"` // Remaining balance (custom type)
-	CreatedAt     time.Time `json:"created_at" gorm:"autoCreateTime"`
+	ID            int           `json:"id" gorm:"primaryKey"`
+	CustomerID    sql.NullInt64 `json:"customerID" validate:"required"`
+	Date          string        `json:"date"`          // Date of the transaction
+	Account       string        `json:"account"`       // Account associated with the entry
+	BillNumber    string        `json:"billNumber"`    // Account associated with the entry
+	Debit         float64       `json:"debit"`         // Debit amount (custom type)
+	Credit        float64       `json:"credit"`        // Credit amount (custom type)
+	BalanceAmount float64       `json:"balanceAmount"` // Remaining balance (custom type)
+	CreatedAt     time.Time     `json:"created_at" gorm:"autoCreateTime"`
 }
 
 type SaleLedger struct {

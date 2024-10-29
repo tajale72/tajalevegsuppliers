@@ -11,10 +11,11 @@
 <body>
     <div class="navbar">
         <a href="dashboard.html">Dashboard</a>
+ <a href="customerlist.html">Customers</a>
         <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
         <a href="vegetablecount.html">Vegetable Count</a>
-        <a href="ledger.html">Ledger</a>
+        <a href="ledger.html">All Ledger</a>
     </div>
 
     <div id="loader" class="loader"></div>
@@ -58,7 +59,7 @@
             loader.style.display = "block"; // Show loader
 
             // Prepare API URL with search parameter if provided
-            let apiUrl = "http://54.204.70.243:8080 /customer";
+            let apiUrl = "http://54.204.70.243:8080/customer";
             if (searchQuery) {
                 apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
             }
@@ -97,7 +98,11 @@
 
                         // Add click event to row for navigation
                         row.addEventListener("click", () => {
-                            window.location.href = `ledger.html?id=${product.id}`;
+                            const customerName = product.customerName;
+                            if (customerName) {
+                                // Use encodeURIComponent to handle spaces and special characters
+                                window.location.href = `getcustomerledgerbyname.html?customerName=${encodeURIComponent(customerName)}`;
+                            }
                         });
 
                         // Add event listener for delete button
@@ -116,8 +121,8 @@
                         overallTotalAmount += parseFloat(product.finalTotalAmount) || 0;
                     });
 
-                        // Update the overall total amount in the footer
-                        finalTotalAmount.textContent = `${overallTotalAmount.toFixed(2)} /-`;
+                    // Update the overall total amount in the footer
+                    finalTotalAmount.textContent = `${overallTotalAmount.toFixed(2)} /-`;
 
                 })
                 .catch((error) => {
@@ -136,7 +141,7 @@
 
         // Function to delete an entry
         function deleteEntry(id) {
-            fetch(`http://54.204.70.243:8080 /customer/${id}`, {
+            fetch(`http://54.204.70.243:8080/customer/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
