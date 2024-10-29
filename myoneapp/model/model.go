@@ -23,6 +23,7 @@ type Request struct {
 	BillTotalAmount      string          `json:"billTotalAmount" validate:"required"`
 	SellerName           string          `json:"sellerName" validate:"required"`
 	SellerPanNum         string          `json:"sellerPanNum" validate:"required"`
+	CustomerID           int             `json:"customerID" validate:"required"`
 	CustomerName         string          `json:"customerName" validate:"required"`
 	CustomerLocation     string          `json:"customerLocation" validate:"required"`
 	CustomerPhoneNumber  string          `json:"customerPhoneNumber" validate:"required"`

@@ -70,7 +70,7 @@
             loader.style.display = "block"; // Show loader
 
             // Prepare API URL with search parameter if provided
-            let apiUrl = "http://54.204.70.243:8080/billtransaction";
+            let apiUrl = "http://54.204.70.243:8080 /billtransaction";
             if (searchQuery) {
                 apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
             }
@@ -152,7 +152,7 @@
 
         // Function to delete an entry
         function deleteEntry(id) {
-            fetch(`http://54.204.70.243:8080/billtransaction/${id}`, {
+            fetch(`http://54.204.70.243:8080 /billtransaction/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {

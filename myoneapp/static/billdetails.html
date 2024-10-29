@@ -149,7 +149,7 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("http://54.204.70.243:8080/billtransaction/1")
+        fetch("http://54.204.70.243:8080 /billtransaction/1")
           .then(response => response.json())
           .then(data => {
             populateForm(data);

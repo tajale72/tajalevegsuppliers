@@ -25,7 +25,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 
 	// If the local DB query fails or local DB is not connected, try AivenDB
 	if rows == nil && dbClient.AivenDB != nil {
-		rows, err = dbClient.AivenDB.Query("SELECT * FROM Bill_Details ORDER BY customer_name;")
+		rows, err = dbClient.AivenDB.Query("SELECT * FROM Bill_Details ORDER BY bill_date DESC;")
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 			return nil, fmt.Errorf("error querying AivenDB: %w", err)
@@ -58,6 +58,7 @@ func (dbClient *DBClient) GetProducts() ([]model.Request, error) {
 			&productsJSON,
 			&bill.TotalDebit,  // Add total_debit
 			&bill.TotalCredit, // Add total_credit
+			&bill.CustomerID,
 		); err != nil {
 			log.Println("Error scanning row:", err)
 			return nil, fmt.Errorf("error scanning row: %w", err)
@@ -139,6 +140,7 @@ func (dbClient *DBClient) GetProductsBySearch(searchQuery string) ([]model.Reque
 			&productsJSON,
 			&bill.TotalDebit,  // Add total_debit
 			&bill.TotalCredit, // Add total_credit
+			&bill.CustomerID,
 		); err != nil {
 			log.Println("Error scanning row:", err)
 			return nil, fmt.Errorf("error scanning row: %w", err)

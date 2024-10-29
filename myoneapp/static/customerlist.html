@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="allprodutcs.css" />
+    <link rel="stylesheet" href="customerlist.css" />
     <title>Bill Details</title>
 </head>
 
@@ -18,11 +18,10 @@
     </div>
 
     <div id="loader" class="loader"></div>
-    <div id="error-message" class="error-message"></div>
 
     <div class="search-container">
         <form id="searchForm">
-            <input type="text" id="searchInput" placeholder="Search by Bill Number or Seller Name..." name="search" />
+            <input type="text" id="searchInput" placeholder="Search by Customer Name..." name="search" />
             <button type="submit">Search</button>
         </form>
     </div>
@@ -32,26 +31,15 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Bill Number</th>
-                    <th>Bill Date</th>
-                    <th>Seller Name</th>
-                    <th class="center-align">Seller PAN Number</th>
                     <th class="center-align">Customer Name</th>
                     <th class="center-align">Customer Location</th>
                     <th class="center-align">Customer Phone Number</th>
                     <th class="center-align">Customer PAN Container</th>
-                    <th class="center-align">Bill Total Amount /-</th>
+                    <th class="center-align">CreatedAt </th>
                     <th class="center-align">Delete</th>
                 </tr>
             </thead>
             <tbody id="productTableBody"></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="9" class="center-align"><strong>Final Total:</strong></td>
-                    <td class="center-align" id="finalTotalAmount">0.00 /-</td>
-                    <td></td>
-                </tr>
-            </tfoot>
 
         </table>
     </div>
@@ -70,7 +58,7 @@
             loader.style.display = "block"; // Show loader
 
             // Prepare API URL with search parameter if provided
-            let apiUrl = "http://54.204.70.243:8080/customer";
+            let apiUrl = "http://54.204.70.243:8080 /customer";
             if (searchQuery) {
                 apiUrl += `?search=${encodeURIComponent(searchQuery)}`;
             }
@@ -97,15 +85,11 @@
 
                         row.innerHTML = `
                             <td>${product.id}</td>
-                            <td>${product.billNumber}</td>
-                            <td>${new Date(product.billDate).toLocaleDateString()}</td>
-                            <td>${product.sellerName}</td>
-                            <td class="center-align">${product.sellerPanNum}</td>
                             <td class="center-align">${product.customerName}</td>
                             <td class="center-align">${product.customerLocation}</td>
                             <td class="center-align">${product.customerPhoneNumber}</td>
                             <td class="center-align">${product.customerPanContainer}</td>
-                            <td class="center-align">${product.billTotalAmount} /-</td>
+                            <td class="center-align">${product.created_at}</td>
                             <td class="center-align">
                             <button class="delete-btn" data-id="${product.id}">Delete</button>
                             </td>
@@ -113,7 +97,7 @@
 
                         // Add click event to row for navigation
                         row.addEventListener("click", () => {
-                            window.location.href = `getbilldetailsbyid.html?id=${product.id}`;
+                            window.location.href = `ledger.html?id=${product.id}`;
                         });
 
                         // Add event listener for delete button
@@ -152,7 +136,7 @@
 
         // Function to delete an entry
         function deleteEntry(id) {
-            fetch(`http://54.204.70.243:8080/customer/${id}`, {
+            fetch(`http://54.204.70.243:8080 /customer/${id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
