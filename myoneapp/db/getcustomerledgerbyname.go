@@ -9,36 +9,41 @@ import (
 )
 
 func (dbClient *DBClient) GetCustomerLedgerByName(account string) ([]model.LedgerEntry, error) {
-
 	var rows *sql.Rows
 	var err error
 
 	// Try querying the local DB first
 	if dbClient.DB != nil {
-		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE LOWER(account) LIKE ($1);`, account)
+		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE account LIKE $1;`, account)
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
 			log.Println("Queried local DB successfully")
+			defer rows.Close() // Ensure rows are closed if query is successful
+			return scanLedgerEntries(rows)
 		}
 	}
 
 	// If local DB query fails or local DB is not connected, try AivenDB
-	if rows == nil && dbClient.AivenDB != nil {
-		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE LOWER(account = $1;`, account)
+	if dbClient.AivenDB != nil {
+		rows, err = dbClient.AivenDB.Query(`SELECT * FROM ledger_entries WHERE account = $1;`, account)
 		if err != nil {
 			log.Printf("Error querying AivenDB: %v", err)
 			return nil, fmt.Errorf("error querying AivenDB: %w", err)
 		}
 		log.Println("Queried AivenDB successfully")
-	} else if rows == nil {
-		// If both queries failed or no database is connected
-		return nil, fmt.Errorf("no available database to query from")
+		defer rows.Close() // Ensure rows are closed if query is successful
+		return scanLedgerEntries(rows)
 	}
 
-	defer rows.Close()
+	// If both queries failed or no database is connected
+	return nil, fmt.Errorf("no available database to query from")
+}
 
+// Helper function to scan rows into a list of LedgerEntry
+func scanLedgerEntries(rows *sql.Rows) ([]model.LedgerEntry, error) {
 	var listOfEntries []model.LedgerEntry
+
 	for rows.Next() {
 		var entry model.LedgerEntry
 
@@ -66,7 +71,6 @@ func (dbClient *DBClient) GetCustomerLedgerByName(account string) ([]model.Ledge
 		return nil, fmt.Errorf("error iterating over rows: %w", err)
 	}
 
-	fmt.Println("listOfEntriesbyname", listOfEntries)
 	return listOfEntries, nil
 }
 

@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="allprodutcs.css" />
     <link href="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.4.min.css"
-    rel="stylesheet" type="text/css" />
-  <script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.4.min.js"
-    type="text/javascript"></script>
+        rel="stylesheet" type="text/css" />
+    <script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.4.min.js"
+        type="text/javascript"></script>
     <title>Double-Entry Ledger System</title>
     <style>
         body {
@@ -17,7 +17,7 @@
             margin: 0;
             padding: 0;
         }
-    
+
         header {
             background-color: #ffffff;
             color: #181616;
@@ -26,48 +26,56 @@
             font-size: 24px;
             font-weight: bold;
         }
-    
+
         .container {
             padding: 20px;
         }
-    
+
         form {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #ffffff; /* White background */
+            background-color: #ffffff;
+            /* White background */
             border: 1px solid #ccc;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Light shadow */
         }
-    
+
         label {
             display: block;
             margin-bottom: 8px;
-            color: #1f4962; /* Dark blue text */
+            color: #1f4962;
+            /* Dark blue text */
             font-weight: bold;
         }
-    
+
         input[type="text"],
         input[type="number"],
         input[type="date"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #99c2ff; /* Soft blue border */
+            border: 1px solid #99c2ff;
+            /* Soft blue border */
             border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Slight shadow for input fields */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            /* Slight shadow for input fields */
             font-size: 16px;
         }
-    
+
         input:focus {
-            border-color: #1f4962; /* Dark blue border on focus */
+            border-color: #1f4962;
+            /* Dark blue border on focus */
             outline: none;
-            box-shadow: 0 0 5px rgba(0, 77, 153, 0.2); /* Light blue glow */
+            box-shadow: 0 0 5px rgba(0, 77, 153, 0.2);
+            /* Light blue glow */
         }
-    
+
         button {
-            background-color: #1f4962; /* Dark blue button */
+            background-color: #1f4962;
+            /* Dark blue button */
             color: #ffffff;
             border: none;
             padding: 10px 20px;
@@ -77,40 +85,43 @@
             font-weight: 500;
             transition: background-color 0.3s;
         }
-    
+
         button:hover {
-            background-color: #003366; /* Darker blue on hover */
+            background-color: #003366;
+            /* Darker blue on hover */
         }
-    
+
         .nepali-date-picker {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #99c2ff; /* Soft blue border */
+            border: 1px solid #99c2ff;
+            /* Soft blue border */
             border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Slight shadow */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            /* Slight shadow */
             font-size: 16px;
         }
     </style>
-    
+
 </head>
 
 <body>
     <div class="navbar">
         <a href="dashboard.html">Dashboard</a>
- <a href="customerlist.html">Customers</a>
- <a href="createbillv2.html">Create Bill</a>
+        <a href="customerlist.html">Customers</a>
+        <a href="createbillv2.html">Create Bill</a>
         <a href="allproducts.html">Transactions</a>
 
         <a href="vegetablecount.html">Vegetable Count</a>
         <a href="ledger.html">All Ledger</a>
- <a href="dashboard.html">Dashboard</a>
- <a href="customerlist.html">Customers</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="customerlist.html">Customers</a>
     </div>
 
     <form id="ledgerForm">
         <label for="date">मिति:</label>
-        <input type="text" id="nepali-datepicker" placeholder="Select Nepali Date"  required/>
+        <input type="text" id="nepali-datepicker" placeholder="Select Nepali Date" required />
 
         <label for="account">Customer Name:</label>
         <input type="text" id="account" name="account" placeholder="Enter Customer Name" required>
@@ -124,8 +135,8 @@
         <label for="credit">Credit Amount:</label>
         <input type="number" id="credit" name="credit" placeholder="Enter Credit Amount" step="0.01">
 
-        <label for="credit">Balance Amount:</label>
-        <input type="number" id="balanceAmount" name="balanceAmount" placeholder="Enter Balance Amount" step="0.01">
+        <!-- <label for="credit">Balance Amount:</label>
+        <input type="number" id="balanceAmount" name="balanceAmount" placeholder="Enter Balance Amount" step="0.01"> -->
 
         <button type="button" onclick="addEntry()">Add Entry</button>
     </form>
@@ -146,13 +157,19 @@
         <tbody id="ledgerEntries">
             <!-- Entries will be dynamically added here -->
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" class="center-align">Final Total Amount :</td>
+                <td id="finalTotalAmount" style="font-weight: bold;">0.00</td>
+            </tr>
+        </tfoot>
     </table>
 
     <script>
         // Function to fetch and display ledger entries
         async function fetchLedgerEntries() {
             try {
-                const response = await fetch('http://54.204.70.243:8080/ledger');
+                const response = await fetch('http://54.204.70.243:8080 /ledger');
                 if (!response.ok) {
                     throw new Error('Failed to fetch ledger entries.');
                 }
@@ -160,11 +177,21 @@
                 const entries = await response.json();
                 const ledgerEntries = document.getElementById('ledgerEntries');
 
+                let finalTotal = 0; // Initialize final total amount
+                let initialBalance = 0;
+
                 // Clear existing table rows
                 ledgerEntries.innerHTML = '';
 
                 // Populate table with fetched entries
                 entries.forEach(entry => {
+                    const debit = parseFloat(entry.debit) || 0;
+                    const credit = parseFloat(entry.credit) || 0;
+
+                    // Calculate the new balance based on initial balance, debit, and credit
+                    initialBalance = initialBalance - debit + credit;
+
+
                     const newRow = ledgerEntries.insertRow();
                     newRow.insertCell(0).textContent = entry.id;
                     newRow.insertCell(1).textContent = entry.date;
@@ -172,8 +199,35 @@
                     newRow.insertCell(3).textContent = entry.billNumber;
                     newRow.insertCell(4).textContent = entry.debit || '';
                     newRow.insertCell(5).textContent = entry.credit || '';
-                    newRow.insertCell(6).textContent = entry.balanceAmount || '';
+                    newRow.insertCell(6).textContent = initialBalance.toFixed(2);
+
+
+                    // Update the final total with the new balance
+                    finalTotal = initialBalance;
+
+
+                    // Add click event to the row for navigation
+                    newRow.style.cursor = 'pointer'; // Add pointer cursor to indicate clickable row
+                    newRow.addEventListener("click", () => {
+                        const customerName = entry.account;
+                        if (customerName) {
+                            // Use encodeURIComponent to handle spaces and special characters
+                            window.location.href = `getcustomerledgerbyname.html?customerName=${encodeURIComponent(customerName)}`;
+                        }
+                    });
+
+                    // Update the final total amount in the tfoot
+                    const finalTotalAmount = document.getElementById('finalTotalAmount');
+                    if (finalTotalAmount) {
+                        finalTotalAmount.textContent = finalTotal.toFixed(2);
+                    } else {
+                        console.error("Element with ID 'finalTotalAmount' not found.");
+                    }
+
                 });
+
+
+
             } catch (error) {
                 console.error('Error fetching ledger entries:', error);
                 alert('Failed to load ledger entries. Please try again.');
@@ -207,7 +261,7 @@
 
             try {
                 // Send the data to the backend via POST request
-                const response = await fetch('http://54.204.70.243:8080/ledger', {
+                const response = await fetch('http://54.204.70.243:8080 /ledger', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -235,12 +289,12 @@
         document.addEventListener('DOMContentLoaded', fetchLedgerEntries);
     </script>
 
-<script type="text/javascript">
-    window.onload = function () {
-      var mainInput = document.getElementById("nepali-datepicker");
-      mainInput.nepaliDatePicker();
-    };
-</script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var mainInput = document.getElementById("nepali-datepicker");
+            mainInput.nepaliDatePicker();
+        };
+    </script>
 
 
 </body>

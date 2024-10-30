@@ -158,10 +158,10 @@
 
         <tfoot>
             <tr>
-              <td colspan="6" class="center-align">Final Total Amount :</td>
-              <td id="finalTotalAmount" style="font-weight: bold;">0.00</td>
+                <td colspan="6" class="center-align">Final Total Amount :</td>
+                <td id="finalTotalAmount" style="font-weight: bold;">0.00</td>
             </tr>
-          </tfoot>
+        </tfoot>
     </table>
 
     <script>
@@ -190,7 +190,7 @@
 
 
                 // Use query parameter in the fetch URL
-                const response = await fetch(`http://54.204.70.243:8080/ledger?customerName=${encodeURIComponent(customerName)}`);
+                const response = await fetch(`http://54.204.70.243:8080 /ledger?customerName=${encodeURIComponent(customerName)}`);
 
                 // Check if the response is OK
                 if (!response.ok) {
@@ -204,6 +204,9 @@
                 // Get the table element to display the entries
                 const ledgerEntries = document.getElementById('ledgerEntries');
 
+                let finalTotal = 0; // Initialize final total amount
+                let initialBalance = 0;
+
                 // Clear existing table rows
                 ledgerEntries.innerHTML = '';
 
@@ -214,15 +217,34 @@
 
                 // Populate table with fetched entries
                 data.forEach(entry => {
+                    const debit = parseFloat(entry.debit) || 0;
+                    const credit = parseFloat(entry.credit) || 0;
+
+                    // Calculate the new balance based on initial balance, debit, and credit
+                    initialBalance = initialBalance - debit + credit;
+
+                    // Create a new row and populate cells
                     const newRow = ledgerEntries.insertRow();
                     newRow.insertCell(0).textContent = entry.id;
                     newRow.insertCell(1).textContent = entry.date || 'N/A';
                     newRow.insertCell(2).textContent = entry.account || 'N/A';
                     newRow.insertCell(3).textContent = entry.billNumber || 'N/A';
-                    newRow.insertCell(4).textContent = entry.debit !== null ? entry.debit : '0.00';
-                    newRow.insertCell(5).textContent = entry.credit !== null ? entry.credit : '0.00';
-                    newRow.insertCell(6).textContent = entry.balanceAmount !== null ? entry.balanceAmount : '0.00';
+                    newRow.insertCell(4).textContent = debit !== null ? debit.toFixed(2) : '0.00';
+                    newRow.insertCell(5).textContent = credit !== null ? credit.toFixed(2) : '0.00';
+                    newRow.insertCell(6).textContent = initialBalance.toFixed(2);
+
+                    // Update the final total with the new balance
+                    finalTotal = initialBalance;
                 });
+
+                // Update the final total amount in the tfoot
+                const finalTotalAmount = document.getElementById('finalTotalAmount');
+                if (finalTotalAmount) {
+                    finalTotalAmount.textContent = finalTotal.toFixed(2);
+                } else {
+                    console.error("Element with ID 'finalTotalAmount' not found.");
+                }
+
             } catch (error) {
                 console.error('Error fetching ledger entries:', error);
                 alert('Failed to load ledger entries. Please try again.');
@@ -256,7 +278,7 @@
 
             try {
                 // Send the data to the backend via POST request
-                const response = await fetch('http://54.204.70.243:8080/ledger', {
+                const response = await fetch('http://54.204.70.243:8080 /ledger', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
