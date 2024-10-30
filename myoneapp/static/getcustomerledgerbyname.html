@@ -190,7 +190,7 @@
 
 
                 // Use query parameter in the fetch URL
-                const response = await fetch(`http://54.234.134.122:8080 /ledger?customerName=${encodeURIComponent(customerName)}`);
+                const response = await fetch(`http://54.234.134.122:8080/ledger?customerName=${encodeURIComponent(customerName)}`);
 
                 // Check if the response is OK
                 if (!response.ok) {
@@ -278,7 +278,7 @@
 
             try {
                 // Send the data to the backend via POST request
-                const response = await fetch('http://54.234.134.122:8080 /ledger', {
+                const response = await fetch('http://54.234.134.122:8080/ledger', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

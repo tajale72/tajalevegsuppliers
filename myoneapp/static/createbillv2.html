@@ -106,7 +106,7 @@
     </div>
 
     <div>
-      <form id="uploadForm" action="http://54.234.134.122:8080 /upload" method="post" enctype="multipart/form-data">
+      <form id="uploadForm" action="http://54.234.134.122:8080/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/*" required>
         <button type="submit">Upload</button>
     </form>
@@ -271,7 +271,7 @@
         }
 
         // Example API call to send the data
-        fetch("http://54.234.134.122:8080 /billtransaction", {
+        fetch("http://54.234.134.122:8080/billtransaction", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -303,7 +303,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    fetch("http://54.234.134.122:8080 /getBillNumber")
+    fetch("http://54.234.134.122:8080/getBillNumber")
       .then((response) => response.json())
       .then((data) => {
         // Assuming the bill number is returned in the 'billNumber' property of the response
