@@ -65,7 +65,5 @@ func (dbClient *DBClient) GetLedgerEntries() ([]model.LedgerEntry, error) {
 		log.Println("Error iterating over rows:", err)
 		return nil, fmt.Errorf("error iterating over rows: %w", err)
 	}
-
-	fmt.Println("listOfEntries", listOfEntries)
 	return listOfEntries, nil
 }

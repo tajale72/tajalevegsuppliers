@@ -40,3 +40,15 @@ UPDATE bill_details bd
 SET customer_id = c.id
 FROM customers c
 WHERE bd.customer_name = c.customer_name;
+
+
+INSERT INTO ledger_entries (date, account, billNumber, debit, credit, balance_amount)
+SELECT 
+    bill_date AS date,
+    customer_name AS account,
+    bill_number AS billNumber,
+    0.00 AS debit,
+    bill_total_amount::DECIMAL(10, 2) AS credit,
+    bill_total_amount::DECIMAL(10, 2) AS balance_amount
+FROM 
+    bill_details;

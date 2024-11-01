@@ -14,7 +14,12 @@ func (dbClient *DBClient) GetCustomerLedgerByName(account string) ([]model.Ledge
 
 	// Try querying the local DB first
 	if dbClient.DB != nil {
-		rows, err = dbClient.DB.Query(`SELECT * FROM ledger_entries WHERE account LIKE $1;`, account)
+		// Add the % wildcard to the search term for partial matching
+		account = "%" + account + "%"
+
+		// Use the modified account in the query
+		query := `SELECT * FROM ledger_entries WHERE account ILIKE $1`
+		rows, err := dbClient.DB.Query(query, account)
 		if err != nil {
 			log.Printf("Error querying local DB: %v", err)
 		} else {
