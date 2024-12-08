@@ -38,3 +38,10 @@ type Request struct {
 type Result struct {
 	BillNumber int64 `json:"billNumber"`
 }
+
+type Dashboard struct {
+	TotalSales           float64  `json:"totalSales"`
+	Profit               float64  `json:"profit"`
+	
+	TopSellingVegetables []string `json:"topSellingVegetables"`
+}

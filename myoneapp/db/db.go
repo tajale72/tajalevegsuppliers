@@ -31,6 +31,8 @@ type Database interface {
 	GetCustomers() ([]model.Customer, error)
 	GetCustomerLedgerByName(account string) ([]model.LedgerEntry, error)
 	// Add other database-related methods if needed
+
+	GetDashBoardData() (*model.Dashboard, error)
 }
 
 const (

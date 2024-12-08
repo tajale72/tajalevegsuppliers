@@ -53,7 +53,22 @@ func main() {
 
 	r.POST("/upload", UploadImageHandler)
 
+	r.GET("/dashboard", dbClient.GetDashBoard)
+
 	r.Run()
+}
+
+func (dbClient *DBClient) GetDashBoard(c *gin.Context) {
+
+	dashboardData, err := dbClient.DB.GetDashBoardData()
+	if err != nil {
+		log.Println("Error getting dashboard data: ", err)
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// Send JSON response
+	c.JSON(http.StatusOK, dashboardData)
 }
 
 func UploadImageHandler(c *gin.Context) {
