@@ -1,323 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Management Portal</title>
-    <style>
-      /* General Styles */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-      }
-    
-      /* Header Styles */
-      header {
-        background-color: #ffffff;
-        color: #181616;
-        padding: 10px 0;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-    
-      /* Navigation Bar Styles */
-      nav {
-        background-color: #1f4962;
-        display: flex;
-        align-items: center;
-        padding: 0;
-        margin: 0;
-      }
-    
-      nav a, .dropdown .dropbtn {
-        padding: 14px 20px;
-        color: #f4f4f4; /* Light font for contrast */
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: 500;
-        transition: background-color 0.3s, color 0.3s;
-        cursor: pointer;
-        display: block;
-        background-color: #1f4962;
-        border: none;
-      }
-    
-      nav a:hover, .dropdown .dropbtn:hover {
-        background-color: #003366; /* Darker blue on hover */
-        color: #ffffff; /* White text on hover */
-      }
-    
-      nav a.active {
-        background-color: #00264d; /* Darkest blue for active link */
-        color: #ffffff;
-      }
-    
-      .dropdown {
-        position: relative;
-        display: inline-block;
-      }
-    
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        left: 0;
-        top: 100%;
-        min-width: 200px;
-        background-color: #003366; /* Use the same theme color */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-      }
-    
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-    
-      .dropdown-content a {
-        padding: 12px 16px;
-        color: #f4f4f4; /* Light font for contrast */
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.3s;
-        border-bottom: 1px solid #00264d; /* Slight contrast divider */
-      }
-    
-      .dropdown-content a:hover {
-        background-color: #00264d; /* Darker blue on hover */
-      }
-    
-      /* Container and Card Styles */
-      .container {
-        padding: 20px;
-      }
-    
-      .card {
-        background-color: #ffffff;
-        margin: 10px 0;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-    
-      .card h3 {
-        color: #1f4962;
-        font-weight: bold;
-        margin-top: 0;
-      }
-    
-      /* Button Styles */
-      button {
-        background-color: #1f4962;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        margin-top: 10px;
-        border-radius: 5px;
-        font-weight: 500;
-        transition: background-color 0.3s;
-      }
-    
-      button:hover {
-        background-color: #003366;
-      }
-    </style>
-    
-    
-  </head>
-  <body>
 
-    <!-- Navigation Bar -->
-    <nav>
-      <a href="#dashboard">Dashboard</a>
-  
-      <div class="dropdown">
-        <a href="customerlist.html">Customers</a>
-        <div class="dropdown-content">
-          <a href="customerlist.html">View Customers</a>
-          <a href="#" onclick="loadModalContent('addcustomer.html')">Add Customer</a>
-        </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#inventory-management">Inventory</a>
-        <div class="dropdown-content">
-          <a href="#view-inventory">View Inventory</a>
-          <a href="#add-inventory">Add Inventory</a>
-        </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#sales-management">Sales</a>
-        <div class="dropdown-content">
-          <a href="createbillv2.html">Create Bill</a>
-          <a href="allproducts.html">Transactions</a>
-        </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#expense-tracker">Expenses</a>
-        <div class="dropdown-content">
-          <a href="#add-expense">Add Expense</a>
-          <a href="#view-expenses">View Expenses</a>
-        </div>
-      </div>
-  
-      <div class="dropdown">
-        <a href="#">Reports</a>
-        <div class="dropdown-content">
-          <a href="vegetablecount.html">Vegetable Count</a>
-          <a href="ledger.html">Ledger</a>
-        </div>
-      </div>
-  
-    </nav>
-    <!-- Main Container -->
-    <div class="container">
-      <!-- Dashboard -->
-      <div class="card" id="dashboard">
-        <h3>Dashboard Overview</h3>
-        <p id="salesProfit">Total Sales: $0 | Profit: $0</p>
-        <p id="topSellingVegetables">Top-Selling Vegetables: None</p>
-        <button onclick="alert('Generating report...')">
-          Generate Sales Report
-        </button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Management Portal</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
 
-      <!-- Customer Management -->
-      <div class="card" id="customer-management">
-        <h3>Customer Management</h3>
-        <table id="customerTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Contact</th>
-              <th>Credit</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <button onclick="alert('Add New Customer')">Add New Customer</button>
-      </div>
+    /* Header Styles */
+    header {
+      background-color: #ffffff;
+      color: #181616;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      <!-- Inventory Management -->
-      <div class="card" id="inventory-management">
-        <h3>Inventory Management</h3>
-        <table id="inventoryTable">
-          <thead>
-            <tr>
-              <th>Vegetable</th>
-              <th>Stock</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <button onclick="alert('Add Stock')">Add Stock</button>
-      </div>
+    /* Navigation Bar Styles */
+    nav {
+      background-color: #1f4962;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+    }
 
-      <!-- Sales Management -->
-      <div class="card" id="sales-management">
-        <h3>Sales Management</h3>
-        <p>Create new bills, apply discounts, and track daily sales.</p>
-        <button onclick="alert('Create Bill')">Create New Bill</button>
-      </div>
+    nav a,
+    .dropdown .dropbtn {
+      padding: 14px 20px;
+      color: #f4f4f4;
+      /* Light font for contrast */
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+      display: block;
+      background-color: #1f4962;
+      border: none;
+    }
 
-      <!-- Expense Tracker -->
-      <div class="card" id="expense-tracker">
-        <h3>Expense Tracker</h3>
-        <table id="expenseTable">
-          <thead>
-            <tr>
-              <th>Expense</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <button onclick="alert('Add Expense')">Add Expense</button>
+    nav a:hover,
+    .dropdown .dropbtn:hover {
+      background-color: #003366;
+      /* Darker blue on hover */
+      color: #ffffff;
+      /* White text on hover */
+    }
+
+    nav a.active {
+      background-color: #00264d;
+      /* Darkest blue for active link */
+      color: #ffffff;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      min-width: 200px;
+      background-color: #003366;
+      /* Use the same theme color */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      color: #f4f4f4;
+      /* Light font for contrast */
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+      border-bottom: 1px solid #00264d;
+      /* Slight contrast divider */
+    }
+
+    .dropdown-content a:hover {
+      background-color: #00264d;
+      /* Darker blue on hover */
+    }
+
+    /* Container and Card Styles */
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      margin: 10px 0;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      color: #1f4962;
+      font-weight: bold;
+      margin-top: 0;
+    }
+
+    /* Button Styles */
+    button {
+      background-color: #1f4962;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #003366;
+    }
+
+    /* Button Styles */
+    .button,
+    button {
+      background-color: #1f4962;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-weight: 500;
+      text-decoration: none;
+      /* Remove underline for links */
+      display: inline-block;
+      /* Ensure proper button-like appearance for links */
+      transition: background-color 0.3s;
+    }
+
+    .button:hover,
+    button:hover {
+      background-color: #003366;
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#dashboard">Dashboard</a>
+
+    <div class="dropdown">
+      <a href="customerlist.html">Customers</a>
+      <div class="dropdown-content">
+        <a href="customerlist.html">View Customers</a>
+        <a href="#" onclick="loadModalContent('addcustomer.html')">Add Customer</a>
       </div>
     </div>
 
-    <!-- Modal for Loading External Content -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div id="modal-body"></div> <!-- Content will be loaded here -->
+    <div class="dropdown">
+      <a href="#inventory-management">Inventory</a>
+      <div class="dropdown-content">
+        <a href="#view-inventory">View Inventory</a>
+        <a href="#add-inventory">Add Inventory</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#sales-management">Sales</a>
+      <div class="dropdown-content">
+        <a href="createbillv2.html">Create Bill</a>
+        <a href="allproducts.html">Transactions</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#expense-tracker">Expenses</a>
+      <div class="dropdown-content">
+        <a href="#add-expense">Add Expense</a>
+        <a href="#view-expenses">View Expenses</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <a href="#">Reports</a>
+      <div class="dropdown-content">
+        <a href="vegetablecount.html">Vegetable Count</a>
+        <a href="ledger.html">Ledger</a>
+      </div>
+    </div>
+
+  </nav>
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Dashboard -->
+    <div class="card" id="dashboard">
+      <h3>Dashboard Overview</h3>
+      <p id="salesProfit">Total Sales: $0 | Profit: $0</p>
+      <p id="topSellingVegetables">Top-Selling Vegetables: None</p>
+      <button onclick="alert('Generating report...')">
+        Generate Sales Report
+      </button>
+    </div>
+
+    <!-- Customer Management -->
+    <div class="card" id="customer-management">
+      <h3>Customer Management</h3>
+      <table id="customerTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Credit</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="alert('Add New Customer')">Add New Customer</button>
+    </div>
+
+    <!-- Inventory Management -->
+    <div class="card" id="inventory-management">
+      <h3>Inventory Management</h3>
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>Vegetable</th>
+            <th>Stock</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="alert('Add Stock')">Add Stock</button>
+    </div>
+
+    <!-- Sales Management -->
+    <div class="card" id="sales-management">
+      <h3>Sales Management</h3>
+      <p>Create new bills, apply discounts, and track daily sales.</p>
+      <a href="createbillv2.html" class="button">Create New Bill</a>
+    </div>
+
+    <!-- Expense Tracker -->
+    <div class="card" id="expense-tracker">
+      <h3>Expense Tracker</h3>
+      <table id="expenseTable">
+        <thead>
+          <tr>
+            <th>Expense</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="alert('Add Expense')">Add Expense</button>
+    </div>
   </div>
-</div>
 
-    <!-- JavaScript to Fetch Data -->
-    <script>
-      // Fetch data from the backend
-      fetch("http://54.234.134.122:8080/dashboard") // Replace with your actual backend endpoint
-        .then((response) => response.json())
-        .then((data) => {
-          // Update Total Sales and Profit
-          document.getElementById(
-            "salesProfit"
-          ).innerText = `Total Sales: $${data.totalSales} | Profit: $${data.profit}`;
+  <!-- Modal for Loading External Content -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <div id="modal-body"></div> <!-- Content will be loaded here -->
+    </div>
+  </div>
 
-          // Update Top-Selling Vegetables
-          document.getElementById(
-            "topSellingVegetables"
-          ).innerText = `Top-Selling Vegetables: ${data.topSellingVegetables.join(
-            ", "
-          )}`;
+  <!-- JavaScript to Fetch Data -->
+  <script>
+    // Fetch data from the backend
+    fetch("http://54.234.134.122:8080/dashboard") // Replace with your actual backend endpoint
+      .then((response) => response.json())
+      .then((data) => {
+        // Update Total Sales and Profit
+        document.getElementById(
+          "salesProfit"
+        ).innerText = `Total Sales: $${data.totalSales} | Profit: $${data.profit}`;
 
-          // Populate Customer Table
-          const customerTableBody = document
-            .getElementById("customerTable")
-            .querySelector("tbody");
-          customerTableBody.innerHTML = ""; // Clear existing rows
-          data.customers.forEach((customer) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        // Update Top-Selling Vegetables
+        document.getElementById(
+          "topSellingVegetables"
+        ).innerText = `Top-Selling Vegetables: ${data.topSellingVegetables.join(
+          ", "
+        )}`;
+
+        // Populate Customer Table
+        const customerTableBody = document
+          .getElementById("customerTable")
+          .querySelector("tbody");
+        customerTableBody.innerHTML = ""; // Clear existing rows
+        data.customers.forEach((customer) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
                         <td>${customer.name}</td>
                         <td>${customer.contact}</td>
                         <td>$${customer.credit}</td>
                     `;
-            customerTableBody.appendChild(row);
-          });
+          customerTableBody.appendChild(row);
+        });
 
-          // Populate Inventory Table
-          const inventoryTableBody = document
-            .getElementById("inventoryTable")
-            .querySelector("tbody");
-          inventoryTableBody.innerHTML = ""; // Clear existing rows
-          data.inventory.forEach((item) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        // Populate Inventory Table
+        const inventoryTableBody = document
+          .getElementById("inventoryTable")
+          .querySelector("tbody");
+        inventoryTableBody.innerHTML = ""; // Clear existing rows
+        data.inventory.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
                         <td>${item.vegetable}</td>
                         <td>${item.stock}</td>
                         <td>${item.price}</td>
                     `;
-            inventoryTableBody.appendChild(row);
-          });
+          inventoryTableBody.appendChild(row);
+        });
 
-          // Populate Expense Table
-          const expenseTableBody = document
-            .getElementById("expenseTable")
-            .querySelector("tbody");
-          expenseTableBody.innerHTML = ""; // Clear existing rows
-          data.expenses.forEach((expense) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        // Populate Expense Table
+        const expenseTableBody = document
+          .getElementById("expenseTable")
+          .querySelector("tbody");
+        expenseTableBody.innerHTML = ""; // Clear existing rows
+        data.expenses.forEach((expense) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
                         <td>${expense.expense}</td>
                         <td>$${expense.amount}</td>
                     `;
-            expenseTableBody.appendChild(row);
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
+          expenseTableBody.appendChild(row);
         });
-    </script>
-  </body>
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  </script>
+</body>
+
 </html>
 
 
@@ -344,7 +380,7 @@
   }
 
   // Close the modal when clicking outside of it
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     const modal = document.getElementById('modal');
     if (event.target === modal) {
       closeModal();
