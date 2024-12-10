@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"time"
-
 	// replace with your actual package path
 
 	"myoneapp/model"
@@ -76,3 +75,4 @@ func (dbClient *DBClient) CreateLedger(data []byte) error {
 
 	return nil
 }
+

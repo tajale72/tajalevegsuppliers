@@ -29,8 +29,8 @@ type Request struct {
 	CustomerLocation     string          `json:"customerLocation" validate:"required"`
 	CustomerPhoneNumber  string          `json:"customerPhoneNumber" validate:"required"`
 	CustomerPanContainer string          `json:"customerPanContainer" validate:"required"`
-	TotalDebit           string          `json:"totalDebit"`
-	TotalCredit          string          `json:"totalCredit"`
+	TotalDebit           float64         `json:"totalDebit"`
+	TotalCredit          float64         `json:"totalCredit"`
 	FinalTotalAmount     float64         `json:"finalTotalAmount"`
 	Items                json.RawMessage `json:"items" validate:"required"` // Use RawMessage to handle JSON data
 }
@@ -40,8 +40,8 @@ type Result struct {
 }
 
 type Dashboard struct {
-	TotalSales           float64  `json:"totalSales"`
-	Profit               float64  `json:"profit"`
-	
+	TotalSales float64 `json:"totalSales"`
+	Profit     float64 `json:"profit"`
+
 	TopSellingVegetables []string `json:"topSellingVegetables"`
 }

@@ -86,6 +86,23 @@ func (dbClient *DBClient) CreateTable(data []byte) error {
 
 	dbClient.CalucaltedVegTableQuantitySold(itemsJSON, req.BillNumber)
 
+	ledgerPayload := model.LedgerEntry{
+		Date:          req.BillDate,
+		Account:       req.CustomerName,
+		BillNumber:    req.BillNumber,
+		Debit:         req.TotalDebit,
+		Credit:        req.TotalCredit,
+		BalanceAmount: req.FinalTotalAmount,
+	}
+
+	jsondata, err := json.Marshal(ledgerPayload)
+	if err != nil {
+		log.Println("error marshalling the ledger payload")
+		return fmt.Errorf("error marshalling the ledger payload: %w", err)
+	}
+
+	dbClient.CreateLedger(jsondata)
+
 	return nil
 }
 
@@ -208,4 +225,8 @@ func (dbClient *DBClient) CalucaltedVegTableQuantitySold(data []byte, billNumber
 	}
 
 	return nil
+}
+
+func PayloadforLedger(data model.Request) {
+
 }
