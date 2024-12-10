@@ -15,6 +15,18 @@ func (dbClient *DBClient) GetCustomers() ([]model.Customer, error) {
 	var rows *sql.Rows
 	var err error
 
+	dbClient.DB.Exec(`
+    INSERT INTO customers (customer_name, customer_location, customer_phone_number, customer_pan_container)
+    SELECT DISTINCT 
+        customer_name, 
+        customer_location, 
+        customer_phone_number, 
+        customer_pan_container
+    FROM bill_details
+    WHERE customer_name IS NOT NULL
+      AND customer_name NOT IN (SELECT customer_name FROM customers);
+`)
+
 	// Try querying AivenDB first if it's connected
 	if dbClient.AivenDB != nil {
 		rows, err = dbClient.AivenDB.Query("SELECT * FROM customers ORDER BY customer_name ASC;")
